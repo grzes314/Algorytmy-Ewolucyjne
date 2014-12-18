@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 import kinematics.logic.Arm;
 import kinematics.logic.Configuration;
+import kinematics.logic.LocalSearchIK;
 import kinematics.logic.MutationPerformerIK;
 import kinematics.logic.NaiveConfigurationValuator;
 import kinematics.logic.NoCrossoverIK;
@@ -14,6 +15,7 @@ import kinematics.logic.RandomPopulationGeneratorIK;
 import sga.Function;
 import sga.Population;
 import sga.ProgressObserver;
+import sga.RandomParentSelector;
 import sga.RouletteParentSelector;
 import sga.SGA;
 import sga.SGA_Params;
@@ -55,12 +57,14 @@ public class Runner implements ProgressObserver
         sga = new SGA<>(params);
         sga.addObserver(this);
         sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(pData));
-        sga.setParentSelector(new RouletteParentSelector<>());
+        //sga.setParentSelector(new RouletteParentSelector<>());
+        sga.setParentSelector(new RandomParentSelector<>());
         sga.setCrossoverPerformer(new NoCrossoverIK());
         MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         sga.setReplacementPerformer(new SimpleReplacementPerformer<>());
+        sga.setLocalSearch(new LocalSearchIK(pData));
         thread = new Thread( () -> {
             sga.maximize(fun);
             System.out.println("Finished: " + sga.getBestVal());
@@ -114,7 +118,7 @@ public class Runner implements ProgressObserver
     @Override
     public void currentIteration(int i, boolean solutionImproved)
     {
-        if (i % 1000 == 0)
+        if (i % 200 == 0)
         {
             Population<Configuration> pop = sga.getCurrPopulation();
             String str = String.format("It=%d, best=%.6f, mean=%.6f, worst=%.6f",

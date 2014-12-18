@@ -23,6 +23,7 @@ public class SGA<Individual>
     private CrossoverPerformer<Individual> crossoverPerformer;
     private MutationPerformer<Individual> mutationPerformer;
     private ReplacementPerformer<Individual> replacementPerformer;
+    private LocalSearch<Individual> localSearch = new NoLocalSearch<>();
     
     //------------------------------- Statistics ---------------------------------------------------
     private int performedIterations;
@@ -62,6 +63,7 @@ public class SGA<Individual>
             populationC = mutationPerformer.mutation(populationC, thetaM);
             populationC.evaluate(F);
             currPopulation = replacementPerformer.replace(currPopulation, populationC);
+            localSearch.upgrade(currPopulation, F);
             currPopulation.evaluate(F);
             updateStats(i);
             postObservers(i);
@@ -126,6 +128,16 @@ public class SGA<Individual>
     public void setReplacementPerformer(ReplacementPerformer replacementPerformer)
     {
         this.replacementPerformer = replacementPerformer;
+    }
+
+    public LocalSearch<Individual> getLocalSearch()
+    {
+        return localSearch;
+    }
+
+    public void setLocalSearch(LocalSearch<Individual> localSearch)
+    {
+        this.localSearch = localSearch;
     }
 
     public ArrayList<Double> getBest()

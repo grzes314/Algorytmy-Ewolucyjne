@@ -63,9 +63,9 @@ public class SimplePopulation<Individual> implements Population<Individual>
     @Override
     public boolean terminationCondition()
     {
-        if (Math.abs(minTargetVal - maxTargetVal) < 0.00001)
+        /*if (Math.abs(minTargetVal - maxTargetVal) < 0.00001)
             return rand.nextDouble() < 0.05;
-        else
+        else*/
             return false;
     }
     

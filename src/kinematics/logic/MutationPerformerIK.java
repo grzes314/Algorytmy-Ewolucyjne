@@ -43,15 +43,16 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
         Configuration c = new Configuration(n);
         for (int i = 0; i < n; ++i)
         {
+            c.angle[i] = individual.angle[i];
             if (rand.nextDouble() < thetaM)
             {
                 double d = rand.nextDouble() * 2 * range - range;
-                c.angle[i] = individual.angle[i] + d;
+                c.angle[i] += d;
+                if (c.angle[i] > pData.sData.beta[i])
+                    c.angle[i] = pData.sData.beta[i];
+                if (c.angle[i] < pData.sData.alfa[i])
+                    c.angle[i] = pData.sData.alfa[i];
             }
-            if (c.angle[i] > pData.sData.beta[i])
-                c.angle[i] = pData.sData.beta[i];
-            if (c.angle[i] < pData.sData.alfa[i])
-                c.angle[i] = pData.sData.alfa[i];
         }
         return c;
     }
@@ -67,12 +68,12 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
             sum++;
         if (sum < 0 || sum > nrOfLastIterationsObserved)
             throw new RuntimeException("Internal error");
-        if (sum < nrOfLastIterationsObserved / 10)
-            range *= 0.9995;
+        if (sum < nrOfLastIterationsObserved / 5)
+            range *= 0.995;
         else
-            range *= 1.0005;
-        if (i % 1000 == 0)
-            System.out.println("Range: " + range);
+            range *= 1.005;
+        if (i % 200 == 0)
+            System.out.printf("Range =  %.3f rad = %4.2f degrees\n", range, 180*range/Math.PI);
     }
     
 }

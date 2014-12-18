@@ -24,7 +24,6 @@ public class PBILFrame extends JFrame
         setSize(1024, 768);
         setTitle("PBIL test");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(new MainPanel());
     }
     
 }

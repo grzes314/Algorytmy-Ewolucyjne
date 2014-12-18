@@ -2,7 +2,6 @@
 package sga;
 
 import java.util.ArrayList;
-import java.util.Observer;
 
 /**
  *
@@ -31,9 +30,12 @@ public class SGA<Individual>
     private Population<Individual> currPopulation;
     private double bestVal;
     private Individual bestInd;
+    private double currBestVal;
+    private Individual currBestInd;
     
     //------------------- Other -------------------------------------------------
     private final ArrayList<ProgressObserver> observers = new ArrayList<>();
+    private boolean interrupted;
 
     public SGA(SGA_Params params)
     {
@@ -47,10 +49,11 @@ public class SGA<Individual>
     public void maximize(Function<Individual> F)
     {
         initStats();
+        interrupted = false;
         currPopulation = randomPopoluationGenerator.generate(populationSize);
         currPopulation.evaluate(F);
         updateStats(0);
-        for (int i = 1; i <= maxIterations && !currPopulation.terminationCondition(); ++i)
+        for (int i = 1; i <= maxIterations && !interrupted && !currPopulation.terminationCondition(); ++i)
         {
             postObservers(i);
             Population populationP = parentSelector.select(currPopulation, nrOfParents);
@@ -61,6 +64,11 @@ public class SGA<Individual>
             currPopulation.evaluate(F);
             updateStats(i);
         }
+    }
+    
+    public void interrupt()
+    {
+        interrupted = true;
     }
 
     public int getMaxIterations()
@@ -148,6 +156,16 @@ public class SGA<Individual>
         return bestInd;
     }
 
+    public double getCurrBestVal()
+    {
+        return currBestVal;
+    }
+
+    public Individual getCurrBestInd()
+    {
+        return currBestInd;
+    }
+
     private void initStats()
     {
         worst = new ArrayList<>();
@@ -160,7 +178,7 @@ public class SGA<Individual>
 
     private void updateStats(int iteration)
     {
-        double currBestVal = currPopulation.getMaxValue();
+        currBestVal = currPopulation.getMaxValue();
         worst.add( currPopulation.getMinValue() );
         best.add( currBestVal );
         mean.add( currPopulation.getMeanValue() );

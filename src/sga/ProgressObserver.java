@@ -7,5 +7,5 @@ package sga;
  */
 public interface ProgressObserver
 {
-    public void currentIteration(int i);
+    public void currentIteration(int i, boolean solutionImproved);
 }

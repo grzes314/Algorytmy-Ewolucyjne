@@ -21,7 +21,7 @@ public class NaiveConfigurationValuator implements Function<Configuration>
     {
         arm.setConfiguration(x);
         Point last = arm.getLastCoord();
-        return last.distance(problemData.goal);
+        return -last.distance(problemData.goal);
     }
 
     private final ProblemData problemData;

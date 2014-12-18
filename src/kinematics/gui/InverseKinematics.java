@@ -17,7 +17,7 @@ public class InverseKinematics extends JFrame
     
     public InverseKinematics()
     {
-        setSize(1024, 768);
+        setSize(800, 600);
         setTitle("Inverse Kinematics");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(new MainPanel());

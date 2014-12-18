@@ -68,7 +68,7 @@ public abstract class SGA_Runner<Individual>
     private class myProgressObserver implements ProgressObserver
     {
         @Override
-        public void currentIteration(int i)
+        public void currentIteration(int i, boolean solutionImproved)
         {
             int p = 100 * i / params.maxIterations;
             /*if (p > lastDisplayedPerc)

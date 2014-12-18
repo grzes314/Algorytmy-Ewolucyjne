@@ -36,6 +36,7 @@ public class SGA<Individual>
     //------------------- Other -------------------------------------------------
     private final ArrayList<ProgressObserver> observers = new ArrayList<>();
     private boolean interrupted;
+    private boolean solutionImproved;
 
     public SGA(SGA_Params params)
     {
@@ -55,7 +56,7 @@ public class SGA<Individual>
         updateStats(0);
         for (int i = 1; i <= maxIterations && !interrupted && !currPopulation.terminationCondition(); ++i)
         {
-            postObservers(i);
+            solutionImproved = false;
             Population populationP = parentSelector.select(currPopulation, nrOfParents);
             Population populationC = crossoverPerformer.crossover(populationP, thetaC);
             populationC = mutationPerformer.mutation(populationC, thetaM);
@@ -63,6 +64,7 @@ public class SGA<Individual>
             currPopulation = replacementPerformer.replace(currPopulation, populationC);
             currPopulation.evaluate(F);
             updateStats(i);
+            postObservers(i);
         }
     }
     
@@ -165,6 +167,11 @@ public class SGA<Individual>
     {
         return currBestInd;
     }
+    
+    public Population<Individual> getCurrPopulation()
+    {
+        return currPopulation;
+    }
 
     private void initStats()
     {
@@ -179,11 +186,13 @@ public class SGA<Individual>
     private void updateStats(int iteration)
     {
         currBestVal = currPopulation.getMaxValue();
+        currBestInd = currPopulation.getMaxIndividual();
         worst.add( currPopulation.getMinValue() );
         best.add( currBestVal );
         mean.add( currPopulation.getMeanValue() );
         if (currBestVal > bestVal)
         {
+            solutionImproved = true;
             bestVal = currBestVal;
             bestInd = currPopulation.getMaxIndividual();
         }
@@ -203,7 +212,7 @@ public class SGA<Individual>
     private void postObservers(int i)
     {
         for (ProgressObserver obs: observers)
-            obs.currentIteration(i);
+            obs.currentIteration(i, solutionImproved);
     }
     
     public SGA_Result getResult()

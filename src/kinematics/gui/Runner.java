@@ -6,17 +6,24 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 import kinematics.logic.Arm;
 import kinematics.logic.Configuration;
+import kinematics.logic.MutationPerformerIK;
 import kinematics.logic.NaiveConfigurationValuator;
+import kinematics.logic.NoCrossoverIK;
 import kinematics.logic.ProblemData;
+import kinematics.logic.RandomPopulationGeneratorIK;
 import sga.Function;
+import sga.Population;
+import sga.ProgressObserver;
+import sga.RouletteParentSelector;
 import sga.SGA;
 import sga.SGA_Params;
+import sga.SimpleReplacementPerformer;
 
 /**
  *
  * @author Grzegorz Los
  */
-public class Runner
+public class Runner implements ProgressObserver
 {
     private final ProblemData pData;
     private final Arm arm;
@@ -38,16 +45,25 @@ public class Runner
     
     public void run()
     {
+        SGA_Params params = new SGA_Params(
+            100,
+            500,
+            1,
+            4.0 / pData.sData.n,
+            Integer.MAX_VALUE
+        );
+        sga = new SGA<>(params);
+        sga.addObserver(this);
+        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(pData));
+        sga.setParentSelector(new RouletteParentSelector<>());
+        sga.setCrossoverPerformer(new NoCrossoverIK());
+        MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
+        sga.addObserver(mp);
+        sga.setMutationPerformer(mp);
+        sga.setReplacementPerformer(new SimpleReplacementPerformer<>());
         thread = new Thread( () -> {
-            SGA_Params params = new SGA_Params(
-                100,
-                500,
-                1,
-                1.0 / pData.sData.n,
-                Integer.MAX_VALUE
-            );
-            sga = new SGA<>(params);
-            //sga.maximize(fun);
+            sga.maximize(fun);
+            System.out.println("Finished: " + sga.getBestVal());
         });
         arm.setConfiguration(defaultConf());
         //createDataUpdater();
@@ -93,5 +109,17 @@ public class Runner
         for (int i = 0; i < n; ++i)
             c.angle[i] = Math.PI;
         return c;
+    }
+
+    @Override
+    public void currentIteration(int i, boolean solutionImproved)
+    {
+        if (i % 1000 == 0)
+        {
+            Population<Configuration> pop = sga.getCurrPopulation();
+            String str = String.format("It=%d, best=%.6f, mean=%.6f, worst=%.6f",
+                                          i, pop.getMaxValue(), pop.getMeanValue(), pop.getMinValue());
+            System.out.println(str);
+        }
     }
 }

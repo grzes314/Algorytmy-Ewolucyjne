@@ -62,8 +62,8 @@ public class ProblemParser
         {
             double[] d = readDoubles(3);
             length[i] = d[0];
-            alfa[i] = d[1];
-            beta[i] = d[2];
+            alfa[i] = d[1] * Math.PI / 180.0;
+            beta[i] = d[2] * Math.PI / 180.0;
         }
         return new SegmentData(n, length, alfa, beta);
     }

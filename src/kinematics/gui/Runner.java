@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 import kinematics.logic.Arm;
+import kinematics.logic.Board;
 import kinematics.logic.Configuration;
 import kinematics.logic.LocalSearchIK;
 import kinematics.logic.MutationPerformerIK;
@@ -12,11 +13,12 @@ import kinematics.logic.NaiveConfigurationValuator;
 import kinematics.logic.NoCrossoverIK;
 import kinematics.logic.ProblemData;
 import kinematics.logic.RandomPopulationGeneratorIK;
+import kinematics.logic.ReplacementWithNonFeasible;
+import kinematics.logic.ValuatorWithObstacles;
 import sga.Function;
 import sga.Population;
 import sga.ProgressObserver;
 import sga.RandomParentSelector;
-import sga.RouletteParentSelector;
 import sga.SGA;
 import sga.SGA_Params;
 import sga.SimpleReplacementPerformer;
@@ -28,25 +30,63 @@ import sga.SimpleReplacementPerformer;
 public class Runner implements ProgressObserver
 {
     private final ProblemData pData;
+    private final Board board;
     private final Arm arm;
     private final Canvas canvas;
     private SGA<Configuration> sga;
     private Thread thread;
-    private final Function<Configuration> fun;
+    private Function<Configuration> fun;
     //private Timer dataUpdater;
     private Timer viewUpdater;
+    Mode mode;
+    
+    public enum Mode
+    {
+        Simple, Static, Dynamic
+    }
 
     public Runner(ProblemData pData, Canvas canvas)
     {
         this.pData = pData;
         this.canvas = canvas;
+        board = new Board(pData);
         arm = new Arm(pData.sData);
         canvas.setArm(arm);
-        fun = new NaiveConfigurationValuator(pData);
+        canvas.setBoard(board);
     }    
     
-    public void run()
+    public void run(Mode mode)
     {
+        this.mode = mode;
+        switch(mode)
+        {
+            case Simple:
+                prepareSimple();
+                break;
+            case Static:
+                prepareStatic();
+                break;
+            case Dynamic:
+                prepareDynamic();
+                break;
+        }
+        thread = new Thread( () -> {
+            sga.maximize(fun);
+            System.out.println("Finished: " + sga.getBestVal());
+        });
+        arm.setConfiguration(defaultConf());
+        
+        //createDataUpdater();
+        createViewUpdater();
+        thread.start();
+        viewUpdater.start();
+        //dataUpdater.start();
+    }
+    
+    private void prepareSimple()
+    {
+        fun = new NaiveConfigurationValuator(pData);
+        
         SGA_Params params = new SGA_Params(
             100,
             500,
@@ -54,6 +94,7 @@ public class Runner implements ProgressObserver
             4.0 / pData.sData.n,
             Integer.MAX_VALUE
         );
+        
         sga = new SGA<>(params);
         sga.addObserver(this);
         sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(pData));
@@ -64,17 +105,37 @@ public class Runner implements ProgressObserver
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         sga.setReplacementPerformer(new SimpleReplacementPerformer<>());
-        sga.setLocalSearch(new LocalSearchIK(pData));
-        thread = new Thread( () -> {
-            sga.maximize(fun);
-            System.out.println("Finished: " + sga.getBestVal());
-        });
-        arm.setConfiguration(defaultConf());
-        //createDataUpdater();
-        createViewUpdater();
-        thread.start();
-        viewUpdater.start();
-        //dataUpdater.start();
+        sga.setLocalSearch(new LocalSearchIK(pData));        
+    }
+
+    private void prepareStatic()
+    {
+        fun = new ValuatorWithObstacles(pData, board);
+        
+        SGA_Params params = new SGA_Params(
+            100,
+            500,
+            1,
+            4.0 / pData.sData.n,
+            Integer.MAX_VALUE
+        );
+        
+        sga = new SGA<>(params);
+        sga.addObserver(this);
+        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(pData));
+        //sga.setParentSelector(new RouletteParentSelector<>());
+        sga.setParentSelector(new RandomParentSelector<>());
+        sga.setCrossoverPerformer(new NoCrossoverIK());
+        MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
+        sga.addObserver(mp);
+        sga.setMutationPerformer(mp);
+        sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.nrOfParents,params.nrOfParents/2));
+        sga.setLocalSearch(new LocalSearchIK(pData));        
+    }
+
+    private void prepareDynamic()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public void stop()

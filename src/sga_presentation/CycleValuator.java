@@ -30,4 +30,10 @@ public class CycleValuator implements Function<Permutation>
         return -sum;
     }
 
+    @Override
+    public boolean isLastFisible()
+    {
+        return true;
+    }
+
 }

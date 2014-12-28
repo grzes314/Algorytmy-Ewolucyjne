@@ -13,10 +13,9 @@ public class RandomParentSelector<Individual> implements ParentSelector<Individu
     @Override
     public Population<Individual> select(Population<Individual> population, int nrOfParents)
     {
-        SimplePopulation<Individual> all = (SimplePopulation<Individual>) population;
         SimplePopulation<Individual> parents = new SimplePopulation<>();
         for (int i = 0; i < nrOfParents; ++i)
-            parents.addIndividual( all.getIndividual(rand.nextInt(all.getSize())) );
+            parents.addIndividual( population.getIndividual(rand.nextInt(population.getSize())) );
         return parents;
     }
 }

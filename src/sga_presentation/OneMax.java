@@ -21,4 +21,10 @@ public class OneMax implements Function<BitString>
         return sum;
     }
 
+    @Override
+    public boolean isLastFisible()
+    {
+        return true;
+    }
+
 }

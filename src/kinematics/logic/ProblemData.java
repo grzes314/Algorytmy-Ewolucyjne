@@ -28,7 +28,6 @@ public class ProblemData
         public final int k;
         public final Point[] from;
         public final Point[] to;
-        public final Point[] curr;
         public final double[] h;
         public final double[] w;
         public final double[] v;
@@ -41,9 +40,6 @@ public class ProblemData
             this.h = h;
             this.w = w;
             this.v = v;
-            curr = new Point[from.length];
-            for (int i = 0; i < curr.length; ++i)
-                curr[i] = from[i];
         }
     }
     

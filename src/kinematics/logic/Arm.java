@@ -2,6 +2,7 @@
 package kinematics.logic;
 
 import kinematics.logic.ProblemData.SegmentData;
+import kinematics.logic.Line;
 
 /**
  *
@@ -46,6 +47,18 @@ public class Arm
     public Point[] getCoord()
     {
         return coord;
+    }
+    
+    public Line[] getLines()
+    {
+        Line[] lines = new Line[coord.length];
+        Point prev = new Point(0,0);
+        for (int i = 0; i < lines.length; ++i)
+        {
+            lines[i] = new Line(prev, coord[i]);
+            prev = coord[i];
+        }
+        return lines;
     }
 
     public Point getLastCoord()

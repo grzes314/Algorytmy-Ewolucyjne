@@ -7,12 +7,13 @@ import sga.Function;
  *
  * @author Grzegorz Los
  */
-public class NaiveConfigurationValuator implements Function<Configuration>
+public class ValuatorWithObstacles implements Function<Configuration>
 {
 
-    public NaiveConfigurationValuator(ProblemData problemData)
+    public ValuatorWithObstacles(ProblemData problemData, Board board)
     {
         this.problemData = problemData;
+        this.board = board;
         arm = new Arm(problemData.sData);
     }
     
@@ -23,13 +24,14 @@ public class NaiveConfigurationValuator implements Function<Configuration>
         Point last = arm.getLastCoord();
         return -last.distance(problemData.goal);
     }
-
-    private final ProblemData problemData;
-    private final Arm arm;
-
+    
     @Override
     public boolean isLastFisible()
     {
-        return true;
+        return !board.intersects(arm.getLines());
     }
+
+    private final ProblemData problemData;
+    private final Arm arm;
+    private final Board board;
 }

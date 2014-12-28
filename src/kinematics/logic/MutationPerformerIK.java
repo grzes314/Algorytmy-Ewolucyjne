@@ -69,9 +69,9 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
         if (sum < 0 || sum > nrOfLastIterationsObserved)
             throw new RuntimeException("Internal error");
         if (sum < nrOfLastIterationsObserved / 5)
-            range *= 0.995;
+            range *= 0.99;
         else
-            range *= 1.005;
+            range *= 1.01;
         if (i % 200 == 0)
             System.out.printf("Range =  %.3f rad = %4.2f degrees\n", range, 180*range/Math.PI);
     }

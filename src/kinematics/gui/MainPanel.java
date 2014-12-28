@@ -37,7 +37,6 @@ public class MainPanel extends javax.swing.JPanel
         {
             try {
                 ProblemData pData = pParser.read(chooser.getSelectedFile().getName());
-                canvas.setPData(pData);
                 runner = new Runner(pData, canvas);
             } catch (IOException ex) {
                 Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -50,7 +49,8 @@ public class MainPanel extends javax.swing.JPanel
         browse.setEnabled(false);
         solve.setEnabled(false);
         stop.setEnabled(true);
-        runner.run();
+        Runner.Mode mode = getSelectedMode();
+        runner.run(mode);
     }
     
     private void stopClicked()
@@ -61,6 +61,15 @@ public class MainPanel extends javax.swing.JPanel
         stop.setEnabled(false);
     }
 
+    private Runner.Mode getSelectedMode()
+    {
+        if (simple.isSelected())
+            return Runner.Mode.Simple;
+        else if (static_.isSelected())
+            return Runner.Mode.Static;
+        else
+            return Runner.Mode.Dynamic;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -71,11 +80,15 @@ public class MainPanel extends javax.swing.JPanel
     private void initComponents()
     {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         browse = new javax.swing.JButton();
         imageContainer = new javax.swing.JPanel();
         filePath = new javax.swing.JTextField();
         solve = new javax.swing.JButton();
         stop = new javax.swing.JButton();
+        simple = new javax.swing.JRadioButton();
+        static_ = new javax.swing.JRadioButton();
+        dynamic = new javax.swing.JRadioButton();
 
         browse.setText("Browse");
         browse.addActionListener(new java.awt.event.ActionListener()
@@ -90,7 +103,7 @@ public class MainPanel extends javax.swing.JPanel
         imageContainer.setLayout(imageContainerLayout);
         imageContainerLayout.setHorizontalGroup(
             imageContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 330, Short.MAX_VALUE)
+            .addGap(0, 497, Short.MAX_VALUE)
         );
         imageContainerLayout.setVerticalGroup(
             imageContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,6 +131,16 @@ public class MainPanel extends javax.swing.JPanel
             }
         });
 
+        buttonGroup1.add(simple);
+        simple.setSelected(true);
+        simple.setText("Simple");
+
+        buttonGroup1.add(static_);
+        static_.setText("Static");
+
+        buttonGroup1.add(dynamic);
+        dynamic.setText("Dynamic");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -125,30 +148,40 @@ public class MainPanel extends javax.swing.JPanel
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(filePath)
+                    .addComponent(filePath, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
                     .addComponent(imageContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(browse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(solve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(stop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(19, 19, 19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(static_, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(simple, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dynamic, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stop, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(solve, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(browse))
+                .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(browse)
-                    .addComponent(filePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(filePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(browse, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(imageContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addComponent(solve)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(stop)
-                        .addGap(0, 183, Short.MAX_VALUE)))
+                        .addGap(26, 26, 26)
+                        .addComponent(simple)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(static_)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dynamic)
+                        .addGap(0, 230, Short.MAX_VALUE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -171,9 +204,14 @@ public class MainPanel extends javax.swing.JPanel
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browse;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JRadioButton dynamic;
     private javax.swing.JTextField filePath;
     private javax.swing.JPanel imageContainer;
+    private javax.swing.JRadioButton simple;
     private javax.swing.JButton solve;
+    private javax.swing.JRadioButton static_;
     private javax.swing.JButton stop;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -3,10 +3,12 @@ package kinematics.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.List;
 import javax.swing.JPanel;
 import kinematics.logic.Arm;
+import kinematics.logic.Board;
 import kinematics.logic.Point;
-import kinematics.logic.ProblemData;
+import kinematics.logic.Rectangle;
 
 /**
  *
@@ -14,8 +16,8 @@ import kinematics.logic.ProblemData;
  */
 public class Canvas extends JPanel
 {
-    private ProblemData pData;
     private Arm arm;
+    private Board board;
     private final int goalR = 6;
     private final int nodeR = 4;
     private Graphics gr;
@@ -38,7 +40,7 @@ public class Canvas extends JPanel
         this.gr = gr;
         gr.setColor(Color.WHITE);
         gr.fillRect(0, 0, getSize().width, getSize().height);
-        if (pData != null)
+        if (board != null)
         {
             drawGoal();
             drawObstacles();
@@ -47,20 +49,20 @@ public class Canvas extends JPanel
             drawSegments();        
     }
 
-    public void setPData(ProblemData pData)
-    {
-        this.pData = pData;
-    }
-
     public void setArm(Arm arm)
     {
         this.arm = arm;
+    }
+
+    public void setBoard(Board board)
+    {
+        this.board = board;
     }
     
     private SwingCoord translate(Point c)
     {
         int h = getSize().height, w = getSize().width;
-        double minX = pData.minArea.x, maxX = pData.maxArea.x, minY = pData.minArea.y, maxY = pData.maxArea.y;
+        double minX = board.minArea.x, maxX = board.maxArea.x, minY = board.minArea.y, maxY = board.maxArea.y;
         double x = (c.x - minX) / (maxX - minX) * w;
         double y = (maxY - c.y) / (maxY - minY) * h;
         return new SwingCoord((int)x, (int)y);
@@ -69,7 +71,7 @@ public class Canvas extends JPanel
     private void drawGoal()
     {
         gr.setColor(Color.RED);
-        SwingCoord sc = translate(pData.goal);
+        SwingCoord sc = translate(board.goal);
         int x = sc.x - goalR;
         int y = sc.y - goalR;
         gr.fillOval(x, y, 2*goalR, 2*goalR); 
@@ -97,15 +99,16 @@ public class Canvas extends JPanel
     private void drawObstacles()
     {
         gr.setColor(new Color(128,64,0));
-        for (int i = 0; i < pData.oData.k; ++i)
-            drawObstacle(i);
+        List<Rectangle> rects = board.getRects();
+        for (Rectangle rect: rects)
+            drawObstacle(rect);
     }
 
-    private void drawObstacle(int i)
+    private void drawObstacle(Rectangle rect)
     {
-        Point mid = pData.oData.curr[i];
-        double h = pData.oData.h[i];
-        double w = pData.oData.w[i];
+        Point mid = rect.getPos();
+        double h = rect.h;
+        double w = rect.w;
         Point p1 = new Point(mid.x - w/2, mid.y - h/2);
         Point p2 = new Point(mid.x + w/2, mid.y + h/2);
         SwingCoord from = translate(p1);

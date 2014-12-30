@@ -10,9 +10,9 @@ import java.util.ArrayList;
  */
 public class SimplePopulation<Individual> implements Population<Individual>
 {
-    private final ArrayList<Individual> inds = new ArrayList<>();
+    private final ArrayList<ValuedIndividual<Individual>> inds = new ArrayList<>();
+    private final ArrayList<Boolean> evaluated = new ArrayList<>();
     private double targetVals[], fitVals[], cumFitVals[];
-    private boolean feasible[];
     private double minTargetVal, maxTargetVal, meanTargetVal;
     Individual maxIndividual, minIndividual;
     private int N;
@@ -30,12 +30,14 @@ public class SimplePopulation<Individual> implements Population<Individual>
     private void calculateTargetVals(Function<Individual> F)
     {
         targetVals = new double[N];
-        feasible = new boolean[N];
         for (int i = 0; i < N; ++i)
         {
-            ValuedIndividual<Individual> valInd = F.value(inds.get(i));
-            targetVals[i] = valInd.value;
-            feasible[i] = valInd.feasible;
+            if (!evaluated.get(i))
+            {
+                ValuedIndividual<Individual> valInd = F.value(inds.get(i).ind);
+                inds.set(i, valInd);
+            }
+            targetVals[i] = inds.get(i).value; 
         }
     }
 
@@ -77,7 +79,7 @@ public class SimplePopulation<Individual> implements Population<Individual>
     public Individual randomIndividual(double r)
     {
         int i = firstGreaterThan(0, N-1, r);
-        return inds.get(i);
+        return inds.get(i).ind;
     }
     
     private int firstGreaterThan(int beg, int end, double r)
@@ -101,7 +103,15 @@ public class SimplePopulation<Individual> implements Population<Individual>
     
     public void addIndividual(Individual individual)
     {
-        inds.add(individual);
+        evaluated.add(Boolean.FALSE);
+        ValuedIndividual<Individual> valInd = new ValuedIndividual<>(individual, Double.NaN, false);
+        inds.add(valInd);
+    }
+    
+    public void addIndividual(ValuedIndividual<Individual> valuedIndividual)
+    {
+        evaluated.add(Boolean.TRUE);
+        inds.add(valuedIndividual);
     }
 
     private void calculateStats()
@@ -111,17 +121,17 @@ public class SimplePopulation<Individual> implements Population<Individual>
         meanTargetVal = 0;
         for (int i = 0; i < N; ++i)
         {
-            if (!feasible[i])
+            if (!inds.get(i).feasible)
                 continue;
             if (targetVals[i] < minTargetVal)
             {
                 minTargetVal = targetVals[i];
-                minIndividual = inds.get(i);
+                minIndividual = inds.get(i).ind;
             }
             if (targetVals[i] > maxTargetVal)
             {
                 maxTargetVal = targetVals[i];
-                maxIndividual = inds.get(i);
+                maxIndividual = inds.get(i).ind;
             }
             meanTargetVal += targetVals[i] / N;
         }
@@ -166,7 +176,7 @@ public class SimplePopulation<Individual> implements Population<Individual>
     @Override
     public Individual getIndividual(int i)
     {
-        return inds.get(i);
+        return inds.get(i).ind;
     }
 
     @Override
@@ -175,7 +185,7 @@ public class SimplePopulation<Individual> implements Population<Individual>
         ArrayList<ValuedIndividual<Individual>> list = new ArrayList<>();
         for (int i = 0; i < N; ++i)
         {
-            list.add( new ValuedIndividual<>(inds.get(i), targetVals[i], feasible[i]) );
+            list.add(inds.get(i));
         }
         list.sort( (ValuedIndividual<Individual> o1, ValuedIndividual<Individual> o2)
                     -> -Double.compare(o1.value, o2.value) );

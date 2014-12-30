@@ -2,7 +2,6 @@
 package sga;
 
 import java.util.ArrayList;
-import static sga.RandomnessSource.rand;
 
 /**
  *
@@ -13,6 +12,7 @@ public class SimplePopulation<Individual> implements Population<Individual>
 {
     private final ArrayList<Individual> inds = new ArrayList<>();
     private double targetVals[], fitVals[], cumFitVals[];
+    private boolean feasible[];
     private double minTargetVal, maxTargetVal, meanTargetVal;
     Individual maxIndividual, minIndividual;
     private int N;
@@ -30,8 +30,13 @@ public class SimplePopulation<Individual> implements Population<Individual>
     private void calculateTargetVals(Function<Individual> F)
     {
         targetVals = new double[N];
+        feasible = new boolean[N];
         for (int i = 0; i < N; ++i)
-            targetVals[i] = F.value(inds.get(i)).value;
+        {
+            ValuedIndividual<Individual> valInd = F.value(inds.get(i));
+            targetVals[i] = valInd.value;
+            feasible[i] = valInd.feasible;
+        }
     }
 
     private void calculateFitValues()
@@ -106,6 +111,8 @@ public class SimplePopulation<Individual> implements Population<Individual>
         meanTargetVal = 0;
         for (int i = 0; i < N; ++i)
         {
+            if (!feasible[i])
+                continue;
             if (targetVals[i] < minTargetVal)
             {
                 minTargetVal = targetVals[i];
@@ -168,7 +175,7 @@ public class SimplePopulation<Individual> implements Population<Individual>
         ArrayList<ValuedIndividual<Individual>> list = new ArrayList<>();
         for (int i = 0; i < N; ++i)
         {
-            list.add( new ValuedIndividual<>(inds.get(i), targetVals[i]) );
+            list.add( new ValuedIndividual<>(inds.get(i), targetVals[i], feasible[i]) );
         }
         list.sort( (ValuedIndividual<Individual> o1, ValuedIndividual<Individual> o2)
                     -> -Double.compare(o1.value, o2.value) );

@@ -1,6 +1,7 @@
 
 package kinematics.logic;
 
+import sga.SimplePopulation;
 import java.util.ArrayList;
 import sga.Population;
 import sga.ReplacementPerformer;
@@ -25,7 +26,7 @@ public class ReplacementWithNonFeasible<Individual> implements ReplacementPerfor
     @Override
     public Population<Individual> replace(Population<Individual> old, Population<Individual> _new)
     {
-        PopulationWithNonFeasible<Individual> newest = new PopulationWithNonFeasible<>();
+        SimplePopulation<Individual> newest = new SimplePopulation<>();
         ArrayList<ValuedIndividual<Individual>> a =  old.createListOfSortedIndividuals();
         ArrayList<ValuedIndividual<Individual>> b = _new.createListOfSortedIndividuals();
         int N = old.getSize();

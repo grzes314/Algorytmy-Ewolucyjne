@@ -31,7 +31,7 @@ public class SimplePopulation<Individual> implements Population<Individual>
     {
         targetVals = new double[N];
         for (int i = 0; i < N; ++i)
-            targetVals[i] = F.value(inds.get(i));
+            targetVals[i] = F.value(inds.get(i)).value;
     }
 
     private void calculateFitValues()

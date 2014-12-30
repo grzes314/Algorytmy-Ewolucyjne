@@ -3,6 +3,7 @@ package sga_presentation;
 
 import sga.Function;
 import sga.Permutation;
+import sga.ValuedIndividual;
 
 /**
  *
@@ -19,7 +20,7 @@ public class CycleValuator implements Function<Permutation>
     }
 
     @Override
-    public double value(Permutation perm)
+    public ValuedIndividual<Permutation> value(Permutation perm)
     {
         cycle = perm.toArray();
         double sum = 0;
@@ -27,13 +28,6 @@ public class CycleValuator implements Function<Permutation>
         for (int i = 1; i < N; ++i)
             sum += graph.get(cycle[i-1], cycle[i]);
         sum += graph.get(cycle[N-1], cycle[0]);
-        return -sum;
+        return new ValuedIndividual<>(perm, -sum);
     }
-
-    @Override
-    public boolean isLastFisible()
-    {
-        return true;
-    }
-
 }

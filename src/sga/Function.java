@@ -7,7 +7,5 @@ package sga;
  */
 public interface Function<ArgType>
 {
-    public double value(ArgType x);
-    
-    public boolean isLastFisible();
+    public ValuedIndividual<ArgType> value(ArgType x);
 }

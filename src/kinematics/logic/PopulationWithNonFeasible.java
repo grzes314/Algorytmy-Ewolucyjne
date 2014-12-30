@@ -36,8 +36,9 @@ public class PopulationWithNonFeasible<Individual> implements Population<Individ
         feasible = new boolean[N];
         for (int i = 0; i < N; ++i)
         {
-            targetVals[i] = F.value(inds.get(i));
-            feasible[i] = F.isLastFisible();
+            ValuedIndividual<Individual> valInd = F.value(inds.get(i));
+            targetVals[i] = valInd.value;
+            feasible[i] = valInd.feasible;
         }
     }
 

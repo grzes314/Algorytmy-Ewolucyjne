@@ -3,6 +3,7 @@ package sga_presentation;
 
 import sga.BitString;
 import sga.Function;
+import sga.ValuedIndividual;
 
 /**
  *
@@ -12,19 +13,12 @@ public class OneMax implements Function<BitString>
 {
 
     @Override
-    public double value(BitString x)
+    public ValuedIndividual<BitString> value(BitString x)
     {
         int sum = 0;
         for (boolean bit: x.bits)
             if (bit)
                 sum++;
-        return sum;
+        return new ValuedIndividual<>(x, sum);
     }
-
-    @Override
-    public boolean isLastFisible()
-    {
-        return true;
-    }
-
 }

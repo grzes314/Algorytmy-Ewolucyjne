@@ -2,6 +2,7 @@
 package kinematics.logic;
 
 import sga.Function;
+import sga.ValuedIndividual;
 
 /**
  *
@@ -17,19 +18,13 @@ public class NaiveConfigurationValuator implements Function<Configuration>
     }
     
     @Override
-    public double value(Configuration x)
+    public ValuedIndividual<Configuration> value(Configuration x)
     {
         arm.setConfiguration(x);
         Point last = arm.getLastCoord();
-        return -last.distance(problemData.goal);
+        return new ValuedIndividual<>(x, -last.distance(problemData.goal));
     }
 
     private final ProblemData problemData;
     private final Arm arm;
-
-    @Override
-    public boolean isLastFisible()
-    {
-        return true;
-    }
 }

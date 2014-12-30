@@ -32,12 +32,12 @@ public class LocalSearchIK implements LocalSearch<Configuration>
         double alfa = pData.sData.alfa[k];
         double beta = pData.sData.beta[k];
         double bestAngle = conf.angle[k];
-        double bestVal = F.value(conf);
+        double bestVal = F.value(conf).value;
         for (int i = 0; i <= 10; ++i)
         {
             double newAngle = alfa + i * (beta - alfa) / 10.0;
             conf.angle[k] = newAngle;
-            double val = F.value(conf);
+            double val = F.value(conf).value;
             if (val > bestVal)
             {
                 bestAngle = newAngle;

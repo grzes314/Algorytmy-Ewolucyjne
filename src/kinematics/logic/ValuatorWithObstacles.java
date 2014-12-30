@@ -2,6 +2,7 @@
 package kinematics.logic;
 
 import sga.Function;
+import sga.ValuedIndividual;
 
 /**
  *
@@ -18,17 +19,12 @@ public class ValuatorWithObstacles implements Function<Configuration>
     }
     
     @Override
-    public double value(Configuration x)
+    public ValuedIndividual<Configuration> value(Configuration x)
     {
         arm.setConfiguration(x);
         Point last = arm.getLastCoord();
-        return -last.distance(problemData.goal);
-    }
-    
-    @Override
-    public boolean isLastFisible()
-    {
-        return !board.intersects(arm.getLines());
+        boolean feasible = !board.intersects(arm.getLines());
+        return new ValuedIndividual<>(x, -last.distance(problemData.goal), feasible);
     }
 
     private final ProblemData problemData;

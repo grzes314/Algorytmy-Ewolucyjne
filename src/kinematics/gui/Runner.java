@@ -7,10 +7,11 @@ import javax.swing.Timer;
 import kinematics.logic.Arm;
 import kinematics.logic.Board;
 import kinematics.logic.Configuration;
-import kinematics.logic.LocalSearchIK;
+import kinematics.logic.Line;
 import kinematics.logic.MutationPerformerIK;
 import kinematics.logic.NaiveConfigurationValuator;
 import kinematics.logic.NoCrossoverIK;
+import kinematics.logic.Point;
 import kinematics.logic.ProblemData;
 import kinematics.logic.RandomPopulationGeneratorIK;
 import kinematics.logic.ReplacementWithNonFeasible;
@@ -105,7 +106,7 @@ public class Runner implements ProgressObserver
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         sga.setReplacementPerformer(new SimpleReplacementPerformer<>());
-        sga.setLocalSearch(new LocalSearchIK(pData));        
+        //sga.setLocalSearch(new LocalSearchIK(pData));        
     }
 
     private void prepareStatic()
@@ -120,6 +121,7 @@ public class Runner implements ProgressObserver
             Integer.MAX_VALUE
         );
         
+        
         sga = new SGA<>(params);
         sga.addObserver(this);
         sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(pData));
@@ -130,7 +132,7 @@ public class Runner implements ProgressObserver
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.nrOfParents,params.nrOfParents/2));
-        sga.setLocalSearch(new LocalSearchIK(pData));        
+        //sga.setLocalSearch(new LocalSearchIK(pData));        
     }
 
     private void prepareDynamic()

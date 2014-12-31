@@ -12,9 +12,12 @@ public class Line
     public final double a, b, c;
     public final double midX, midY, xRange, yRange;
     public static final double eps = 0.0001;
+    private final Point p, r;
     
     public Line(Point p, Point r)
     {
+        this.p = p;
+        this.r = r;
         double u = r.x - p.x;
         double v = r.y - p.y;
         a = v;
@@ -48,13 +51,10 @@ public class Line
         double det = a*l.b - b * l.a;
         if (abs(det) < eps)
             return false;
-        double nominator = c * l.a - a * l.c;
-        double y = nominator / det;
-        double x = 0;
-        if (abs(a) < eps)
-            x = (-l.b * y - l.c) / l.a;
-        else
-            x = (-b * y - c) / a;
-        return onLine(x, y);
+        double det_x = b * l.c - c * l.b;
+        double det_y = c * l.a - a * l.c;
+        double x = det_x / det;
+        double y = det_y / det;
+        return onLine(x, y) && l.onLine(x, y);
     }
 }

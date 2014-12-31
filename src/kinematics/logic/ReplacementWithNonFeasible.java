@@ -17,7 +17,7 @@ public class ReplacementWithNonFeasible<Individual> implements ReplacementPerfor
     private final int maxNonFeasible;
     private final int maxFeasible;
 
-    public ReplacementWithNonFeasible(int maxNonFeasible, int maxFeasible)
+    public ReplacementWithNonFeasible(int maxFeasible, int maxNonFeasible)
     {
         this.maxNonFeasible = maxNonFeasible;
         this.maxFeasible = maxFeasible;
@@ -29,24 +29,23 @@ public class ReplacementWithNonFeasible<Individual> implements ReplacementPerfor
         SimplePopulation<Individual> newest = new SimplePopulation<>();
         ArrayList<ValuedIndividual<Individual>> a =  old.createListOfSortedIndividuals();
         ArrayList<ValuedIndividual<Individual>> b = _new.createListOfSortedIndividuals();
-        int N = old.getSize();
-        int M = _new.getSize();
         int ai = 0, bi = 0;
         int feasible = 0;
         int nonfeasible = 0;
-        for (int i = 0; feasible < maxFeasible; ++i)
+        while ( (feasible < maxFeasible || nonfeasible < maxNonFeasible)
+            && (ai < old.getSize() || bi < _new.getSize()) )
         {
             ValuedIndividual<Individual> fromA = ai < old.getSize() ? a.get(ai) : null;
             ValuedIndividual<Individual> fromB = bi < _new.getSize() ? b.get(bi) : null;
             ValuedIndividual<Individual> better = getBetter(fromA, fromB);
             if (better.feasible && feasible < maxFeasible)
             {
-                newest.addIndividual(better.ind);
+                newest.addIndividual(better);
                 feasible++;
             }
             if (!better.feasible && nonfeasible < maxNonFeasible)
             {
-                newest.addIndividual(better.ind);
+                newest.addIndividual(better);
                 nonfeasible++;
             }
             if (better == fromA) ai++;
@@ -65,5 +64,4 @@ public class ReplacementWithNonFeasible<Individual> implements ReplacementPerfor
             return fromA;
         else return fromB;
     }
-
 }

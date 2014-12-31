@@ -119,10 +119,12 @@ public class SimplePopulation<Individual> implements Population<Individual>
         minTargetVal = Double.POSITIVE_INFINITY;
         maxTargetVal = Double.NEGATIVE_INFINITY;
         meanTargetVal = 0;
+        int feasibleCount = 0;
         for (int i = 0; i < N; ++i)
         {
             if (!inds.get(i).feasible)
                 continue;
+            feasibleCount++;
             if (targetVals[i] < minTargetVal)
             {
                 minTargetVal = targetVals[i];
@@ -133,8 +135,9 @@ public class SimplePopulation<Individual> implements Population<Individual>
                 maxTargetVal = targetVals[i];
                 maxIndividual = inds.get(i).ind;
             }
-            meanTargetVal += targetVals[i] / N;
+            meanTargetVal += targetVals[i];
         }
+        meanTargetVal /= feasibleCount;
     }
 
     @Override

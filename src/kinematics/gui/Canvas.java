@@ -113,6 +113,6 @@ public class Canvas extends JPanel
         Point p2 = new Point(mid.x + w/2, mid.y + h/2);
         SwingCoord from = translate(p1);
         SwingCoord to = translate(p2);
-        gr.fillRect(from.x, from.y, to.x - from.x, from.y - to.y);
+        gr.fillRect(from.x, to.y, to.x - from.x, from.y - to.y);
     }
 }

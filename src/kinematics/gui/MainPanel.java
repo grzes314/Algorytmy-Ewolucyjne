@@ -99,15 +99,17 @@ public class MainPanel extends javax.swing.JPanel
             }
         });
 
+        imageContainer.setPreferredSize(new java.awt.Dimension(500, 500));
+
         javax.swing.GroupLayout imageContainerLayout = new javax.swing.GroupLayout(imageContainer);
         imageContainer.setLayout(imageContainerLayout);
         imageContainerLayout.setHorizontalGroup(
             imageContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 497, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         imageContainerLayout.setVerticalGroup(
             imageContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
 
         filePath.setText("Choose data file");
@@ -148,9 +150,9 @@ public class MainPanel extends javax.swing.JPanel
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(filePath, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
+                    .addComponent(filePath)
                     .addComponent(imageContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addGap(71, 71, 71)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(static_, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(simple, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -180,8 +182,7 @@ public class MainPanel extends javax.swing.JPanel
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(static_)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dynamic)
-                        .addGap(0, 230, Short.MAX_VALUE)))
+                        .addComponent(dynamic)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents

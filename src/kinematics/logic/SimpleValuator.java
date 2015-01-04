@@ -8,13 +8,12 @@ import sga.ValuedIndividual;
  *
  * @author Grzegorz Los
  */
-public class ValuatorWithObstacles implements Function<Configuration>
+public class SimpleValuator implements Function<Configuration>
 {
 
-    public ValuatorWithObstacles(ProblemData problemData, Board board)
+    public SimpleValuator(ProblemData problemData)
     {
         this.problemData = problemData;
-        this.board = board;
         arm = new Arm(problemData.sData);
     }
     
@@ -23,11 +22,9 @@ public class ValuatorWithObstacles implements Function<Configuration>
     {
         arm.setConfiguration(x);
         Point last = arm.getLastCoord();
-        boolean feasible = !board.intersects(arm.getLines());
-        return new ValuedIndividual<>(x, -last.distance(problemData.goal), feasible);
+        return new ValuedIndividual<>(x, -last.distance(problemData.goal));
     }
 
     private final ProblemData problemData;
     private final Arm arm;
-    private final Board board;
 }

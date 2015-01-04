@@ -29,7 +29,7 @@ public class Arm
     private void calculateCoords()
     {
         int n = conf.angle.length;
-        coord = new Point[n];
+        Point[] newCoord = new Point[n];
         Vector u = new Vector(0,-1);
         Point prev = new Point(0,0);
         for (int i = 0; i < n; ++i)
@@ -37,11 +37,12 @@ public class Arm
             double a = conf.angle[i];
             Vector v = u.rotate(a);
             v.scaleTo(segmentData.length[i]);
-            coord[i] = prev.plus(v);
+            newCoord[i] = prev.plus(v);
             
-            u = new Vector(coord[i], prev);
-            prev = coord[i];
+            u = new Vector(newCoord[i], prev);
+            prev = newCoord[i];
         }
+        coord = newCoord;
     }
 
     public Point[] getCoord()
@@ -64,5 +65,10 @@ public class Arm
     public Point getLastCoord()
     {
         return coord[segmentData.n-1];
+    }
+
+    public Configuration getConf()
+    {
+        return conf;
     }
 }

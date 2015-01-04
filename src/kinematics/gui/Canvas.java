@@ -37,6 +37,7 @@ public class Canvas extends JPanel
     @Override
     public void paint(Graphics gr)
     {        
+        super.paint(gr);
         this.gr = gr;
         gr.setColor(Color.WHITE);
         gr.fillRect(0, 0, getSize().width, getSize().height);
@@ -47,6 +48,11 @@ public class Canvas extends JPanel
         }
         if (arm != null && arm.getCoord() != null)
             drawSegments();        
+    }
+
+    public Arm getArm()
+    {
+        return arm;
     }
 
     public void setArm(Arm arm)

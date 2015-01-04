@@ -24,10 +24,18 @@ public class Board
         
         for (int i = 0; i < oData.k; ++i)
         {
-            //public Rectangle(Point from, Point to, double v, double h, double w)
             Rectangle rect = new Rectangle(oData.from[i], oData.to[i], oData.v[i], oData.h[i], oData.w[i]);
             rects.add(rect);
         }
+    }
+    
+    public Board(Board board)
+    {
+        minArea = board.minArea;
+        maxArea = board.maxArea;
+        goal = board.goal;
+        for (Rectangle rect: board.rects)
+            rects.add(new Rectangle(rect));
     }
     
     public void move(double deltaTime)
@@ -62,5 +70,4 @@ public class Board
     {
         return rects;
     }
-
 }

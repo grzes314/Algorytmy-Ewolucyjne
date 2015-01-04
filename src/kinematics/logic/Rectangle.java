@@ -23,6 +23,17 @@ public class Rectangle
         this.w = w;
         pos = from;
     }
+
+    Rectangle(Rectangle rect)
+    {
+        from = rect.from;
+        to = rect.to;
+        pos = rect.pos;
+        vel = rect.vel;
+        h = rect.h;
+        w = rect.w;
+        backwards = rect.backwards;
+    }
     
     public Line[] getLines()
     {
@@ -41,7 +52,7 @@ public class Rectangle
     public void move(double deltaTime)
     {
         Vector v = backwards ? new Vector(to, from) : new Vector(from, to);
-        v.scaleBy(deltaTime * vel);
+        v.scaleTo(deltaTime * vel);
         boolean b = isReachingDestination(deltaTime);
         if (b)
             backwards = !backwards;

@@ -3,7 +3,7 @@ package kinematics.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.RepaintManager;
+import java.util.List;
 import javax.swing.Timer;
 import kinematics.logic.Arm;
 import kinematics.logic.Board;
@@ -188,22 +188,8 @@ public class Runner implements ProgressObserver
     private void createViewUpdater()
     {
         int delay = 40; //40ms -- aktualizacja 25 razy na sekunde
-        class Box {
-            public long aaa;
-        }        
-        final Box box = new Box();
-        box.aaa = System.currentTimeMillis();
-        final Box dupa = new Box(); dupa.aaa = 1;
-         ActionListener taskPerformer = (ActionEvent e) -> {
-            //RepaintManager.currentManager(canvas).addInvalidComponent(canvas);
+        ActionListener taskPerformer = (ActionEvent e) -> {
             canvas.repaint();
-            //canvas.setSize(canvas.getSize().width + (int)dupa.aaa, canvas.getSize().height );
-            dupa.aaa *= -1;
-            long bbb  = System.currentTimeMillis();
-            long diff = bbb-box.aaa;
-            if (diff > 50)
-                System.out.println("!!!!!!!!!!!!!    " + diff);
-            box.aaa = bbb;
         };
         viewUpdater = new Timer(delay, taskPerformer);
     }
@@ -221,7 +207,7 @@ public class Runner implements ProgressObserver
     public void currentIteration(int i, boolean solutionImproved)
     {
         updateAll();
-        if (i % 200 == 0)
+        if (i % 500 == 0)
         {
             Population<Configuration> pop = sga.getCurrPopulation();
             String str = String.format("It=%d, best=%.6f, mean=%.6f, worst=%.6f",
@@ -238,15 +224,14 @@ public class Runner implements ProgressObserver
     
     private void updateArm()
     {
-        Configuration conf = sga.getCurrBestInd();        
-        simulator.setTargetConf(conf);
-        if (conf != null)            
-            canvas.getArm().setConfiguration(simulator.getCurrConf());
+        List<Configuration> confs = sga.getCurrPopulation().getSolutions();
+        simulator.setTargetConf(confs);
+        canvas.getArm().setConfiguration(simulator.getCurrConf());
     }
 
     private void updateFun()
     {
-        Board nextBoard = predictor.predict(simulator.getBoard(), 1.0);
+        Board nextBoard = predictor.predict(simulator.getBoard(), 0.5);
         fun.update(new StaticValuator(pData, nextBoard));
     }
     

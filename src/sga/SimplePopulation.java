@@ -2,13 +2,14 @@
 package sga;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Grzegorz Los
  * @param <Individual>
  */
-public class SimplePopulation<Individual> implements Population<Individual>
+public class SimplePopulation<Individual extends Copyable<Individual>> implements Population<Individual>
 {
     private final ArrayList<ValuedIndividual<Individual>> inds = new ArrayList<>();
     private final ArrayList<Boolean> evaluated = new ArrayList<>();
@@ -16,6 +17,7 @@ public class SimplePopulation<Individual> implements Population<Individual>
     private double minTargetVal, maxTargetVal, meanTargetVal;
     Individual maxIndividual, minIndividual;
     private int N;
+    private boolean optimized = false;
     
     @Override
     public void evaluate(Function<Individual> F)
@@ -32,10 +34,11 @@ public class SimplePopulation<Individual> implements Population<Individual>
         targetVals = new double[N];
         for (int i = 0; i < N; ++i)
         {
-            if (!evaluated.get(i))
+            if (!optimized || !evaluated.get(i))
             {
                 ValuedIndividual<Individual> valInd = F.value(inds.get(i).ind);
                 inds.set(i, valInd);
+                evaluated.set(i, Boolean.TRUE);
             }
             targetVals[i] = inds.get(i).value; 
         }
@@ -79,7 +82,7 @@ public class SimplePopulation<Individual> implements Population<Individual>
     public Individual randomIndividual(double r)
     {
         int i = firstGreaterThan(0, N-1, r);
-        return inds.get(i).ind;
+        return inds.get(i).ind.getCopy();
     }
     
     private int firstGreaterThan(int beg, int end, double r)
@@ -161,13 +164,13 @@ public class SimplePopulation<Individual> implements Population<Individual>
     @Override
     public Individual getMaxIndividual()
     {
-        return maxIndividual;
+        return maxIndividual == null ? null : maxIndividual.getCopy();
     }
     
     @Override
     public Individual getMinIndividual()
     {
-        return minIndividual;
+        return minIndividual == null ? null : minIndividual.getCopy();
     }
 
     @Override
@@ -179,7 +182,7 @@ public class SimplePopulation<Individual> implements Population<Individual>
     @Override
     public Individual getIndividual(int i)
     {
-        return inds.get(i).ind;
+        return inds.get(i).ind.getCopy();
     }
 
     @Override
@@ -193,5 +196,15 @@ public class SimplePopulation<Individual> implements Population<Individual>
         list.sort( (ValuedIndividual<Individual> o1, ValuedIndividual<Individual> o2)
                     -> -Double.compare(o1.value, o2.value) );
         return list;
+    }
+
+    @Override
+    public List<Individual> getSolutions()
+    {
+        List<Individual> sols = new ArrayList<>();
+        for (ValuedIndividual<Individual> ind: inds)
+            if (ind.feasible)
+                sols.add(ind.ind.getCopy());
+        return sols;
     }
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author Grzegorz Los
  * @param <Individual>
  */
-public class SimpleReplacementPerformer<Individual> implements ReplacementPerformer<Individual>
+public class SimpleReplacementPerformer<Individual extends Copyable<Individual>> implements ReplacementPerformer<Individual>
 {
 
     @Override

@@ -70,4 +70,10 @@ public class Board
     {
         return rects;
     }
+
+    void merge(Board board)
+    {
+        for (Rectangle rect: board.getRects())
+            rects.add(rect);
+    }
 }

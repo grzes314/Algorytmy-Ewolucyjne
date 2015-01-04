@@ -12,6 +12,7 @@ public class SimplePredictor implements Predictor
     {
         Board b = new Board(board);
         b.move(time);
+        b.merge(board);
         return b;
     }
 

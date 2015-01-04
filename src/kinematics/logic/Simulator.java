@@ -1,6 +1,8 @@
 
 package kinematics.logic;
 
+import java.util.List;
+
 /**
  *
  * @author Grzegorz Los
@@ -78,10 +80,33 @@ public class Simulator
         return targetConf;
     }
 
-    synchronized public void setTargetConf(Configuration targetConf)
+    synchronized public void setTargetConf(List<Configuration> confs)
     {
-        this.targetConf = targetConf;
-        normalize(targetConf);
+        Configuration best = null;
+        double MIN = Double.POSITIVE_INFINITY;
+        for (Configuration conf: confs)
+        {
+            normalize(conf);
+            double d = distToTarget(conf);
+            if (d < MIN)
+            {
+                best = conf;
+                MIN = d;
+            }
+        }
+        if (best != null)
+            targetConf = best;
+    }
+    
+    private double distToTarget(Configuration conf)
+    {
+        double sum = 0;
+        for (int i = 0; i < conf.angle.length; ++i)
+        {
+            double v = Math.abs(conf.angle[i] - targetConf.angle[i]);
+            sum += v*v;
+        }
+        return sum;
     }
 
     public Configuration getCurrConf()

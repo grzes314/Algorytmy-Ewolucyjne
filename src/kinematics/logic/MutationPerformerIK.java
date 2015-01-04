@@ -72,8 +72,8 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
             range *= 0.99;
         else
             range *= 1.01;
-        if (i % 200 == 0)
-            System.out.printf("Range =  %.3f rad = %4.2f degrees\n", range, 180*range/Math.PI);
+        if (i % 500 == 0)
+            System.out.printf("Range =  %.3frad = %4.2f degrees\n", range, 180*range/Math.PI);
     }
     
 }

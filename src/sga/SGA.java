@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author Grzegorz Los
  * @param <Individual> type of an individuals in population.
  */
-public class SGA<Individual>
+public class SGA<Individual extends Copyable<Individual>>
 {
     //------------------------ Algorithm parameters -----------------------------------------------
     private final int populationSize;
@@ -167,7 +167,7 @@ public class SGA<Individual>
     
     public Individual getBestIndividual()
     {
-        return bestInd;
+        return bestInd == null ? null : bestInd;
     }
 
     public double getCurrBestVal()

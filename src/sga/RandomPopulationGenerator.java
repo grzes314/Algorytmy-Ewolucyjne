@@ -5,7 +5,7 @@ package sga;
  *
  * @author Grzegorz Los
  */
-public interface RandomPopulationGenerator<Individual>
+public interface RandomPopulationGenerator<Individual extends Copyable<Individual>>
 {
     /**
      * Generates population.

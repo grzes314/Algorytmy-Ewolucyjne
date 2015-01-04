@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author Grzegorz Los
  */
-public class Permutation
+public class Permutation implements Copyable<Permutation>
 {
     /**
      * Number of objects. Objects are numbered from 0 to n-1.
@@ -101,5 +101,12 @@ public class Permutation
             else
                 sb.append('|').append(' ');
         return sb.toString();
+    }
+
+    @Override
+    public Permutation getCopy()
+    {
+        //TODO return copy of permuation
+        return this;
     }
 }

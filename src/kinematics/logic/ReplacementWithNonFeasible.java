@@ -3,6 +3,7 @@ package kinematics.logic;
 
 import sga.SimplePopulation;
 import java.util.ArrayList;
+import sga.Copyable;
 import sga.Population;
 import sga.ReplacementPerformer;
 import sga.ValuedIndividual;
@@ -12,7 +13,7 @@ import sga.ValuedIndividual;
  * @author Grzegorz Los
  * @param <Individual>
  */
-public class ReplacementWithNonFeasible<Individual> implements ReplacementPerformer<Individual>
+public class ReplacementWithNonFeasible<Individual extends Copyable<Individual>> implements ReplacementPerformer<Individual>
 {
     private final int maxNonFeasible;
     private final int maxFeasible;

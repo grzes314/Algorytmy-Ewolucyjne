@@ -12,11 +12,12 @@ public class Simulator
     private final Board board;
     private final Configuration currConf;
     private Configuration targetConf;
+    private double targetVal = Double.NEGATIVE_INFINITY;
     private final double armSpeed = Math.PI/4; // 45 degrees per second
     private State state = State.NOT_STARTED;
     private boolean lockObstacles;
     private boolean teleport;
-
+    
     public Simulator(Board board, Configuration initialConf, boolean lockObstacles, boolean teleport)
     {
         this.board = board;
@@ -80,6 +81,12 @@ public class Simulator
         return targetConf;
     }
 
+    synchronized public void setTargetConf(Configuration conf)
+    {
+        if (conf != null)
+            targetConf = conf;
+    }
+    
     synchronized public void setTargetConf(List<Configuration> confs)
     {
         Configuration best = null;
@@ -87,7 +94,7 @@ public class Simulator
         for (Configuration conf: confs)
         {
             normalize(conf);
-            double d = distToTarget(conf);
+            double d = distToCurr(conf);
             if (d < MIN)
             {
                 best = conf;
@@ -98,18 +105,26 @@ public class Simulator
             targetConf = best;
     }
     
-    private double distToTarget(Configuration conf)
+    private double distToCurr(Configuration conf)
     {
         double sum = 0;
         for (int i = 0; i < conf.angle.length; ++i)
         {
-            double v = Math.abs(conf.angle[i] - targetConf.angle[i]);
+            double v = Math.abs(conf.angle[i] - currConf.angle[i]);
             sum += v*v;
         }
         return sum;
     }
+    /*synchronized public void setTargetConf(Configuration targetConf, double targetVal, double currMean)
+    {
+        if (this.targetVal < currMean)
+        {
+            this.targetConf = targetConf.getCopy();
+            this.targetVal = targetVal;
+        }
+    }*/
 
-    public Configuration getCurrConf()
+    synchronized public Configuration getCurrConf()
     {
         return currConf;
     }

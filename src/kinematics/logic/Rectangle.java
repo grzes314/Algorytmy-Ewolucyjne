@@ -55,7 +55,10 @@ public class Rectangle
         v.scaleTo(deltaTime * vel);
         boolean b = isReachingDestination(deltaTime);
         if (b)
+        {
+            pos = backwards ? from : to;
             backwards = !backwards;
+        }
         else
             pos = pos.plus(v);
     }

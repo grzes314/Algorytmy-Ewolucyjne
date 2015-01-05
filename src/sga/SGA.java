@@ -60,6 +60,8 @@ public class SGA<Individual extends Copyable<Individual>>
             solutionImproved = false;
             Population populationP = parentSelector.select(currPopulation, nrOfParents);
             Population populationC = crossoverPerformer.crossover(populationP, thetaC);
+            if (currBestInd == null)
+                mutationPerformer.reset();
             populationC = mutationPerformer.mutation(populationC, thetaM);
             populationC.evaluate(F);
             currPopulation = replacementPerformer.replace(currPopulation, populationC);

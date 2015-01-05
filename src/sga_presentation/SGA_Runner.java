@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sga.Copyable;
 import sga.CrossoverPerformer;
 import sga.Function;
 import sga.MutationPerformer;
@@ -22,7 +23,7 @@ import sga.SGA_Result;
  * @author Grzegorz Los
  * @param <Individual>
  */
-public abstract class SGA_Runner<Individual>
+public abstract class SGA_Runner<Individual extends Copyable<Individual>>
 {
     private Function<Individual> F;
     private String pathForPlotData;

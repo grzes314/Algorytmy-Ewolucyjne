@@ -36,4 +36,9 @@ public class BitStringMutationPerformer implements MutationPerformer<BitString>
         return res;
     }
 
+    @Override
+    public void reset()
+    {
+    }
+
 }

@@ -39,4 +39,9 @@ public class PermutationMutationPerformer implements MutationPerformer<Permutati
         else return individual;
     }
 
+    @Override
+    public void reset()
+    {
+    }
+
 }

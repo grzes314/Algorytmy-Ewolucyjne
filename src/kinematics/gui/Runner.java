@@ -1,6 +1,7 @@
 
 package kinematics.gui;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -190,6 +191,7 @@ public class Runner implements ProgressObserver
         int delay = 40; //40ms -- aktualizacja 25 razy na sekunde
         ActionListener taskPerformer = (ActionEvent e) -> {
             canvas.repaint();
+            Toolkit.getDefaultToolkit().sync();
         };
         viewUpdater = new Timer(delay, taskPerformer);
     }
@@ -224,8 +226,11 @@ public class Runner implements ProgressObserver
     
     private void updateArm()
     {
-        List<Configuration> confs = sga.getCurrPopulation().getSolutions();
-        simulator.setTargetConf(confs);
+        //Population<Configuration> pop = sga.getCurrPopulation();
+        //simulator.setTargetConf(pop.getMaxIndividual(), pop.getMaxValue(), pop.getMeanValue());
+        //List<Configuration> confs = sga.getCurrPopulation().getSolutions();
+        //simulator.setTargetConf(confs);
+        simulator.setTargetConf(sga.getCurrBestInd());
         canvas.getArm().setConfiguration(simulator.getCurrConf());
     }
 

@@ -16,7 +16,7 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
     private final int nrOfLastIterationsObserved;
     private final boolean[] succ;
     private int sum = 0;
-    private double range = Math.PI / 4;
+    private double range = Math.PI / 8;
 
     public MutationPerformerIK(ProblemData pData, int nrOfLastIterationsObserved)
     {
@@ -69,11 +69,17 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
         if (sum < 0 || sum > nrOfLastIterationsObserved)
             throw new RuntimeException("Internal error");
         if (sum < nrOfLastIterationsObserved / 5)
-            range *= 0.99;
+            range *= 0.995;
         else
-            range *= 1.01;
+            range *= 1.05;
         if (i % 500 == 0)
             System.out.printf("Range =  %.3frad = %4.2f degrees\n", range, 180*range/Math.PI);
+    }
+
+    @Override
+    public void reset()
+    {
+        range = Math.PI/8;
     }
     
 }

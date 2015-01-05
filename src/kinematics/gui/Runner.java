@@ -209,7 +209,7 @@ public class Runner implements ProgressObserver
     public void currentIteration(int i, boolean solutionImproved)
     {
         updateAll();
-        if (i % 500 == 0)
+        if (i % 200 == 0)
         {
             Population<Configuration> pop = sga.getCurrPopulation();
             String str = String.format("It=%d, best=%.6f, mean=%.6f, worst=%.6f",
@@ -236,7 +236,7 @@ public class Runner implements ProgressObserver
 
     private void updateFun()
     {
-        Board nextBoard = predictor.predict(simulator.getBoard(), 0.5);
+        Board nextBoard = predictor.predict(simulator.getBoard(), 1.0);
         fun.update(new StaticValuator(pData, nextBoard));
     }
     

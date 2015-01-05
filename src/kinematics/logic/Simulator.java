@@ -55,7 +55,7 @@ public class Simulator
         }
     }
 
-    synchronized private void moveArm(double deltaTime)
+    private void moveArm(double deltaTime)
     {
         double diff = deltaTime * armSpeed;
         double[] curr = currConf.angle;
@@ -81,13 +81,13 @@ public class Simulator
         return targetConf;
     }
 
-    synchronized public void setTargetConf(Configuration conf)
+    public void setTargetConf(Configuration conf)
     {
         if (conf != null)
             targetConf = conf;
     }
     
-    synchronized public void setTargetConf(List<Configuration> confs)
+    public void setTargetConf(List<Configuration> confs)
     {
         Configuration best = null;
         double MIN = Double.POSITIVE_INFINITY;
@@ -108,21 +108,22 @@ public class Simulator
     private double distToCurr(Configuration conf)
     {
         double sum = 0;
+        int l = conf.angle.length;
         for (int i = 0; i < conf.angle.length; ++i)
         {
             double v = Math.abs(conf.angle[i] - currConf.angle[i]);
-            sum += v*v;
+            sum += (l-i)*v*v;
         }
         return sum;
     }
-    /*synchronized public void setTargetConf(Configuration targetConf, double targetVal, double currMean)
+    public void setTargetConf(Configuration targetConf, double targetVal, double currMean)
     {
         if (this.targetVal < currMean)
         {
             this.targetConf = targetConf.getCopy();
             this.targetVal = targetVal;
         }
-    }*/
+    }
 
     synchronized public Configuration getCurrConf()
     {

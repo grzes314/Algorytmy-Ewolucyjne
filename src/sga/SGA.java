@@ -225,8 +225,10 @@ public class SGA<Individual extends Copyable<Individual>>
     
     private void postObservers(int i)
     {
-        for (ProgressObserver obs: observers)
-            obs.currentIteration(i, solutionImproved);
+        new Thread( () -> {
+            for (ProgressObserver obs: observers)
+                obs.currentIteration(i, solutionImproved);
+        }).start();
     }
     
     public SGA_Result getResult()

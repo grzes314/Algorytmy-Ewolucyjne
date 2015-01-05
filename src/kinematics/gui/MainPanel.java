@@ -89,6 +89,7 @@ public class MainPanel extends javax.swing.JPanel
         simple = new javax.swing.JRadioButton();
         static_ = new javax.swing.JRadioButton();
         dynamic = new javax.swing.JRadioButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         browse.setText("Browse");
         browse.addActionListener(new java.awt.event.ActionListener()
@@ -143,6 +144,8 @@ public class MainPanel extends javax.swing.JPanel
         buttonGroup1.add(dynamic);
         dynamic.setText("Dynamic");
 
+        jCheckBox1.setText("simulation");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -159,7 +162,8 @@ public class MainPanel extends javax.swing.JPanel
                     .addComponent(dynamic, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(stop, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(solve, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(browse))
+                    .addComponent(browse)
+                    .addComponent(jCheckBox1))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
@@ -182,7 +186,10 @@ public class MainPanel extends javax.swing.JPanel
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(static_)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dynamic)))
+                        .addComponent(dynamic)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jCheckBox1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -209,6 +216,7 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JRadioButton dynamic;
     private javax.swing.JTextField filePath;
     private javax.swing.JPanel imageContainer;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JRadioButton simple;
     private javax.swing.JButton solve;
     private javax.swing.JRadioButton static_;

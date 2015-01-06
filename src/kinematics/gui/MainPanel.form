@@ -34,7 +34,7 @@
                   <Component id="stop" alignment="0" min="-2" pref="87" max="-2" attributes="0"/>
                   <Component id="solve" alignment="0" min="-2" pref="87" max="-2" attributes="0"/>
                   <Component id="browse" min="-2" max="-2" attributes="0"/>
-                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                  <Component id="simulation" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
           </Group>
@@ -63,7 +63,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="dynamic" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                      <Component id="simulation" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -148,7 +148,7 @@
         <Property name="text" type="java.lang.String" value="Dynamic"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+    <Component class="javax.swing.JCheckBox" name="simulation">
       <Properties>
         <Property name="text" type="java.lang.String" value="simulation"/>
       </Properties>

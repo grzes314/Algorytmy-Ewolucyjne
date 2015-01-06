@@ -50,7 +50,7 @@ public class MainPanel extends javax.swing.JPanel
         solve.setEnabled(false);
         stop.setEnabled(true);
         Runner.Mode mode = getSelectedMode();
-        runner.run(mode);
+        runner.run(mode, simulation.isSelected());
     }
     
     private void stopClicked()
@@ -89,7 +89,7 @@ public class MainPanel extends javax.swing.JPanel
         simple = new javax.swing.JRadioButton();
         static_ = new javax.swing.JRadioButton();
         dynamic = new javax.swing.JRadioButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        simulation = new javax.swing.JCheckBox();
 
         browse.setText("Browse");
         browse.addActionListener(new java.awt.event.ActionListener()
@@ -144,7 +144,7 @@ public class MainPanel extends javax.swing.JPanel
         buttonGroup1.add(dynamic);
         dynamic.setText("Dynamic");
 
-        jCheckBox1.setText("simulation");
+        simulation.setText("simulation");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -163,7 +163,7 @@ public class MainPanel extends javax.swing.JPanel
                     .addComponent(stop, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(solve, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(browse)
-                    .addComponent(jCheckBox1))
+                    .addComponent(simulation))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
@@ -188,7 +188,7 @@ public class MainPanel extends javax.swing.JPanel
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(dynamic)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox1)
+                        .addComponent(simulation)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -216,8 +216,8 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JRadioButton dynamic;
     private javax.swing.JTextField filePath;
     private javax.swing.JPanel imageContainer;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JRadioButton simple;
+    private javax.swing.JCheckBox simulation;
     private javax.swing.JButton solve;
     private javax.swing.JRadioButton static_;
     private javax.swing.JButton stop;

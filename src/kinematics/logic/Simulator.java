@@ -13,7 +13,7 @@ public class Simulator
     private final Configuration currConf;
     private Configuration targetConf;
     private double targetVal = Double.NEGATIVE_INFINITY;
-    private final double armSpeed = Math.PI/4; // 45 degrees per second
+    private final double armSpeed = Math.PI/2; // 45 degrees per second
     private State state = State.NOT_STARTED;
     private boolean lockObstacles;
     private boolean teleport;
@@ -57,11 +57,12 @@ public class Simulator
 
     private void moveArm(double deltaTime)
     {
-        double diff = deltaTime * armSpeed;
         double[] curr = currConf.angle;
         double[] target = targetConf.angle;
         for (int i = 0; i < curr.length; ++i)
         {
+            //double diff = deltaTime * armSpeed * (curr.length + 3*i) / curr.length / 4;
+            double diff = deltaTime * armSpeed;
             double t_c = target[i] - curr[i];
             double dir =  Math.signum(Math.sin(t_c));
             if (teleport || Math.abs(curr[i] - target[i]) < diff)

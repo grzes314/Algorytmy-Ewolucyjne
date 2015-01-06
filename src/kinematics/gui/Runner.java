@@ -52,7 +52,7 @@ public class Runner implements ProgressObserver
 
     }    
     
-    public void run(Mode mode)
+    public void run(Mode mode, boolean simulation)
     {
         Board board = new Board(pData);
         Arm arm = new Arm(pData.sData);
@@ -63,15 +63,15 @@ public class Runner implements ProgressObserver
         switch(mode)
         {
             case Simple:
-                prepareSimulationSimple(board);
+                prepareSimulationSimple(board, simulation);
                 prepareSGASimple();
                 break;
             case Static:
-                prepareSimulationStatic(board);
+                prepareSimulationStatic(board, simulation);
                 prepareSGAStatic();
                 break;
             case Dynamic:
-                prepareSimulationDynamic(board);
+                prepareSimulationDynamic(board, simulation);
                 prepareSGADynamic();
                 break;
         }
@@ -87,24 +87,24 @@ public class Runner implements ProgressObserver
         viewUpdater.start();
     }
     
-    private void prepareSimulationSimple(Board board)
+    private void prepareSimulationSimple(Board board, boolean simulation)
     {
         fun = new StaticFunction<>(new SimpleValuator(pData));
-        simulator = new Simulator(board, defaultConf(), true, true);
+        simulator = new Simulator(board, defaultConf(), true, !simulation);
         predictor = new DummyPredictor();
     }
     
-    private void prepareSimulationStatic(Board board)
+    private void prepareSimulationStatic(Board board, boolean simulation)
     {
         fun = new StaticFunction<>(new StaticValuator(pData, board));      
-        simulator = new Simulator(board, defaultConf(), true, true); 
+        simulator = new Simulator(board, defaultConf(), true, !simulation); 
         predictor = new DummyPredictor(); 
     }
     
-    private void prepareSimulationDynamic(Board board)
+    private void prepareSimulationDynamic(Board board, boolean simulation)
     {
         fun = new DynamicFunction<>(new StaticValuator(pData, board));
-        simulator = new Simulator(board, defaultConf(), false, false);
+        simulator = new Simulator(board, defaultConf(), false, !simulation);
         predictor = new SimplePredictor();
     }
     
@@ -151,7 +151,7 @@ public class Runner implements ProgressObserver
         MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
-        sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.nrOfParents,params.nrOfParents/2));
+        sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,params.populationSize/2));
         //sga.setLocalSearch(new LocalSearchIK(pData));        
     }
 
@@ -175,7 +175,7 @@ public class Runner implements ProgressObserver
         MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
-        sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.nrOfParents,params.nrOfParents/2));
+        sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,params.populationSize/2));
         //sga.setLocalSearch(new LocalSearchIK(pData));
     }
     
@@ -230,6 +230,10 @@ public class Runner implements ProgressObserver
         //simulator.setTargetConf(pop.getMaxIndividual(), pop.getMaxValue(), pop.getMeanValue());
         //List<Configuration> confs = sga.getCurrPopulation().getSolutions();
         //simulator.setTargetConf(confs);
+        if (sga.getCurrBestVal() > 3)
+        {
+            int a = 7;
+        }
         simulator.setTargetConf(sga.getCurrBestInd());
         canvas.getArm().setConfiguration(simulator.getCurrConf());
     }

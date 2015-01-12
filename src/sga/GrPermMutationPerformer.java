@@ -7,13 +7,13 @@ import static sga.RandomnessSource.rand;
  *
  * @author Grzegorz Los
  */
-public class PermutationMutationPerformer implements MutationPerformer<Permutation>
+public class GrPermMutationPerformer implements MutationPerformer<GrPerm>
 {
 
     @Override
-    public Population<Permutation> mutation(Population<Permutation> population, double thetaM)
+    public Population<GrPerm> mutation(Population<GrPerm> population, double thetaM)
     {
-        SimplePopulation<Permutation> mutated = new SimplePopulation<>();
+        SimplePopulation<GrPerm> mutated = new SimplePopulation<>();
         int N = population.getSize();
         for (int i = 0; i < N; ++i)
         {
@@ -22,7 +22,7 @@ public class PermutationMutationPerformer implements MutationPerformer<Permutati
         return mutated;
     }
 
-    private Permutation mutate(Permutation individual, double thetaM)
+    private GrPerm mutate(GrPerm individual, double thetaM)
     {
         if (rand.nextDouble() < thetaM)
         {
@@ -32,7 +32,7 @@ public class PermutationMutationPerformer implements MutationPerformer<Permutati
             int pom = sepCode[i];
             sepCode[i] = sepCode[j];
             sepCode[j] = pom;
-            Permutation perm = new Permutation(individual.getNrOfObjects(), individual.getNrOfGroups());
+            GrPerm perm = new GrPerm(individual.getNrOfObjects(), individual.getNrOfGroups());
             perm.readSeperatorCode(sepCode);
             return perm;
         }

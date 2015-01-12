@@ -7,33 +7,33 @@ import static sga.RandomnessSource.rand;
  *
  * @author Grzegorz Los
  */
-public class PermutationPopulationGenerator implements RandomPopulationGenerator<Permutation>
+public class GrPermPopulationGenerator implements RandomPopulationGenerator<GrPerm>
 {
     private final int k;
     private final int n;
 
-    public PermutationPopulationGenerator(int nrOfObjects, int nrOfGroups)
+    public GrPermPopulationGenerator(int nrOfObjects, int nrOfGroups)
     {
         this.n = nrOfObjects;
         this.k = nrOfGroups;
     }
     
     @Override
-    public Population<Permutation> generate(int N)
+    public Population<GrPerm> generate(int N)
     {
-        SimplePopulation<Permutation> pop = new SimplePopulation<>();
+        SimplePopulation<GrPerm> pop = new SimplePopulation<>();
         for (int i = 0; i < N; ++i)
         {
-            Permutation ind = generateInd();
+            GrPerm ind = generateInd();
             pop.addIndividual(ind);
         }
         return pop;
     }
 
-    private Permutation generateInd()
+    private GrPerm generateInd()
     {
         int[] perm = getRandomPerm(n + k - 1);
-        Permutation ind = new Permutation(n, k);
+        GrPerm ind = new GrPerm(n, k);
         ind.readSeperatorCode(perm);
         return ind;
     }

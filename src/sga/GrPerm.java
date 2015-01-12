@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author Grzegorz Los
  */
-public class Permutation implements Copyable<Permutation>
+public class GrPerm implements Copyable<GrPerm>
 {
     /**
      * Number of objects. Objects are numbered from 0 to n-1.
@@ -20,7 +20,7 @@ public class Permutation implements Copyable<Permutation>
     
     protected final ArrayList< ArrayList<Integer> > segments;
 
-    public Permutation(int n, int k)
+    public GrPerm(int n, int k)
     {
         this.n = n;
         this.k = k;
@@ -104,7 +104,7 @@ public class Permutation implements Copyable<Permutation>
     }
 
     @Override
-    public Permutation getCopy()
+    public GrPerm getCopy()
     {
         //TODO return copy of permuation
         return this;

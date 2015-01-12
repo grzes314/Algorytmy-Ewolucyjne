@@ -3,10 +3,10 @@ package sga_presentation;
 
 import sga.CrossoverPerformer;
 import sga.MutationPerformer;
-import sga.PMX;
+import sga.GrPMX;
 import sga.ParentSelector;
-import sga.PermutationMutationPerformer;
-import sga.PermutationPopulationGenerator;
+import sga.GrPermMutationPerformer;
+import sga.GrPermPopulationGenerator;
 import sga.RandomPopulationGenerator;
 import sga.ReplacementPerformer;
 import sga.RouletteParentSelector;
@@ -30,7 +30,7 @@ public class SGA_RunnerForTSP extends SGA_Runner
     @Override
     protected RandomPopulationGenerator makeRandomPopulationGenerator()
     {
-        return new PermutationPopulationGenerator(nrOfObjects, nrOfGroups);
+        return new GrPermPopulationGenerator(nrOfObjects, nrOfGroups);
     }
 
     @Override
@@ -42,13 +42,13 @@ public class SGA_RunnerForTSP extends SGA_Runner
     @Override
     protected CrossoverPerformer makeCrossoverPerformer()
     {
-        return new PMX();
+        return new GrPMX();
     }
 
     @Override
     protected MutationPerformer makeMutationPerformer()
     {
-        return new PermutationMutationPerformer();
+        return new GrPermMutationPerformer();
     }
 
     @Override

@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sga.PMX;
-import sga.Permutation;
+import sga.GrPMX;
+import sga.GrPerm;
 import sga.Population;
 import sga.RandomnessSource;
 import sga.SGA_Params;
@@ -200,15 +200,15 @@ public class SGA_Presentation
     {
         int[] t1 = { 0, 1, 2, 3, 4, 10, 5, 6, 7, 8, 11, 9 };
         int[] t2 = { 4, 3, 5, 11, 6, 0, 1, 2, 9, 7, 10, 8 };
-        Permutation p1 = new Permutation(10, 3);
-        Permutation p2 = new Permutation(10, 3);
+        GrPerm p1 = new GrPerm(10, 3);
+        GrPerm p2 = new GrPerm(10, 3);
         p1.readSeperatorCode(t1);
         p2.readSeperatorCode(t2);
-        SimplePopulation<Permutation> pop = new SimplePopulation();
+        SimplePopulation<GrPerm> pop = new SimplePopulation();
         pop.addIndividual(p1);
         pop.addIndividual(p2);
-        PMX pmx = new PMX();
-        Population<Permutation> newPop = pmx.crossover(pop, 1);
+        GrPMX pmx = new GrPMX();
+        Population<GrPerm> newPop = pmx.crossover(pop, 1);
         System.out.println(newPop.getIndividual(0));
         System.out.println(newPop.getIndividual(1));
     }

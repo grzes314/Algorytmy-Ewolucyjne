@@ -2,14 +2,14 @@
 package sga_presentation;
 
 import optimization.Function;
-import sga.Permutation;
+import sga.GrPerm;
 import optimization.ValuedIndividual;
 
 /**
  *
  * @author Grzegorz Los
  */
-public class CycleValuator implements Function<Permutation>
+public class CycleValuator implements Function<GrPerm>
 {
     private final FullGraph graph;
     private int[] cycle;
@@ -20,7 +20,7 @@ public class CycleValuator implements Function<Permutation>
     }
 
     @Override
-    public ValuedIndividual<Permutation> value(Permutation perm)
+    public ValuedIndividual<GrPerm> value(GrPerm perm)
     {
         cycle = perm.toArray();
         double sum = 0;

@@ -10,12 +10,12 @@ import static sga.RandomnessSource.rand;
  *
  * @author Grzegorz Los
  */
-public class PMX implements CrossoverPerformer<Permutation>
+public class GrPMX implements CrossoverPerformer<GrPerm>
 {
-    private SimplePopulation<Permutation> newPopulation;
+    private SimplePopulation<GrPerm> newPopulation;
 
     @Override
-    public Population<Permutation> crossover(Population<Permutation> parents, double thetaC)
+    public Population<GrPerm> crossover(Population<GrPerm> parents, double thetaC)
     {
         newPopulation = new SimplePopulation<>();
         int N = parents.getSize();
@@ -34,7 +34,7 @@ public class PMX implements CrossoverPerformer<Permutation>
         return newPopulation;
     }
     
-    private void crossover(Permutation p1, Permutation p2)
+    private void crossover(GrPerm p1, GrPerm p2)
     {
         int k = rand.nextInt(p1.getNrOfGroups());
         ArrayList<Integer> s1 = p1.segments.get(k);
@@ -43,11 +43,11 @@ public class PMX implements CrossoverPerformer<Permutation>
         newPopulation.addIndividual( replacement(p2, k, s1) );
     }
 
-    private Permutation replacement(Permutation p, int segIndex, ArrayList<Integer> replacement)
+    private GrPerm replacement(GrPerm p, int segIndex, ArrayList<Integer> replacement)
     {
         ArrayList<Integer> prevSegment = p.segments.get(segIndex);
         Map<Integer, Integer> map = makeMap(prevSegment, replacement);
-        Permutation newPerm = new Permutation(p.getNrOfObjects(), p.getNrOfGroups());
+        GrPerm newPerm = new GrPerm(p.getNrOfObjects(), p.getNrOfGroups());
         for (int i = 0; i < p.getNrOfGroups(); ++i)
         {
             if (i == segIndex) {

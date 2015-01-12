@@ -4,7 +4,7 @@ package sga;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-import static sga.RandomnessSource.rand;
+import static optimization.RandomnessSource.rand;
 
 /**
  *

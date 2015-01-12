@@ -1,7 +1,7 @@
 
 package sga;
 
-import static sga.RandomnessSource.rand;
+import static optimization.RandomnessSource.rand;
 
 /**
  *

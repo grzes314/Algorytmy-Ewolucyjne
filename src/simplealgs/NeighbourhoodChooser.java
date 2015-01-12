@@ -10,4 +10,5 @@ import java.util.List;
 public interface NeighbourhoodChooser<Individual>
 {
     List<Individual> choose(Individual ind);
+    Individual chooseOne(Individual ind);
 }

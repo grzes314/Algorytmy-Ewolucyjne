@@ -69,7 +69,7 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
         if (sum < 0 || sum > nrOfLastIterationsObserved)
             throw new RuntimeException("Internal error");
         if (sum < nrOfLastIterationsObserved / 5)
-            range *= 0.995;
+            range *= 0.999;
         else
             range *= 1.05;
         if (i % 200 == 0)

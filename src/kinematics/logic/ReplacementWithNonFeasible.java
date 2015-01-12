@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import sga.Copyable;
 import sga.Population;
 import sga.ReplacementPerformer;
-import sga.ValuedIndividual;
+import optimization.ValuedIndividual;
 
 /**
  *

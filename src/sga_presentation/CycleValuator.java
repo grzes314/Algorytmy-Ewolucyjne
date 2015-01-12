@@ -1,9 +1,9 @@
 
 package sga_presentation;
 
-import sga.Function;
+import optimization.Function;
 import sga.Permutation;
-import sga.ValuedIndividual;
+import optimization.ValuedIndividual;
 
 /**
  *

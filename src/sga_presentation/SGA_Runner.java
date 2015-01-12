@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import sga.Copyable;
 import sga.CrossoverPerformer;
-import sga.Function;
+import optimization.Function;
 import sga.MutationPerformer;
 import sga.ParentSelector;
 import sga.ProgressObserver;

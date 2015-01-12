@@ -1,8 +1,5 @@
 
-package kinematics.logic;
-
-import sga.Function;
-import sga.ValuedIndividual;
+package optimization;
 
 /**
  *

@@ -2,8 +2,8 @@
 package sga_presentation;
 
 import sga.BitString;
-import sga.Function;
-import sga.ValuedIndividual;
+import optimization.Function;
+import optimization.ValuedIndividual;
 
 /**
  *

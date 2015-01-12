@@ -1,7 +1,7 @@
 
-package sga;
+package optimization;
 
-import kinematics.logic.DynamicFunction;
+import optimization.Function;
 
 /**
  *

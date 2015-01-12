@@ -1,6 +1,8 @@
 
 package sga;
 
+import optimization.ValuedIndividual;
+import optimization.Function;
 import java.util.ArrayList;
 import java.util.List;
 

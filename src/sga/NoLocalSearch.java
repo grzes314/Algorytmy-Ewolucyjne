@@ -1,6 +1,8 @@
 
 package sga;
 
+import optimization.Function;
+
 /**
  *
  * @author Grzegorz Los

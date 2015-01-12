@@ -1,7 +1,7 @@
 
 package kinematics.logic;
 
-import sga.Function;
+import optimization.Function;
 import sga.LocalSearch;
 import sga.Population;
 import sga.RandomnessSource;

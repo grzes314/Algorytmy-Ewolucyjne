@@ -10,7 +10,7 @@ import kinematics.logic.Arm;
 import kinematics.logic.Board;
 import kinematics.logic.Configuration;
 import kinematics.logic.DummyPredictor;
-import kinematics.logic.DynamicFunction;
+import optimization.DynamicFunction;
 import kinematics.logic.MutationPerformerIK;
 import kinematics.logic.NoCrossoverIK;
 import kinematics.logic.Predictor;
@@ -27,7 +27,7 @@ import sga.RandomParentSelector;
 import sga.SGA;
 import sga.SGA_Params;
 import sga.SimpleReplacementPerformer;
-import sga.StaticFunction;
+import optimization.StaticFunction;
 
 /**
  *

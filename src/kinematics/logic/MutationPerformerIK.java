@@ -3,7 +3,7 @@ package kinematics.logic;
 
 import sga.Population;
 import sga.ProgressObserver;
-import static sga.RandomnessSource.rand;
+import static optimization.RandomnessSource.rand;
 import sga.SimplePopulation;
 
 /**

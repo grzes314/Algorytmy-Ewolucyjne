@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import sga.GrPMX;
 import sga.GrPerm;
 import sga.Population;
-import sga.RandomnessSource;
+import optimization.RandomnessSource;
 import sga.SGA_Params;
 import sga.SimplePopulation;
 

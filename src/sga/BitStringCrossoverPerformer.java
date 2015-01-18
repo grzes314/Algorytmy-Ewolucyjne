@@ -1,6 +1,7 @@
 
 package sga;
 
+import optimization.BitString;
 import static optimization.RandomnessSource.rand;
 
 /**

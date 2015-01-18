@@ -1,7 +1,7 @@
 
 package kinematics.logic;
 
-import sga.Copyable;
+import optimization.Copyable;
 
 /**
  *

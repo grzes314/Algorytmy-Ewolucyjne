@@ -1,6 +1,7 @@
 
 package sga;
 
+import optimization.Copyable;
 import java.util.ArrayList;
 
 /**

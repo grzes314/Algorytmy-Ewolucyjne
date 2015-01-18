@@ -1,6 +1,8 @@
 
 package sga;
 
+import optimization.Copyable;
+
 /**
  *
  * @author Grzegorz Los

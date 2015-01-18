@@ -3,7 +3,7 @@ package kinematics.logic;
 
 import sga.SimplePopulation;
 import java.util.ArrayList;
-import sga.Copyable;
+import optimization.Copyable;
 import sga.Population;
 import sga.ReplacementPerformer;
 import optimization.ValuedIndividual;

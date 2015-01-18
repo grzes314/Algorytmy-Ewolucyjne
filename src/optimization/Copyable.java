@@ -1,5 +1,5 @@
 
-package sga;
+package optimization;
 
 /**
  *

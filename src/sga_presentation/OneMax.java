@@ -1,7 +1,7 @@
 
 package sga_presentation;
 
-import sga.BitString;
+import optimization.BitString;
 import optimization.Function;
 import optimization.ValuedIndividual;
 

@@ -1,6 +1,7 @@
 
 package sga;
 
+import optimization.Copyable;
 import static optimization.RandomnessSource.rand;
 
 /**

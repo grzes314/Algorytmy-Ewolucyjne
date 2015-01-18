@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sga.Copyable;
+import optimization.Copyable;
 import sga.CrossoverPerformer;
 import optimization.Function;
 import sga.MutationPerformer;

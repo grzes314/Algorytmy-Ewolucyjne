@@ -7,7 +7,7 @@ import static optimization.RandomnessSource.rand;
  *
  * @author Grzegorz Los
  */
-public class Permutation
+public class Permutation implements Copyable<Permutation>
 {
     private final int[] perm;
     
@@ -31,7 +31,7 @@ public class Permutation
         perm[i+1] = aux;
     }
     
-    private Permutation(int[] perm)
+    public Permutation(int[] perm)
     {
         this.perm = perm;
     }
@@ -71,5 +71,11 @@ public class Permutation
         for (int i = 0; i < perm.length; ++i)
             sb.append(perm[i] + (plusOne ? 1 : 0)).append(' ');
         return sb.toString();
+    }
+
+    @Override
+    public Permutation getCopy()
+    {
+        return new Permutation(this);
     }
 }

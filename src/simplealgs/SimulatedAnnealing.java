@@ -1,7 +1,6 @@
 
 package simplealgs;
 
-import java.util.Random;
 import optimization.Function;
 import optimization.RandomnessSource;
 import optimization.ValuedIndividual;

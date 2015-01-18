@@ -6,9 +6,6 @@ import java.util.TreeMap;
 import optimization.Permutation;
 import optimization.RandomnessSource;
 import static optimization.RandomnessSource.rand;
-import sga.CrossoverPerformer;
-import sga.Population;
-import sga.SimplePopulation;
 
 /**
  *

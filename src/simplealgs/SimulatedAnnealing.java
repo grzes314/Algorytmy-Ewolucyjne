@@ -3,6 +3,7 @@ package simplealgs;
 
 import java.util.Random;
 import optimization.Function;
+import optimization.RandomnessSource;
 import optimization.ValuedIndividual;
 
 /**
@@ -14,21 +15,21 @@ public class SimulatedAnnealing<Individual>
     private RandIndChooser<Individual> randInd;
     private NeighbourhoodChooser<Individual> neighbourhood;
     private Function<Individual> F;
+    private int trials;
     private int nrOfIterations;
-    private final Random rand;
 
-    public SimulatedAnnealing(int nrOfIterations)
+    public SimulatedAnnealing(int trials, int nrOfIterations)
     {
+        this.trials = trials;
         this.nrOfIterations = nrOfIterations;
-        rand = new Random();
     }
 
-    public SimulatedAnnealing(int nrOfIterations, RandIndChooser<Individual> randInd, NeighbourhoodChooser<Individual> neighbourhood)
+    public SimulatedAnnealing(int trials, int nrOfIterations, RandIndChooser<Individual> randInd, NeighbourhoodChooser<Individual> neighbourhood)
     {
+        this.trials = trials;
+        this.nrOfIterations = nrOfIterations;
         this.randInd = randInd;
         this.neighbourhood = neighbourhood;
-        this.nrOfIterations = nrOfIterations;
-        rand = new Random();
     }
 
     public RandIndChooser<Individual> getRandInd()
@@ -66,13 +67,25 @@ public class SimulatedAnnealing<Individual>
 
     public ValuedIndividual<Individual> maximize(Function<Individual> F)
     {
+        this.F = F;
+        ValuedIndividual<Individual> currBest = oneTry();
+        for (int i = 1; i < trials; ++i)
+        {
+            ValuedIndividual vi = oneTry();
+            if (vi.value > currBest.value)
+                currBest = vi;
+        }
+        return currBest;
+    }
+    
+    public ValuedIndividual<Individual> oneTry()
+    {
         Individual ind = randInd.getNext();
-        int iter = 0;
         ValuedIndividual<Individual> curr  = F.value(ind);
         ValuedIndividual<Individual> best  = curr;
         for (int i = 0; i < nrOfIterations; ++i)
         {
-            double t = 1.0 / (1.0 + Math.log(1.0 + i));
+            double t = 0.2 / (1.0 + Math.sqrt(i));
             curr = oneIteration(curr, t);
             if (curr.value > best.value)
                 best = curr;
@@ -86,8 +99,8 @@ public class SimulatedAnnealing<Individual>
         ValuedIndividual vi = F.value(n);
         if (vi.value > curr.value)
             return vi;
-        double r = rand.nextDouble();
-        double x = (vi.value - curr.value) / temp; //curr.value >= vi.value
+        double r = RandomnessSource.rand.nextDouble();
+        double x = (vi.value - curr.value) / Math.abs(curr.value) / temp; // vi.value < curr.value
         if (Math.exp(x) > r)
             return vi;
         else

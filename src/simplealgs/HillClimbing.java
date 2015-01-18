@@ -63,7 +63,7 @@ public class HillClimbing<Individual>
         
     }
     
-    ValuedIndividual maximize(Function<Individual> F)
+    public ValuedIndividual<Individual> maximize(Function<Individual> F)
     {
         this.F = F;
         ValuedIndividual currBest = oneTry();
@@ -76,7 +76,7 @@ public class HillClimbing<Individual>
         return currBest;
     }
 
-    private ValuedIndividual oneTry()
+    private ValuedIndividual<Individual> oneTry()
     {
         Individual currInd = randInd.getNext();
         ValuedIndividual<Individual> curr = F.value(currInd);
@@ -89,7 +89,7 @@ public class HillClimbing<Individual>
         return curr;
     }
     
-    private ValuedIndividual climb(final ValuedIndividual<Individual> curr)
+    private ValuedIndividual<Individual> climb(final ValuedIndividual<Individual> curr)
     {
         ValuedIndividual<Individual> bestNeigh = new ValuedIndividual<>(null, Double.NEGATIVE_INFINITY);
         List<Individual> neighs = neighbourhood.choose(curr.ind);

@@ -11,8 +11,9 @@ import optimization.ValuedIndividual;
  */
 public class Valuator implements Function<Permutation>
 {
-    private final ProblemData pData;
+    public final ProblemData pData;
     private final double[] finishTimes;
+    private final double tolerance = 1.0e-3;
 
     public Valuator(ProblemData pData)
     {
@@ -52,7 +53,7 @@ public class Valuator implements Function<Permutation>
             t = Math.max(finishTimes[i], finishTimes[i+1]);
         }
         finishTimes[lastM] = t + task.times[lastM];
-        return finishTimes[lastM] <= pData.deadline;
+        return finishTimes[lastM] < pData.deadline + tolerance;
     }
 
 }

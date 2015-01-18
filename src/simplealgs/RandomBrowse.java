@@ -49,7 +49,7 @@ public class RandomBrowse<Individual>
         
     }
     
-    ValuedIndividual maximize(Function<Individual> F)
+    public ValuedIndividual maximize(Function<Individual> F)
     {
         this.F = F;
         ValuedIndividual currBest = new ValuedIndividual(null, Double.NEGATIVE_INFINITY);

@@ -3,7 +3,7 @@ package sga;
 
 import optimization.Permutation;
 import static optimization.RandomnessSource.rand;
-import simplealgs.TranspositionChooser;
+import simplealgs.NeighbourhoodChooser;
 
 /**
  *
@@ -11,9 +11,9 @@ import simplealgs.TranspositionChooser;
  */
 public class PermutationMutationPerformer implements MutationPerformer<Permutation>
 {
-    private final TranspositionChooser neighbourChooser;
+    private final NeighbourhoodChooser<Permutation> neighbourChooser;
 
-    public PermutationMutationPerformer(TranspositionChooser neighbourChooser)
+    public PermutationMutationPerformer(NeighbourhoodChooser<Permutation> neighbourChooser)
     {
         this.neighbourChooser = neighbourChooser;
     }

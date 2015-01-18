@@ -21,6 +21,11 @@ public class Results<Individual>
         times.add(time);
     }
     
+    public ValuedIndividual<Individual> getResult(int i)
+    {
+        return results.get(i);
+    }
+    
     public void calcStats()
     {
         best = Double.NEGATIVE_INFINITY;

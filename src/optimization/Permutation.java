@@ -27,8 +27,8 @@ public class Permutation implements Copyable<Permutation>
     {
         perm = other.toArray();
         int aux = perm[i];
-        perm[i] = perm[i+1];
-        perm[i+1] = aux;
+        perm[i] = perm[j];
+        perm[j] = aux;
     }
     
     public Permutation(int[] perm)

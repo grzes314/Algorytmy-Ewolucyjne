@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,11 +38,14 @@ public class Looper
     {
         File dir = new File(pathIn);
         File[] tests = dir.listFiles((File pathname) -> pathname.getName().endsWith(".txt"));
+        Arrays.sort(tests, (File o1, File o2) -> {
+            return o1.compareTo(o2);
+        });
         for (File file: tests)
         {
             System.out.println("RUNNING " + file.getName());
             try {
-                runOneTest(file, getOutFile(file, pathOut));
+                runOneTest(file, pathOut);
             } catch (IOException ex) {
                 Logger.getLogger(Looper.class.getName()).log(Level.SEVERE, null, ex);
                 System.err.println(file.getName() + " failed :((((((((");
@@ -48,20 +53,21 @@ public class Looper
         }
     }
 
-    private File getOutFile(File inFile, String pathOut)
+    private File getOutFile(File inFile, String pathOut, String ext)
     {
         String inName = inFile.getName();
         int l = inName.length();
-        String outName = pathOut + "/" + inFile.getName().substring(0, l-3) + "out";
+        String outName = pathOut + "/" + inFile.getName().substring(0, l-3) + ext;
         return new File(outName);
     }
 
-    private void runOneTest(File inFile, File outFile) throws IOException
+    private void runOneTest(File inFile, String pathOut) throws IOException
     {
         ProblemData pData = parser.read(inFile);
         Valuator F = new Valuator(pData);
         ArrayList<Results> results = runAllAlgsOnOneTest(F);
-        writeResults(outFile, results);
+        writeSummary(getOutFile(inFile, pathOut, "out"), results);
+        writeTable(getOutFile(inFile, pathOut, "csv"), results);
     }
 
     private ArrayList<Results> runAllAlgsOnOneTest(Valuator F)
@@ -91,7 +97,7 @@ public class Looper
         return results;
     }
 
-    private void writeResults(File outFile, ArrayList<Results> results)
+    private void writeSummary(File outFile, ArrayList<Results> results)
     {
         BufferedWriter out;
         try {
@@ -128,5 +134,48 @@ public class Looper
         out.write("ind = " + results.getBestInd().getString(true)); out.newLine();
         out.write("_____________________________________________________________________________");
         out.newLine(); out.newLine();
+    }
+
+    private void writeTable(File outFile, ArrayList<Results> results)
+    {
+        BufferedWriter out;
+        try {
+            out = new BufferedWriter(new FileWriter(outFile));
+        } catch (IOException ex) {
+            Logger.getLogger(Looper.class.getName()).log(Level.SEVERE, null, ex);
+            return ;
+        }
+        try {
+            writeTable(out, results);
+        } catch (IOException ex) {
+            Logger.getLogger(Looper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            out.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Looper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void writeTable(BufferedWriter out, ArrayList<Results> results) throws IOException
+    {
+        out.write("repetition");
+        for (int i = 0; i < algRunners.size(); ++i)
+        {
+            out.write(",");
+            out.write(algRunners.get(i).getName());
+        }
+        out.newLine();
+        
+        for (int j = 0; j < repetitions; ++j)
+        {
+            out.write("" + (j+1));
+            for (int i = 0; i < results.size(); ++i)
+            {
+                out.write(",");
+                out.write("" + results.get(i).getResult(j).value);
+            }
+            out.newLine();
+        }
     }
 }

@@ -11,5 +11,5 @@ import optimization.Function;
  */
 public interface LocalSearch<Individual extends Copyable<Individual>>
 {
-    public void upgrade(Population<Individual> pop, Function<Individual> F);
+    public Population<Individual> upgrade(Population<Individual> pop, Function<Individual> F);
 }

@@ -1,21 +1,30 @@
 
 package flowshop;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import optimization.Function;
 import optimization.Permutation;
 import optimization.ValuedIndividual;
+import sga.CrossoverPerformer;
+import sga.LocalSearch;
+import sga.MutationPerformer;
+import sga.NoLocalSearch;
 import sga.PMX;
+import sga.ParentSelector;
 import sga.PermutationMutationPerformer;
 import sga.RandomParentSelector;
+import sga.RandomPopulationGenerator;
+import sga.ReplacementPerformer;
 import sga.SGA;
 import sga.SGA_Params;
 import sga.SimpleRandomPopulationGenerator;
 import sga.SimpleReplacementPerformer;
-import simplealgs.HillClimbing;
+import sga_presentation.SGA_Runner;
 import simplealgs.ConsecutiveTransChooser;
+import simplealgs.HillClimbing;
 import simplealgs.RandPermChooser;
 import simplealgs.RandomBrowse;
 import simplealgs.SimulatedAnnealing;
@@ -39,6 +48,86 @@ public class Main
     }
 
     private void run(String inPath, String outPath)
+    {
+        try {
+            //runMethodCompOnAllTests(inPath, outPath);
+            runEnhancedSGA("flowshop/in/ta115.txt", "flowshop/out/enhanced/", 2);
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private String getBaseName(String inPath)
+    {
+        int k = inPath.lastIndexOf("/");
+        int l = inPath.lastIndexOf(".");
+        return inPath.substring(k+1,l);
+    }
+
+    
+    private void runEnhancedSGA(String inPath, String outPath, int version) throws IOException
+    {
+        ProblemData pData = (new ProblemParser()).read(inPath);
+        Valuator F = new Valuator(pData);
+        SGA_Params params = new SGA_Params(500,     // populationSize
+                                    2000,     // nr of parents
+                                    1.0,     // probability of crossover
+                                    0.05,    //probability of mutation
+                                    1000   // max iterations
+        );
+        SGA<Permutation> sga = new SGA<>(params);
+        RandPermChooser randPermChooser = new RandPermChooser(pData.nrOfTasks);
+        
+        SGA_Runner runner = new SGA_Runner() {
+            @Override
+            protected RandomPopulationGenerator makeRandomPopulationGenerator() {
+                return new SimpleRandomPopulationGenerator(randPermChooser);
+            }
+            @Override
+            protected ParentSelector makeParentSelector() {
+                return new RandomParentSelector<>();
+            }
+            @Override
+            protected CrossoverPerformer makeCrossoverPerformer() {
+                return new PMX();
+            }
+            @Override
+            protected MutationPerformer makeMutationPerformer() {
+                switch (version)
+                {
+                    case 1:
+                        return new PermBlockShift();
+                    case 2:
+                        return new PermutationMutationPerformer(new TranspositionChooser(100));
+                    default:
+                        return null;
+                }
+            }
+            @Override
+            protected ReplacementPerformer makeReplacementPerformer() {
+                return new SimpleReplacementPerformer();
+            }
+            @Override
+            protected LocalSearch makeLocalSearch() {
+                switch (version)
+                {
+                    case 1:
+                        return new LocalSearchByHC(100);
+                    case 2:
+                        return new NoLocalSearch();
+                    default:
+                        return null;
+                }
+            }
+        };
+        String name = getBaseName(inPath);
+        runner.run(params, F,
+                           outPath + name + "_" + version + ".plot",
+                           outPath + name + "_" + version + ".txt",
+                           10);
+    }
+
+    private void runMethodCompOnAllTests(String inPath, String outPath)
     {
         looper = new Looper();
         makeAlgRunners();
@@ -197,7 +286,8 @@ public class Main
                     "    -- nrOfIterations = " + nrOfIterations + "\n" +
                     "    -- neighberhood: transposition of consecutive elements";
             }
-        };    }
+        };    
+    }
 
     private AlgRunner makeSGA()
     {

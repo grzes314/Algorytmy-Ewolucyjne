@@ -88,6 +88,19 @@ public class HillClimbing<Individual>
         } while (curr.value - prev.value > eps);
         return curr;
     }
+
+    public ValuedIndividual<Individual> oneTry(Individual currInd, Function<Individual> F)
+    {
+        this.F = F;
+        ValuedIndividual<Individual> curr = F.value(currInd);
+        ValuedIndividual<Individual> prev;
+        do
+        {
+            prev = curr;
+            curr = climb(curr);
+        } while (curr.value - prev.value > eps);
+        return curr;
+    }
     
     private ValuedIndividual<Individual> climb(final ValuedIndividual<Individual> curr)
     {

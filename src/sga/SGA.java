@@ -67,7 +67,7 @@ public class SGA<Individual extends Copyable<Individual>>
             populationC = mutationPerformer.mutation(populationC, thetaM);
             populationC.evaluate(F);
             currPopulation = replacementPerformer.replace(currPopulation, populationC);
-            localSearch.upgrade(currPopulation, F);
+            currPopulation = localSearch.upgrade(currPopulation, F);
             currPopulation.evaluate(F);
             updateStats(i);
             postObservers(i);

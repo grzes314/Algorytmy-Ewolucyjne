@@ -2,11 +2,13 @@
 package sga_presentation;
 
 import sga.CrossoverPerformer;
-import sga.MutationPerformer;
 import sga.GrPMX;
-import sga.ParentSelector;
 import sga.GrPermMutationPerformer;
 import sga.GrPermPopulationGenerator;
+import sga.LocalSearch;
+import sga.MutationPerformer;
+import sga.NoLocalSearch;
+import sga.ParentSelector;
 import sga.RandomPopulationGenerator;
 import sga.ReplacementPerformer;
 import sga.RouletteParentSelector;
@@ -55,6 +57,12 @@ public class SGA_RunnerForTSP extends SGA_Runner
     protected ReplacementPerformer makeReplacementPerformer()
     {
         return new SimpleReplacementPerformer();
+    }
+
+    @Override
+    protected LocalSearch makeLocalSearch()
+    {
+        return new NoLocalSearch();
     }
 
 }

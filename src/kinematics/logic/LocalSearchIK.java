@@ -20,10 +20,11 @@ public class LocalSearchIK implements LocalSearch<Configuration>
     }
 
     @Override
-    public void upgrade(Population<Configuration> pop, Function<Configuration> F)
+    public Population<Configuration> upgrade(Population<Configuration> pop, Function<Configuration> F)
     {
         for (int i = 0; i < pop.getSize(); ++i)
             upgrade(pop.getIndividual(i), F);
+        return pop;
     }
     
     public void upgrade(Configuration conf, Function<Configuration> F)

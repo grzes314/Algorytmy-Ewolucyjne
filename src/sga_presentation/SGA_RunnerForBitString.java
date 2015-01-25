@@ -6,7 +6,9 @@ import sga.BitStringCrossoverPerformer;
 import sga.BitStringMutationPerformer;
 import sga.BitStringPopulationGenerator;
 import sga.CrossoverPerformer;
+import sga.LocalSearch;
 import sga.MutationPerformer;
+import sga.NoLocalSearch;
 import sga.ParentSelector;
 import sga.RandomPopulationGenerator;
 import sga.ReplacementPerformer;
@@ -55,6 +57,12 @@ public class SGA_RunnerForBitString extends SGA_Runner<BitString>
     protected ReplacementPerformer makeReplacementPerformer()
     {
         return new SimpleReplacementPerformer<>();
+    }
+
+    @Override
+    protected LocalSearch<BitString> makeLocalSearch()
+    {
+        return new NoLocalSearch<>();
     }
 
 }

@@ -34,6 +34,13 @@ public class Permutation implements Copyable<Permutation>
     public Permutation(int[] perm)
     {
         this.perm = perm;
+        
+        /*int[] a = new int[perm.length];
+        for (int i = 0; i < perm.length; ++i)
+            a[perm[i]] = 1;
+        for (int i = 0; i < perm.length; ++i)
+            if (a[i] != 1)
+                throw new RuntimeException("To nie permutacja!!!!1!11oneone");   */     
     }
     
     public int at(int i)
@@ -77,5 +84,17 @@ public class Permutation implements Copyable<Permutation>
     public Permutation getCopy()
     {
         return new Permutation(this);
+    }
+    
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        int its = (perm.length <= 12 ? perm.length : 10);
+        for (int i = 0; i < its; ++i)
+            sb.append(perm[i]).append(' ');
+        if (perm.length > 12)
+            sb.append("... (").append(perm.length-10).append(" more)");
+        return sb.toString();
     }
 }

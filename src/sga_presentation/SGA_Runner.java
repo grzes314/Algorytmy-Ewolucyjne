@@ -7,8 +7,9 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import optimization.Copyable;
-import sga.CrossoverPerformer;
 import optimization.Function;
+import sga.CrossoverPerformer;
+import sga.LocalSearch;
 import sga.MutationPerformer;
 import sga.ParentSelector;
 import sga.ProgressObserver;
@@ -49,6 +50,7 @@ public abstract class SGA_Runner<Individual extends Copyable<Individual>>
         sga.setCrossoverPerformer( makeCrossoverPerformer() );
         sga.setMutationPerformer( makeMutationPerformer() );
         sga.setReplacementPerformer( makeReplacementPerformer() );
+        sga.setLocalSearch(makeLocalSearch());
         sga.addObserver(new myProgressObserver());
         results = new SGA_Result[repetitions];
         for (int i = 0; i < repetitions; ++i)
@@ -57,7 +59,7 @@ public abstract class SGA_Runner<Individual extends Copyable<Individual>>
         writeResults();
     }
     
-    public void runOneReptition(int nr)
+    private void runOneReptition(int nr)
     {
         System.out.println("Repetition " + nr + "/" + repetitions);
         lastDisplayedPerc = 0;
@@ -90,6 +92,8 @@ public abstract class SGA_Runner<Individual extends Copyable<Individual>>
     abstract protected MutationPerformer<Individual> makeMutationPerformer();
     
     abstract protected ReplacementPerformer<Individual> makeReplacementPerformer();
+    
+    abstract protected LocalSearch<Individual> makeLocalSearch();
 
     private void findBestResult()
     {

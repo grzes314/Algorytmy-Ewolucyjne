@@ -13,8 +13,9 @@ public class NoLocalSearch<Individual extends Copyable<Individual>> implements L
 {
 
     @Override
-    public void upgrade(Population<Individual> pop, Function<Individual> F)
+    public Population<Individual> upgrade(Population<Individual> pop, Function<Individual> F)
     {
+        return pop;
     }
 
 }

@@ -23,7 +23,7 @@ public class LocalSearchIK implements LocalSearch<Configuration>
     public Population<Configuration> upgrade(Population<Configuration> pop, Function<Configuration> F)
     {
         for (int i = 0; i < pop.getSize(); ++i)
-            upgrade(pop.getIndividual(i), F);
+            upgrade(pop.getIndividual(i).ind, F);
         return pop;
     }
     

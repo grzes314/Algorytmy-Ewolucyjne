@@ -1,7 +1,6 @@
 
 package flowshop;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,6 +11,7 @@ import sga.CrossoverPerformer;
 import sga.LocalSearch;
 import sga.MutationPerformer;
 import sga.NoLocalSearch;
+import sga.NoMutation;
 import sga.PMX;
 import sga.ParentSelector;
 import sga.PermutationMutationPerformer;
@@ -23,8 +23,9 @@ import sga.SGA_Params;
 import sga.SimpleRandomPopulationGenerator;
 import sga.SimpleReplacementPerformer;
 import sga_presentation.SGA_Runner;
-import simplealgs.ConsecutiveTransChooser;
+import simplealgs.AllTranspositions;
 import simplealgs.HillClimbing;
+import simplealgs.NeighbourhoodChooser;
 import simplealgs.RandPermChooser;
 import simplealgs.RandomBrowse;
 import simplealgs.SimulatedAnnealing;
@@ -41,18 +42,18 @@ public class Main
     public static void main(String[] args)
     {
         //new Main().run(args[0], args[1]);
-        new Main().run("flowshop/in/dupa", args[1]);
+        new Main().run("flowshop/in/", args[1]);
         /*String out = args[0] + "/dupa.txt";
-        ProblemData pData = (new DataGenerator(20,200)).generate();
+        ProblemData pData = (new DataGenerator(20,500)).generate();
         (new ProblemWriter()).write(pData, out);*/
     }
 
     private void run(String inPath, String outPath)
     {
         try {
-            //runMethodCompOnAllTests(inPath, outPath);
-            runEnhancedSGA("flowshop/in/ta115.txt", "flowshop/out/enhanced/", 2);
-        } catch (IOException ex) {
+            runMethodCompOnAllTests(inPath, outPath);
+            //runEnhancedSGA("flowshop/in/ta115.txt", "flowshop/out/enhanced/dlugo", 11);
+        } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -72,10 +73,9 @@ public class Main
         SGA_Params params = new SGA_Params(500,     // populationSize
                                     2000,     // nr of parents
                                     1.0,     // probability of crossover
-                                    0.05,    //probability of mutation
-                                    1000   // max iterations
+                                    0.5,    //probability of mutation
+                                    100000   // max iterations
         );
-        SGA<Permutation> sga = new SGA<>(params);
         RandPermChooser randPermChooser = new RandPermChooser(pData.nrOfTasks);
         
         SGA_Runner runner = new SGA_Runner() {
@@ -96,9 +96,27 @@ public class Main
                 switch (version)
                 {
                     case 1:
-                        return new PermBlockShift();
+                        return new PermutationMutationPerformer(new TranspositionChooser(-1));
                     case 2:
-                        return new PermutationMutationPerformer(new TranspositionChooser(100));
+                        return new PermutationMutationPerformer(new TranspositionChooser(-1));
+                    case 3:
+                        return new NoMutation<>();
+                    case 4:
+                        return new PermutationMutationPerformer(new TranspositionChooser(-1), 5);
+                    case 5:
+                        return new PermutationMutationPerformer(new TranspositionChooser(-1), 5);
+                    case 6:
+                        return new PermutationMutationPerformer(new TranspositionChooser(-1), 2);
+                    case 7:
+                        return new PermutationMutationPerformer(new TranspositionChooser(-1));
+                    case 8:
+                        return new PermutationMutationPerformer(new TranspositionChooser(-1), 5);
+                    case 9:
+                        return new PermutationMutationPerformer(new TranspositionChooser(-1), 3);
+                    case 10:
+                        return new PermutationMutationPerformer(new TranspositionChooser(-1), 2);
+                    case 11:
+                        return new PermutationMutationPerformer(new TranspositionChooser(-1), 3, PermutationMutationPerformer.Mode.UPTO);
                     default:
                         return null;
                 }
@@ -112,8 +130,26 @@ public class Main
                 switch (version)
                 {
                     case 1:
-                        return new LocalSearchByHC(100);
+                        return new NoLocalSearch();
                     case 2:
+                        return new NoLocalSearch();
+                    case 3:
+                        return new LocalSearchByHC(pData.nrOfTasks);
+                    case 4:
+                        return new LocalSearchByHC(pData.nrOfTasks);
+                    case 5:
+                        return new LocalSearchByHC(pData.nrOfTasks);
+                    case 6:
+                        return new LocalSearchByHC(pData.nrOfTasks);
+                    case 7:
+                        return new LocalSearchByHC(pData.nrOfTasks);
+                    case 8:
+                        return new NoLocalSearch();
+                    case 9:
+                        return new NoLocalSearch();
+                    case 10:
+                        return new LocalSearchByHC(10*pData.nrOfTasks);
+                    case 11:
                         return new NoLocalSearch();
                     default:
                         return null;
@@ -124,7 +160,7 @@ public class Main
         runner.run(params, F,
                            outPath + name + "_" + version + ".plot",
                            outPath + name + "_" + version + ".txt",
-                           10);
+                           1);
     }
 
     private void runMethodCompOnAllTests(String inPath, String outPath)
@@ -137,20 +173,25 @@ public class Main
 
     private void makeAlgRunners()
     {
-        //looper.addAlgRunner(makeHillClimbing1());
-        looper.addAlgRunner(makeHillClimbing2());
-        looper.addAlgRunner(makeRandomBrowse());
-        looper.addAlgRunner(makeSimulatedAnnealing());
-        looper.addAlgRunner(makeSGA());
+        //looper.addAlgRunner(makeHillClimbing());
+        //looper.addAlgRunner(makeRandomBrowse());
+        //looper.addAlgRunner(makeSimulatedAnnealing());
+        //looper.addAlgRunner(makeSGA());
+        //looper.addAlgRunner(makeSGA2());
+        //looper.addAlgRunner(makeSGA3());
+        //looper.addAlgRunner(makeSGA4());
+        //looper.addAlgRunner(makeSGA5());
+        looper.addAlgRunner(makeSGA6());
     }
-
-    private AlgRunner makeHillClimbing1()
+    
+    private AlgRunner makeHillClimbing()
     {
-        final int trials = 1500;
+        final int trials = 1;
         RandPermChooser randPermChooser = new RandPermChooser(1);
-        ConsecutiveTransChooser consecutiveTransChooser = new ConsecutiveTransChooser();
+        int neighbourhoodSize = 2000;
+        NeighbourhoodChooser<Permutation> neighbourhood = new TranspositionChooser(neighbourhoodSize);
         
-        final HillClimbing hill = new HillClimbing(trials, randPermChooser, consecutiveTransChooser);
+        final HillClimbing hill = new HillClimbing(trials, randPermChooser, neighbourhood);
         
         return new AlgRunner()
         {
@@ -169,51 +210,14 @@ public class Main
             @Override
             public String getName()
             {
-                return "HILL_CLIMBING1";
+                return "HILL_CLIMBING";
             }
 
             @Override
             public String getDesc()
             {
                 return "    -- trials = " + trials + "\n" +
-                    "    -- neighberhood: transposition of consecutive elements";
-            }
-        };
-    }
-
-    private AlgRunner makeHillClimbing2()
-    {
-        final int trials = 1000;
-        RandPermChooser randPermChooser = new RandPermChooser(1);
-        TranspositionChooser transpositionChooser = new TranspositionChooser(100);
-        
-        final HillClimbing hill = new HillClimbing(trials, randPermChooser, transpositionChooser);
-        
-        return new AlgRunner()
-        {
-            @Override
-            public ValuedIndividual<Permutation> run(Function<Permutation> F)
-            {
-                return hill.maximize(F);
-            }
-
-            @Override
-            public void prepare(ProblemData pData)
-            {
-                randPermChooser.setPermLength(pData.nrOfTasks);
-            }
-
-            @Override
-            public String getName()
-            {
-                return "HILL_CLIMBING2";
-            }
-
-            @Override
-            public String getDesc()
-            {
-                return "    -- trials = " + trials + "\n" +
-                    "    -- neighberhood: 100 random transpositions";
+                    "    -- neighberhood: " + neighbourhoodSize + " random transpositions";
             }
         };
     }
@@ -254,11 +258,11 @@ public class Main
 
     private AlgRunner makeSimulatedAnnealing()
     {
-        final int trials = 100;
-        final int nrOfIterations = 5000;
+        final int trials = 1;
+        final int nrOfIterations = 300000;
         RandPermChooser randPermChooser = new RandPermChooser(1);
-        ConsecutiveTransChooser consecutiveTransChooser = new ConsecutiveTransChooser();
-        SimulatedAnnealing sa = new SimulatedAnnealing(trials, nrOfIterations, randPermChooser, consecutiveTransChooser);
+        NeighbourhoodChooser<Permutation> neighbourhood = new TranspositionChooser(-1);
+        SimulatedAnnealing sa = new SimulatedAnnealing(trials, nrOfIterations, randPermChooser, neighbourhood);
         return new AlgRunner()
         {
             @Override
@@ -284,25 +288,25 @@ public class Main
             {
                 return "    -- trials = " + trials + "\n" +
                     "    -- nrOfIterations = " + nrOfIterations + "\n" +
-                    "    -- neighberhood: transposition of consecutive elements";
+                    "    -- neighberhood: random transpositions";
             }
         };    
     }
 
     private AlgRunner makeSGA()
     {
-        SGA_Params params = new SGA_Params(100,     // populationSize
-                                    200,     // nr of parents
+        SGA_Params params = new SGA_Params(250,     // populationSize
+                                    1000,     // nr of parents
                                     1.0,     // probability of crossover
-                                    0.05,    //probability of mutation
-                                    800   // max iterations
+                                    0.5,    //probability of mutation
+                                    1000   // max iterations
         );
         SGA<Permutation> sga = new SGA<>(params);
         RandPermChooser randPermChooser = new RandPermChooser(1);
         sga.setRandomPopoluationGenerator(new SimpleRandomPopulationGenerator(randPermChooser));
         sga.setParentSelector(new RandomParentSelector<>());
         sga.setCrossoverPerformer(new PMX());
-        sga.setMutationPerformer(new PermutationMutationPerformer(new TranspositionChooser(100)));
+        sga.setMutationPerformer(new PermutationMutationPerformer(new TranspositionChooser(-1)));
         sga.setReplacementPerformer(new SimpleReplacementPerformer());
         
         return new AlgRunner()
@@ -325,13 +329,250 @@ public class Main
             @Override
             public String getName()
             {
-                return "SGA";
+                return "SGA1";
             }
 
             @Override
             public String getDesc()
             {
-                return params.toString();
+                return "mutation: one trans., no local serch\n" + params.toString();
+            }  
+        };
+    }
+
+    private AlgRunner makeSGA2()
+    {
+        SGA_Params params = new SGA_Params(100,     // populationSize
+                                    1000,     // nr of parents
+                                    1.0,     // probability of crossover
+                                    0.5,    //probability of mutation
+                                    1000   // max iterations
+        );
+        SGA<Permutation> sga = new SGA<>(params);
+        RandPermChooser randPermChooser = new RandPermChooser(1);
+        sga.setRandomPopoluationGenerator(new SimpleRandomPopulationGenerator(randPermChooser));
+        sga.setParentSelector(new RandomParentSelector<>());
+        sga.setCrossoverPerformer(new PMX());
+        sga.setMutationPerformer(new PermutationMutationPerformer(new TranspositionChooser(-1)));
+        sga.setReplacementPerformer(new SimpleReplacementPerformer());
+        
+        return new AlgRunner()
+        {
+            @Override
+            public ValuedIndividual<Permutation> run(Function<Permutation> F)
+            {
+                sga.maximize(F);
+                double best = sga.getBestVal();
+                Permutation perm = sga.getBestIndividual();
+                return new ValuedIndividual<>(perm, best);
+            }
+
+            @Override
+            public void prepare(ProblemData pData)
+            {
+                randPermChooser.setPermLength(pData.nrOfTasks);
+                sga.setLocalSearch(new LocalSearchByHC(2*pData.nrOfTasks));
+            }
+
+            @Override
+            public String getName()
+            {
+                return "SGA2";
+            }
+
+            @Override
+            public String getDesc()
+            {
+                return "mutation: one trans., local serch\n" + params.toString();
+            }  
+        };
+    }
+
+    private AlgRunner makeSGA3()
+    {
+        SGA_Params params = new SGA_Params(250,     // populationSize
+                                    1000,     // nr of parents
+                                    1.0,     // probability of crossover
+                                    0.5,    //probability of mutation
+                                    1000   // max iterations
+        );
+        SGA<Permutation> sga = new SGA<>(params);
+        RandPermChooser randPermChooser = new RandPermChooser(1);
+        sga.setRandomPopoluationGenerator(new SimpleRandomPopulationGenerator(randPermChooser));
+        sga.setParentSelector(new RandomParentSelector<>());
+        sga.setCrossoverPerformer(new PMX());
+        sga.setMutationPerformer(new PermutationMutationPerformer(new TranspositionChooser(-1), 2));
+        sga.setReplacementPerformer(new SimpleReplacementPerformer());
+        
+        return new AlgRunner()
+        {
+            @Override
+            public ValuedIndividual<Permutation> run(Function<Permutation> F)
+            {
+                sga.maximize(F);
+                double best = sga.getBestVal();
+                Permutation perm = sga.getBestIndividual();
+                return new ValuedIndividual<>(perm, best);
+            }
+
+            @Override
+            public void prepare(ProblemData pData)
+            {
+                randPermChooser.setPermLength(pData.nrOfTasks);
+            }
+
+            @Override
+            public String getName()
+            {
+                return "SGA3";
+            }
+
+            @Override
+            public String getDesc()
+            {
+                return "mutation: two trans., no local serch\n" + params.toString();
+            }  
+        };
+    }
+
+    private AlgRunner makeSGA4()
+    {
+        SGA_Params params = new SGA_Params(100,     // populationSize
+                                    1000,     // nr of parents
+                                    1.0,     // probability of crossover
+                                    0.5,    //probability of mutation
+                                    1000   // max iterations
+        );
+        SGA<Permutation> sga = new SGA<>(params);
+        RandPermChooser randPermChooser = new RandPermChooser(1);
+        sga.setRandomPopoluationGenerator(new SimpleRandomPopulationGenerator(randPermChooser));
+        sga.setParentSelector(new RandomParentSelector<>());
+        sga.setCrossoverPerformer(new PMX());
+        sga.setMutationPerformer(new PermutationMutationPerformer(new TranspositionChooser(-1)));
+        sga.setReplacementPerformer(new SimpleReplacementPerformer());
+        
+        return new AlgRunner()
+        {
+            @Override
+            public ValuedIndividual<Permutation> run(Function<Permutation> F)
+            {
+                sga.maximize(F);
+                double best = sga.getBestVal();
+                Permutation perm = sga.getBestIndividual();
+                return new ValuedIndividual<>(perm, best);
+            }
+
+            @Override
+            public void prepare(ProblemData pData)
+            {
+                randPermChooser.setPermLength(pData.nrOfTasks);
+                sga.setLocalSearch(new LocalSearchByHC(2*pData.nrOfTasks));
+            }
+
+            @Override
+            public String getName()
+            {
+                return "SGA4";
+            }
+
+            @Override
+            public String getDesc()
+            {
+                return "mutation: two trans., local serch\n" + params.toString();
+            }  
+        };
+    }
+
+    private AlgRunner makeSGA5()
+    {
+        SGA_Params params = new SGA_Params(250,     // populationSize
+                                    1000,     // nr of parents
+                                    1.0,     // probability of crossover
+                                    0.5,    //probability of mutation
+                                    1000   // max iterations
+        );
+        SGA<Permutation> sga = new SGA<>(params);
+        RandPermChooser randPermChooser = new RandPermChooser(1);
+        sga.setRandomPopoluationGenerator(new SimpleRandomPopulationGenerator(randPermChooser));
+        sga.setParentSelector(new RandomParentSelector<>());
+        sga.setCrossoverPerformer(new PMX());
+        sga.setMutationPerformer(new PermutationMutationPerformer(new TranspositionChooser(-1), 3, PermutationMutationPerformer.Mode.UPTO));
+        sga.setReplacementPerformer(new SimpleReplacementPerformer());
+        
+        return new AlgRunner()
+        {
+            @Override
+            public ValuedIndividual<Permutation> run(Function<Permutation> F)
+            {
+                sga.maximize(F);
+                double best = sga.getBestVal();
+                Permutation perm = sga.getBestIndividual();
+                return new ValuedIndividual<>(perm, best);
+            }
+
+            @Override
+            public void prepare(ProblemData pData)
+            {
+                randPermChooser.setPermLength(pData.nrOfTasks);
+            }
+
+            @Override
+            public String getName()
+            {
+                return "SGA5";
+            }
+
+            @Override
+            public String getDesc()
+            {
+                return "mutation: up to 3 trans., no local serch\n" + params.toString();
+            }  
+        };
+    }
+
+    private AlgRunner makeSGA6()
+    {
+        SGA_Params params = new SGA_Params(250,     // populationSize
+                                    1000,     // nr of parents
+                                    1.0,     // probability of crossover
+                                    0.5,    //probability of mutation
+                                    1000   // max iterations
+        );
+        SGA<Permutation> sga = new SGA<>(params);
+        RandPermChooser randPermChooser = new RandPermChooser(1);
+        sga.setRandomPopoluationGenerator(new SimpleRandomPopulationGenerator(randPermChooser));
+        sga.setParentSelector(new RandomParentSelector<>());
+        sga.setCrossoverPerformer(new PMX());
+        sga.setMutationPerformer(new PermBlockShift());
+        sga.setReplacementPerformer(new SimpleReplacementPerformer());
+        
+        return new AlgRunner()
+        {
+            @Override
+            public ValuedIndividual<Permutation> run(Function<Permutation> F)
+            {
+                sga.maximize(F);
+                double best = sga.getBestVal();
+                Permutation perm = sga.getBestIndividual();
+                return new ValuedIndividual<>(perm, best);
+            }
+
+            @Override
+            public void prepare(ProblemData pData)
+            {
+                randPermChooser.setPermLength(pData.nrOfTasks);
+            }
+
+            @Override
+            public String getName()
+            {
+                return "SGA6";
+            }
+
+            @Override
+            public String getDesc()
+            {
+                return "mutation: block., no local serch\n" + params.toString();
             }  
         };
     }

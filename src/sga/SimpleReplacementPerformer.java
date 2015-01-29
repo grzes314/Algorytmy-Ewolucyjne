@@ -25,16 +25,16 @@ public class SimpleReplacementPerformer<Individual extends Copyable<Individual>>
         for (int i = 0; i < N; ++i)
         {
             if (ai == N) {
-                newest.addIndividual( b.get(bi).ind );
+                newest.addIndividual( b.get(bi) );
                 bi++;
             } else if (bi == M) {
-                newest.addIndividual( a.get(ai).ind );
+                newest.addIndividual( a.get(ai) );
                 ai++;
             } else if (a.get(ai).value > b.get(bi).value) {
-                newest.addIndividual( a.get(ai).ind );
+                newest.addIndividual( a.get(ai) );
                 ai++;
             } else {
-                newest.addIndividual( b.get(bi).ind );
+                newest.addIndividual( b.get(bi) );
                 bi++;
             }
         }

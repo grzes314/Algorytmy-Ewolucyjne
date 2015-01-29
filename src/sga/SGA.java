@@ -55,6 +55,7 @@ public class SGA<Individual extends Copyable<Individual>>
         initStats();
         interrupted = false;
         currPopulation = randomPopoluationGenerator.generate(populationSize);
+        currPopulation = localSearch.upgrade(currPopulation, F);
         currPopulation.evaluate(F);
         updateStats(0);
         for (int i = 1; i <= maxIterations && !interrupted && !currPopulation.terminationCondition(); ++i)
@@ -67,7 +68,8 @@ public class SGA<Individual extends Copyable<Individual>>
             populationC = mutationPerformer.mutation(populationC, thetaM);
             populationC.evaluate(F);
             currPopulation = replacementPerformer.replace(currPopulation, populationC);
-            currPopulation = localSearch.upgrade(currPopulation, F);
+            if (i % 200 == 0)
+                currPopulation = localSearch.upgrade(currPopulation, F);
             currPopulation.evaluate(F);
             updateStats(i);
             postObservers(i);

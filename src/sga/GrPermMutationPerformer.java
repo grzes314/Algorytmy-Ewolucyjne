@@ -17,7 +17,7 @@ public class GrPermMutationPerformer implements MutationPerformer<GrPerm>
         int N = population.getSize();
         for (int i = 0; i < N; ++i)
         {
-            mutated.addIndividual( mutate(population.getIndividual(i), thetaM) );
+            mutated.addIndividual( mutate(population.getIndividual(i).ind, thetaM) );
         }
         return mutated;
     }

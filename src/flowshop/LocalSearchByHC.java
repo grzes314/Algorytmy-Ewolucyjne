@@ -6,6 +6,7 @@ import optimization.Permutation;
 import sga.LocalSearch;
 import sga.Population;
 import sga.SimplePopulation;
+import simplealgs.AllTranspositions;
 import simplealgs.HillClimbing;
 import simplealgs.TranspositionChooser;
 
@@ -15,11 +16,14 @@ import simplealgs.TranspositionChooser;
  */
 public class LocalSearchByHC implements LocalSearch<Permutation>
 {
-    HillClimbing<Permutation> hc;
+    final HillClimbing<Permutation> hc;
 
     public LocalSearchByHC(int nrOfNeighbours)
     {
-        hc = new HillClimbing<>(1, null, new TranspositionChooser(nrOfNeighbours));
+        if (nrOfNeighbours <= 0)
+            hc = new HillClimbing<>(1, null, new AllTranspositions());        
+        else
+            hc = new HillClimbing<>(1, null, new TranspositionChooser(nrOfNeighbours));
     }    
     
     @Override

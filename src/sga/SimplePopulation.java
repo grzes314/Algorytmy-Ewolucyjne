@@ -15,12 +15,11 @@ import java.util.List;
 public class SimplePopulation<Individual extends Copyable<Individual>> implements Population<Individual>
 {
     private final ArrayList<ValuedIndividual<Individual>> inds = new ArrayList<>();
-    private final ArrayList<Boolean> evaluated = new ArrayList<>();
     private double targetVals[], fitVals[], cumFitVals[];
     private double minTargetVal, maxTargetVal, meanTargetVal;
     Individual maxIndividual, minIndividual;
     private int N;
-    private boolean optimized = false;
+    private boolean optimized = true;
     
     @Override
     public void evaluate(Function<Individual> F)
@@ -37,11 +36,10 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
         targetVals = new double[N];
         for (int i = 0; i < N; ++i)
         {
-            if (!optimized || !evaluated.get(i))
+            if (!optimized || !inds.get(i).valued)
             {
                 ValuedIndividual<Individual> valInd = F.value(inds.get(i).ind);
                 inds.set(i, valInd);
-                evaluated.set(i, Boolean.TRUE);
             }
             targetVals[i] = inds.get(i).value; 
         }
@@ -109,14 +107,12 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
     
     public void addIndividual(Individual individual)
     {
-        evaluated.add(Boolean.FALSE);
-        ValuedIndividual<Individual> valInd = new ValuedIndividual<>(individual, Double.NaN, false);
+        ValuedIndividual<Individual> valInd = new ValuedIndividual<>(individual);
         inds.add(valInd);
     }
     
     public void addIndividual(ValuedIndividual<Individual> valuedIndividual)
     {
-        evaluated.add(Boolean.TRUE);
         inds.add(valuedIndividual);
     }
 
@@ -183,9 +179,13 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
     }
 
     @Override
-    public Individual getIndividual(int i)
+    public ValuedIndividual<Individual> getIndividual(int i)
     {
-        return inds.get(i).ind.getCopy();
+        ValuedIndividual<Individual> vi = inds.get(i);
+        if (vi.valued)
+            return new ValuedIndividual<>(vi.ind.getCopy(), vi.value, vi.feasible);
+        else
+            return new ValuedIndividual<>(vi.ind.getCopy(), vi.feasible);
     }
 
     @Override
@@ -194,7 +194,8 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
         ArrayList<ValuedIndividual<Individual>> list = new ArrayList<>();
         for (int i = 0; i < N; ++i)
         {
-            list.add(inds.get(i));
+            ValuedIndividual<Individual> vi = inds.get(i);
+            list.add(new ValuedIndividual<>(vi.ind.getCopy(), vi.value, vi.feasible));
         }
         list.sort( (ValuedIndividual<Individual> o1, ValuedIndividual<Individual> o2)
                     -> -Double.compare(o1.value, o2.value) );

@@ -16,6 +16,7 @@ public class HillClimbing<Individual>
     private Function<Individual> F;
     private static double eps = 1e-5;
     private int trials;
+    private boolean fast = true;
 
     public HillClimbing(int trials, RandIndChooser<Individual> randInd, NeighbourhoodChooser<Individual> neighbourhood)
     {
@@ -89,10 +90,10 @@ public class HillClimbing<Individual>
         return curr;
     }
 
-    public ValuedIndividual<Individual> oneTry(Individual currInd, Function<Individual> F)
+    public ValuedIndividual<Individual> oneTry(ValuedIndividual<Individual> currInd, Function<Individual> F)
     {
         this.F = F;
-        ValuedIndividual<Individual> curr = F.value(currInd);
+        ValuedIndividual<Individual> curr = F.value(currInd.ind);
         ValuedIndividual<Individual> prev;
         do
         {
@@ -104,13 +105,17 @@ public class HillClimbing<Individual>
     
     private ValuedIndividual<Individual> climb(final ValuedIndividual<Individual> curr)
     {
-        ValuedIndividual<Individual> bestNeigh = new ValuedIndividual<>(null, Double.NEGATIVE_INFINITY);
+        ValuedIndividual<Individual> bestNeigh = curr;
         List<Individual> neighs = neighbourhood.choose(curr.ind);
         for (Individual n: neighs)
         {
             ValuedIndividual<Individual> v = F.value(n);
             if (v.value > bestNeigh.value)
+            {
+                if (fast)
+                    return v;
                 bestNeigh = v;
+            }
         }
         return bestNeigh;
     }

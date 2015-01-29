@@ -89,6 +89,7 @@ public class Looper
         ar.prepare(F.pData);
         for (int i = 0; i < repetitions; ++i)
         {
+            System.out.println("trial: " + (i+1) + "/" + repetitions);
             double t = System.nanoTime();
             ValuedIndividual<Permutation> vi = ar.run(F);
             double diff = (System.nanoTime() - t) / 1e9;

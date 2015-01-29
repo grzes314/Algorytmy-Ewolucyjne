@@ -30,7 +30,7 @@ public interface Population<Individual extends Copyable<Individual>>
     
     public int getSize();
     
-    public Individual getIndividual(int i);
+    public ValuedIndividual<Individual> getIndividual(int i);
     
     public ArrayList<ValuedIndividual<Individual>> createListOfSortedIndividuals();
     

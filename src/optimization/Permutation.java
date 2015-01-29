@@ -1,6 +1,7 @@
 
 package optimization;
 
+import java.util.Arrays;
 import static optimization.RandomnessSource.rand;
 
 /**
@@ -96,5 +97,19 @@ public class Permutation implements Copyable<Permutation>
         if (perm.length > 12)
             sb.append("... (").append(perm.length-10).append(" more)");
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj.getClass() != Permutation.class)
+            return false;
+        Permutation other = (Permutation) obj;
+        if (perm.length != other.perm.length)
+            return false;
+        for (int i = 0; i < perm.length; ++i)
+            if (perm[i] != other.perm[i])
+                return false;
+        return true;
     }
 }

@@ -24,7 +24,7 @@ public class GrPMX implements CrossoverPerformer<GrPerm>
         for (int i = 0; i < N; i += 2)
         {
             if (rand.nextDouble() < thetaC)
-                crossover(parents.getIndividual(i), parents.getIndividual(i+1));
+                crossover(parents.getIndividual(i).ind, parents.getIndividual(i+1).ind);
             else
             {
                 newPopulation.addIndividual(parents.getIndividual(i));

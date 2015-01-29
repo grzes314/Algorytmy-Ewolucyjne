@@ -74,12 +74,12 @@ public abstract class SGA_Runner<Individual extends Copyable<Individual>>
         public void currentIteration(int i, boolean solutionImproved)
         {
             int p = 100 * i / params.maxIterations;
-            /*if (p > lastDisplayedPerc)
+            if (p != lastDisplayedPerc)
             {
-                System.out.print(p + " ");
+                System.out.println(p);
                 System.out.flush();
                 lastDisplayedPerc = p;
-            }*/
+            }
         }        
     }
 

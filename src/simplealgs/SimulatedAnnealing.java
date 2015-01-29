@@ -84,7 +84,7 @@ public class SimulatedAnnealing<Individual>
         ValuedIndividual<Individual> best  = curr;
         for (int i = 0; i < nrOfIterations; ++i)
         {
-            double t = 0.2 / (1.0 + Math.sqrt(i));
+            double t = 0.05 / (1.0 + Math.sqrt(i));
             curr = oneIteration(curr, t);
             if (curr.value > best.value)
                 best = curr;

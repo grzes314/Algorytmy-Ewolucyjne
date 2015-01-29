@@ -60,7 +60,7 @@ public class DataGenerator
     
     public ProblemData generate()
     {
-        double deadline = Math.log(nrOfMachines) * nrOfTasks * maxTime / 5;
+        double deadline = Math.log(nrOfMachines) * nrOfTasks * maxTime / 10;
         ProblemData pData = new ProblemData(nrOfMachines, nrOfTasks, deadline);
         for (int i = 0; i < nrOfTasks; ++i)
             pData.addTask( generateTask() );

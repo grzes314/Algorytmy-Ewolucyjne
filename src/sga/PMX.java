@@ -1,11 +1,10 @@
 
 package sga;
 
-import java.util.Map;
-import java.util.TreeMap;
 import optimization.Permutation;
 import optimization.RandomnessSource;
 import static optimization.RandomnessSource.rand;
+import optimization.ValuedIndividual;
 
 /**
  *
@@ -24,12 +23,14 @@ public class PMX implements CrossoverPerformer<Permutation>
             N--;
         for (int i = 0; i < N; i += 2)
         {
-            if (rand.nextDouble() < thetaC)
-                crossover(parents.getIndividual(i), parents.getIndividual(i+1));
+            ValuedIndividual<Permutation> p = parents.getIndividual(i);
+            ValuedIndividual<Permutation> r = parents.getIndividual(i+1);
+            if (rand.nextDouble() < thetaC && !p.ind.equals(r.ind))
+                crossover(p.ind, r.ind);
             else
             {
-                newPopulation.addIndividual(parents.getIndividual(i));
-                newPopulation.addIndividual(parents.getIndividual(i+1));
+                newPopulation.addIndividual(p);
+                newPopulation.addIndividual(r);
             }
         }
         return newPopulation;
@@ -59,7 +60,7 @@ public class PMX implements CrossoverPerformer<Permutation>
 
     private Permutation replace(Permutation to, Permutation from, int k, int l)
     {
-        Map<Integer, Integer> map = makeMap(to, from, k, l);
+        Integer[] map = makeMap(to, from, k, l);
         int[] perm = new int[to.getSize()];
         for (int i = 0; i < k; ++i)
             perm[i] = findNewValue(to.at(i), map);
@@ -70,22 +71,22 @@ public class PMX implements CrossoverPerformer<Permutation>
         return new Permutation(perm);
     }
 
-    private Map<Integer, Integer> makeMap(Permutation to, Permutation from, int k, int l)
+    private Integer[] makeMap(Permutation to, Permutation from, int k, int l)
     {
-        Map<Integer, Integer> map = new TreeMap<>();
+        Integer[] map = new Integer[to.getSize()];
         for (int i = k; i <= l; ++i)
-            map.put(from.at(i), to.at(i));
+            map[from.at(i)] = to.at(i);
         return map;
     }
 
-    private int findNewValue(int prev, Map<Integer, Integer> map)
+    private int findNewValue(int prev, Integer[] map)
     {
         int val = prev;
-        Integer aux = map.get(val);
+        Integer aux = map[val];
         while (aux != null)
         {
             val = aux;
-            aux = map.get(val);
+            aux = map[val];
         }
         return val;
     }

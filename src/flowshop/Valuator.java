@@ -34,6 +34,7 @@ public class Valuator implements Function<Permutation>
                 price += task.price;
             else break;
         }
+        price -= finishTimes[pData.nrOfMachines-1] / pData.deadline / 10;
         return new ValuedIndividual<>(x, price);
     }
 

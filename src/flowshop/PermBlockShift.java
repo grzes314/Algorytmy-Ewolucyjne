@@ -3,6 +3,7 @@ package flowshop;
 
 import optimization.Permutation;
 import optimization.RandomnessSource;
+import optimization.ValuedIndividual;
 import sga.MutationPerformer;
 import sga.Population;
 import sga.SimplePopulation;
@@ -26,10 +27,10 @@ public class PermBlockShift implements MutationPerformer<Permutation>
         return mutated;    
     }
 
-    private Permutation mutate(Permutation individual, double thetaM)
+    private ValuedIndividual<Permutation> mutate(ValuedIndividual<Permutation> individual, double thetaM)
     {
         if (thetaM < RandomnessSource.rand.nextDouble())
-            return reallyMutate(individual);
+            return new ValuedIndividual<>(reallyMutate(individual.ind));
         else
             return individual;
     }

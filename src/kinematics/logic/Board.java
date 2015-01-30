@@ -58,12 +58,18 @@ public class Board
     {
         for (Rectangle rect: rects)
         {
-            Line[] rLines = rect.getLines();
-            for (Line rLine: rLines)
-                if (line.instersects(rLine))
-                    return true;
+            if (rect.intersects(line))
+                return true;
         }
         return false;
+    }
+    
+    public double getTotalIntersectionLength(Line[] lines)
+    {
+        double sum = 0.0;
+        for (Rectangle rect: rects)
+            sum += rect.getIntersectionLength(lines);
+        return sum;
     }
 
     public List<Rectangle> getRects()

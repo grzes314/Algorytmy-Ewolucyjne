@@ -19,7 +19,7 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
     private double minTargetVal, maxTargetVal, meanTargetVal;
     Individual maxIndividual, minIndividual;
     private int N;
-    private boolean optimized = true;
+    private boolean optimized = false;
     
     @Override
     public void evaluate(Function<Individual> F)
@@ -183,9 +183,9 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
     {
         ValuedIndividual<Individual> vi = inds.get(i);
         if (vi.valued)
-            return new ValuedIndividual<>(vi.ind.getCopy(), vi.value, vi.feasible);
+            return new ValuedIndividual<>(vi.ind.getCopy(), vi.value, vi.feasible, vi.infeasibility);
         else
-            return new ValuedIndividual<>(vi.ind.getCopy(), vi.feasible);
+            return new ValuedIndividual<>(vi.ind.getCopy(), vi.feasible, vi.infeasibility);
     }
 
     @Override
@@ -195,7 +195,7 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
         for (int i = 0; i < N; ++i)
         {
             ValuedIndividual<Individual> vi = inds.get(i);
-            list.add(new ValuedIndividual<>(vi.ind.getCopy(), vi.value, vi.feasible));
+            list.add(new ValuedIndividual<>(vi.ind.getCopy(), vi.value, vi.feasible, vi.infeasibility));
         }
         list.sort( (ValuedIndividual<Individual> o1, ValuedIndividual<Individual> o2)
                     -> -Double.compare(o1.value, o2.value) );

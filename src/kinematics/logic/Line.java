@@ -12,7 +12,7 @@ public class Line
     public final double a, b, c;
     public final double midX, midY, xRange, yRange;
     public static final double eps = 0.0001;
-    private final Point p, r;
+    public final Point p, r;
     
     public Line(Point p, Point r)
     {
@@ -56,5 +56,20 @@ public class Line
         double x = det_x / det;
         double y = det_y / det;
         return onLine(x, y) && l.onLine(x, y);
+    }
+
+    public Point getItersection(Line l)
+    {
+        double det = a*l.b - b * l.a;
+        if (abs(det) < eps)
+            return null;
+        double det_x = b * l.c - c * l.b;
+        double det_y = c * l.a - a * l.c;
+        double x = det_x / det;
+        double y = det_y / det;
+        if ( onLine(x, y) && l.onLine(x, y) )
+            return new Point(x,y);
+        else
+            return null;
     }
 }

@@ -23,8 +23,8 @@ public class StaticValuator implements Function<Configuration>
     {
         arm.setConfiguration(x);
         Point last = arm.getLastCoord();
-        boolean feasible = !board.intersects(arm.getLines());
-        return new ValuedIndividual<>(x, -last.distance(problemData.goal), feasible);
+        double infeasibility = board.getTotalIntersectionLength(arm.getLines());
+        return new ValuedIndividual<>(x, -last.distance(problemData.goal), infeasibility < 1e-6, infeasibility);
     }
 
     private final ProblemData problemData;

@@ -74,4 +74,65 @@ public class Rectangle
     {
         return pos;
     }
+    
+    public boolean intersects(Line line)
+    {
+        Line[] rLines = getLines();
+        for (Line rLine: rLines)
+            if (line.instersects(rLine))
+                return true;
+        return false;
+    }
+    
+    public double getIntersectionLength(Line line)
+    {
+        Line[] lines = getLines();
+        return getIntersectionLength(line, lines);
+    }
+    
+    private double getIntersectionLength(Line line, Line[] myLines)
+    {
+        Point[] points = new Point[4];
+        int i, j;
+        for (i = 0; i < 4; ++i)
+        {
+            points[i] = line.getItersection(myLines[i]);
+            if (points[i] != null)
+                break;
+        }
+        for (j = i+1; j < 4; ++j)
+        {
+            points[j] = line.getItersection(myLines[j]);
+            if (points[j] != null)
+                break;
+        }
+        if (i < 4) //line gets into rectangle
+        {
+            if (j < 4) // line gets through rectangle
+                return points[i].distance(points[j]);
+            if (inside(line.p))
+                return points[i].distance(line.p);
+            else return points[i].distance(line.r);
+            
+        }
+        else
+            return 0.0;        
+    }
+    
+    public double getIntersectionLength(Line[] lines)
+    {
+        Line[] myLines = getLines();
+        double sum = 0.0;
+        for (Line line: lines)
+            sum += getIntersectionLength(line, myLines);
+        return sum;
+    }
+
+    private boolean inside(Point p)
+    {
+        return p.x > pos.x - w/2 &&
+            p.x < pos.x + w/2 &&
+            p.y > pos.y - h/2 &&
+            p.y < pos.y + h/2;
+    }
 }

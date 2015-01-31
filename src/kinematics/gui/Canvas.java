@@ -3,6 +3,7 @@ package kinematics.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import kinematics.logic.Arm;
@@ -16,7 +17,7 @@ import kinematics.logic.Rectangle;
  */
 public class Canvas extends JPanel
 {
-    private Arm arm;
+    private ArrayList<Arm> arms = new ArrayList<>();
     private Board board;
     private final int goalR = 6;
     private final int nodeR = 4;
@@ -46,18 +47,22 @@ public class Canvas extends JPanel
             drawGoal();
             drawObstacles();
         }
-        if (arm != null && arm.getCoord() != null)
-            drawSegments();        
+        drawArms();        
     }
 
-    public Arm getArm()
+    public Arm getArm(int nr)
     {
-        return arm;
+        return arms.get(nr);
     }
 
-    public void setArm(Arm arm)
+    public void clearArms()
     {
-        this.arm = arm;
+        arms.clear();
+    }
+    
+    public void addArm(Arm arm)
+    {
+        arms.add(arm);
     }
 
     public void setBoard(Board board)
@@ -83,9 +88,18 @@ public class Canvas extends JPanel
         gr.fillOval(x, y, 2*goalR, 2*goalR); 
     }
 
-    private void drawSegments()
+    private void drawArms()
     {
-        gr.setColor(Color.BLUE);
+        Color[] colors = {Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.RED };
+        for (int i = 0; i < arms.size(); ++i)
+            drawSegments(arms.get(i), colors[i]);
+    }
+
+    private void drawSegments(Arm arm, Color color)
+    {
+        if (arm.getCoord() == null)
+            return ;
+        gr.setColor(color);
         Point prev = new Point(0,0);
         for (Point p: arm.getCoord())
         {

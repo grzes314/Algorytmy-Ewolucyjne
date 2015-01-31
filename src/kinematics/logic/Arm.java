@@ -22,12 +22,16 @@ public class Arm
     public void setConfiguration(Configuration conf)
     {
         this.conf = conf;
-        if (conf != null)
-            calculateCoords();
+        calculateCoords();
     }
 
     private void calculateCoords()
     {
+        if (conf == null)
+        {
+            coord = null;
+            return;
+        }
         int n = conf.angle.length;
         Point[] newCoord = new Point[n];
         Vector u = new Vector(0,-1);
@@ -52,6 +56,8 @@ public class Arm
     
     public Line[] getLines()
     {
+        if (coord == null)
+            return null;
         Line[] lines = new Line[coord.length];
         Point prev = new Point(0,0);
         for (int i = 0; i < lines.length; ++i)

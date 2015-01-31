@@ -35,6 +35,7 @@
                   <Component id="solve" alignment="0" min="-2" pref="87" max="-2" attributes="0"/>
                   <Component id="browse" min="-2" max="-2" attributes="0"/>
                   <Component id="simulation" min="-2" max="-2" attributes="0"/>
+                  <Component id="labirynth" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
           </Group>
@@ -62,7 +63,9 @@
                       <Component id="static_" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="dynamic" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="labirynth" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="simulation" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -151,6 +154,14 @@
     <Component class="javax.swing.JCheckBox" name="simulation">
       <Properties>
         <Property name="text" type="java.lang.String" value="simulation"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="labirynth">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="buttonGroup1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Labirynth"/>
       </Properties>
     </Component>
   </SubComponents>

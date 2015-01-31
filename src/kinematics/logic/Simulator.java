@@ -46,8 +46,8 @@ public class Simulator
         {
             long currTime = System.nanoTime();
             double deltaTime = (double)(currTime - lastTime) / 1.0e9;
-            if (deltaTime > 0.005)
-                System.out.println("!!!!!!!!!!! " + deltaTime);
+            //if (deltaTime > 0.005)
+            //    System.out.println("!!!!!!!!!!! " + deltaTime);
             if (!lockObstacles)
                 board.move(deltaTime);
             moveArm(deltaTime);

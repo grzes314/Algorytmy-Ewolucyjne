@@ -1,27 +1,33 @@
 
 package kinematics.logic;
 
-import sga.SimplePopulation;
 import java.util.ArrayList;
 import optimization.Copyable;
-import sga.Population;
-import sga.ReplacementPerformer;
 import optimization.ValuedIndividual;
+import sga.Population;
+import sga.ProgressObserver;
+import sga.ReplacementPerformer;
+import sga.SimplePopulation;
 
 /**
  *
  * @author Grzegorz Los
  * @param <Individual>
  */
-public class ReplacementWithNonFeasible<Individual extends Copyable<Individual>> implements ReplacementPerformer<Individual>
+public class ReplacementWithNonFeasible<Individual extends Copyable<Individual>>
+                implements  ReplacementPerformer<Individual>,
+                            ProgressObserver
 {
     private final int maxNonFeasible;
     private final int maxFeasible;
+    private final double initialMaxInfeasibility;
+    private double maxInfeasibility;
 
-    public ReplacementWithNonFeasible(int maxFeasible, int maxNonFeasible)
+    public ReplacementWithNonFeasible(int maxFeasible, int maxNonFeasible, double initialMaxInfeasibility)
     {
         this.maxNonFeasible = maxNonFeasible;
         this.maxFeasible = maxFeasible;
+        this.initialMaxInfeasibility = initialMaxInfeasibility;
     }
 
     @Override
@@ -44,7 +50,7 @@ public class ReplacementWithNonFeasible<Individual extends Copyable<Individual>>
                 newest.addIndividual(better);
                 feasible++;
             }
-            if (!better.feasible && nonfeasible < maxNonFeasible)
+            if (!better.feasible && nonfeasible < maxNonFeasible && better.infeasibility < maxInfeasibility)
             {
                 newest.addIndividual(better);
                 nonfeasible++;
@@ -64,5 +70,13 @@ public class ReplacementWithNonFeasible<Individual extends Copyable<Individual>>
         if (fromA.value > fromB.value)
             return fromA;
         else return fromB;
+    }
+
+    @Override
+    public void currentIteration(int i, boolean solutionImproved)
+    {
+        maxInfeasibility = initialMaxInfeasibility / (1.0 + i/10.0);
+        if (i % 200 == 0)
+            System.out.println("max infeasibility: " + maxInfeasibility);
     }
 }

@@ -16,8 +16,8 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
 {
     private final ArrayList<ValuedIndividual<Individual>> inds = new ArrayList<>();
     private double targetVals[], fitVals[], cumFitVals[];
-    private double minTargetVal, maxTargetVal, meanTargetVal;
-    Individual maxIndividual, minIndividual;
+    private double minTargetVal, maxTargetVal, meanTargetVal, maxInfeasibleVal;
+    Individual maxIndividual, minIndividual, maxInfeasible;
     private int N;
     private boolean optimized = false;
     
@@ -122,20 +122,29 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
         maxTargetVal = Double.NEGATIVE_INFINITY;
         meanTargetVal = 0;
         int feasibleCount = 0;
+        maxInfeasibleVal = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < N; ++i)
         {
+            ValuedIndividual<Individual> vi = inds.get(i);
             if (!inds.get(i).feasible)
+            {
+                if (maxInfeasibleVal < vi.value)
+                {
+                    maxInfeasible = vi.ind;
+                    maxInfeasibleVal = vi.value;
+                }
                 continue;
+            }
             feasibleCount++;
             if (targetVals[i] < minTargetVal)
             {
                 minTargetVal = targetVals[i];
-                minIndividual = inds.get(i).ind;
+                minIndividual = vi.ind;
             }
             if (targetVals[i] > maxTargetVal)
             {
                 maxTargetVal = targetVals[i];
-                maxIndividual = inds.get(i).ind;
+                maxIndividual = vi.ind;
             }
             meanTargetVal += targetVals[i];
         }
@@ -210,5 +219,10 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
             if (ind.feasible)
                 sols.add(ind.ind.getCopy());
         return sols;
+    }
+
+    public Individual getMaxInfeasible()
+    {
+        return maxInfeasible;
     }
 }

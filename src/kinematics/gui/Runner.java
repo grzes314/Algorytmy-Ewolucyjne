@@ -10,7 +10,6 @@ import kinematics.logic.Arm;
 import kinematics.logic.Board;
 import kinematics.logic.Configuration;
 import kinematics.logic.DummyPredictor;
-import optimization.DynamicFunction;
 import kinematics.logic.MutationPerformerIK;
 import kinematics.logic.NoCrossoverIK;
 import kinematics.logic.Predictor;
@@ -21,13 +20,15 @@ import kinematics.logic.SimplePredictor;
 import kinematics.logic.SimpleValuator;
 import kinematics.logic.Simulator;
 import kinematics.logic.StaticValuator;
+import optimization.DynamicFunction;
+import optimization.StaticFunction;
 import sga.Population;
 import sga.ProgressObserver;
 import sga.RandomParentSelector;
 import sga.SGA;
 import sga.SGA_Params;
+import sga.SimplePopulation;
 import sga.SimpleReplacementPerformer;
-import optimization.StaticFunction;
 
 /**
  *
@@ -49,15 +50,15 @@ public class Runner implements ProgressObserver
     {
         this.pData = pData;
         this.canvas = canvas;
-
     }    
     
     public void run(Mode mode, boolean simulation)
     {
         Board board = new Board(pData);
-        Arm arm = new Arm(pData.sData);
         canvas.setBoard(board);
-        canvas.setArm(arm);
+        canvas.clearArms();
+        canvas.addArm(new Arm(pData.sData));
+        canvas.addArm(new Arm(pData.sData));
         
         this.mode = mode;
         switch(mode)
@@ -73,6 +74,10 @@ public class Runner implements ProgressObserver
             case Dynamic:
                 prepareSimulationDynamic(board, simulation);
                 prepareSGADynamic();
+                break;
+            case Labirynth:
+                prepareSimulationStatic(board, simulation);
+                prepareSGALabirynth();
                 break;
         }
         Thread threadSGA = new Thread( () -> {
@@ -151,7 +156,8 @@ public class Runner implements ProgressObserver
         MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
-        sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,params.populationSize/2));
+        sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,
+                                            params.populationSize/2, Double.POSITIVE_INFINITY));
         //sga.setLocalSearch(new LocalSearchIK(pData));        
     }
 
@@ -175,7 +181,35 @@ public class Runner implements ProgressObserver
         MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
-        sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,params.populationSize/2));
+        sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,
+                                    params.populationSize/2, Double.POSITIVE_INFINITY));
+        //sga.setLocalSearch(new LocalSearchIK(pData));
+    }
+
+    private void prepareSGALabirynth()
+    {
+        SGA_Params params = new SGA_Params(
+            100,
+            500,
+            1,
+            4.0 / pData.sData.n,
+            Integer.MAX_VALUE
+        );
+        
+        
+        sga = new SGA<>(params);
+        sga.addObserver(this);
+        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(pData));
+        //sga.setParentSelector(new RouletteParentSelector<>());
+        sga.setParentSelector(new RandomParentSelector<>());
+        sga.setCrossoverPerformer(new NoCrossoverIK());
+        MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
+        //sga.addObserver(mp);
+        sga.setMutationPerformer(mp);
+        ReplacementWithNonFeasible<Configuration> repl = new ReplacementWithNonFeasible<>(
+            params.populationSize, params.populationSize/2, pData.maxArea.x + pData.maxArea.y);
+        sga.addObserver(repl);
+        sga.setReplacementPerformer(repl);
         //sga.setLocalSearch(new LocalSearchIK(pData));
     }
     
@@ -235,7 +269,13 @@ public class Runner implements ProgressObserver
             int a = 7;
         }
         simulator.setTargetConf(sga.getCurrBestInd());
-        canvas.getArm().setConfiguration(simulator.getCurrConf());
+        canvas.getArm(0).setConfiguration(simulator.getCurrConf());
+        if (mode == Mode.Labirynth)
+        {
+            SimplePopulation<Configuration> pop = (SimplePopulation<Configuration>) sga.getCurrPopulation();
+            Configuration conf = pop.getMaxInfeasible();
+            canvas.getArm(1).setConfiguration(conf);
+        }
     }
 
     private void updateFun()
@@ -246,6 +286,6 @@ public class Runner implements ProgressObserver
     
     public enum Mode
     {
-        Simple, Static, Dynamic
+        Simple, Static, Dynamic, Labirynth
     }
 }

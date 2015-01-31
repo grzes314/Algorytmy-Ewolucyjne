@@ -67,8 +67,9 @@ public class MainPanel extends javax.swing.JPanel
             return Runner.Mode.Simple;
         else if (static_.isSelected())
             return Runner.Mode.Static;
-        else
+        else if (dynamic.isSelected())
             return Runner.Mode.Dynamic;
+        else return Runner.Mode.Labirynth;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -90,6 +91,7 @@ public class MainPanel extends javax.swing.JPanel
         static_ = new javax.swing.JRadioButton();
         dynamic = new javax.swing.JRadioButton();
         simulation = new javax.swing.JCheckBox();
+        labirynth = new javax.swing.JRadioButton();
 
         browse.setText("Browse");
         browse.addActionListener(new java.awt.event.ActionListener()
@@ -146,6 +148,9 @@ public class MainPanel extends javax.swing.JPanel
 
         simulation.setText("simulation");
 
+        buttonGroup1.add(labirynth);
+        labirynth.setText("Labirynth");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,7 +168,8 @@ public class MainPanel extends javax.swing.JPanel
                     .addComponent(stop, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(solve, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(browse)
-                    .addComponent(simulation))
+                    .addComponent(simulation)
+                    .addComponent(labirynth))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
@@ -187,7 +193,9 @@ public class MainPanel extends javax.swing.JPanel
                         .addComponent(static_)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(dynamic)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labirynth)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(simulation)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -216,6 +224,7 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JRadioButton dynamic;
     private javax.swing.JTextField filePath;
     private javax.swing.JPanel imageContainer;
+    private javax.swing.JRadioButton labirynth;
     private javax.swing.JRadioButton simple;
     private javax.swing.JCheckBox simulation;
     private javax.swing.JButton solve;

@@ -225,4 +225,9 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
     {
         return maxInfeasible;
     }
+
+    double getMaxInfeasibleVal()
+    {
+        return maxInfeasibleVal;
+    }
 }

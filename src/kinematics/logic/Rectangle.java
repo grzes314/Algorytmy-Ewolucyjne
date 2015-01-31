@@ -92,6 +92,25 @@ public class Rectangle
     
     private double getIntersectionLength(Line line, Line[] myLines)
     {
+        Point[] q = getIntersectionPoints(line, myLines);
+        if (q[0] == null) // both ends are inside or outside rectangle
+        {
+            if (inside(line.p))
+                return line.p.distance(line.r);
+            else return 0.0;
+        }
+        if (q[1] == null) // only one point is inside rectangle
+        {
+            if (inside(line.p))
+                return q[0].distance(line.p);
+            else
+                return q[0].distance(line.r);
+        }
+        return q[0].distance(q[1]);
+    }
+    
+    private Point[] getIntersectionPoints(Line line, Line[] myLines)
+    {        
         Point[] points = new Point[4];
         int i, j;
         for (i = 0; i < 4; ++i)
@@ -106,17 +125,16 @@ public class Rectangle
             if (points[j] != null)
                 break;
         }
-        if (i < 4) //line gets into rectangle
+        if (i < 4) //at least one intersection
         {
-            if (j < 4) // line gets through rectangle
-                return points[i].distance(points[j]);
-            if (inside(line.p))
-                return points[i].distance(line.p);
-            else return points[i].distance(line.r);
-            
+            if (j < 4) // two intersection points
+                return new Point[]{ points[i], points[j] };
+            else    // only one intersection (line must end inside rectangle)
+                return new Point[]{ points[i], null };            
         }
         else
-            return 0.0;        
+            return new Point[]{null, null};
+        
     }
     
     public double getIntersectionLength(Line[] lines)

@@ -38,7 +38,12 @@ public class Arm
         Point prev = new Point(0,0);
         for (int i = 0; i < n; ++i)
         {
-            double a = conf.angle[i];
+            double a = 1;
+            try {
+                a = conf.angle[i];
+            } catch (Exception ex) {
+                int b = 8;
+            }
             Vector v = u.rotate(a);
             v.scaleTo(segmentData.length[i]);
             newCoord[i] = prev.plus(v);

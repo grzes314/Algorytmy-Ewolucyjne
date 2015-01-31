@@ -204,10 +204,10 @@ public class Runner implements ProgressObserver
         sga.setParentSelector(new RandomParentSelector<>());
         sga.setCrossoverPerformer(new NoCrossoverIK());
         MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
-        //sga.addObserver(mp);
+        sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         ReplacementWithNonFeasible<Configuration> repl = new ReplacementWithNonFeasible<>(
-            params.populationSize, params.populationSize/2, pData.maxArea.x + pData.maxArea.y);
+            params.populationSize, params.populationSize, pData.maxArea.x + pData.maxArea.y);
         sga.addObserver(repl);
         sga.setReplacementPerformer(repl);
         //sga.setLocalSearch(new LocalSearchIK(pData));

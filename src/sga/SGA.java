@@ -31,10 +31,10 @@ public class SGA<Individual extends Copyable<Individual>>
     private int performedIterations;
     private ArrayList<Double> worst, best, mean;
     private Population<Individual> currPopulation;
-    private double bestVal;
-    private Individual bestInd;
-    private double currBestVal;
-    private Individual currBestInd;
+    private double bestVal, bestInfeasibleVal;
+    private Individual bestInd, bestInfeasible;
+    private double currBestVal, currBestInfeasibleVal;
+    private Individual currBestInd, currBestInfeasible;
     
     //------------------- Other -------------------------------------------------
     private final ArrayList<ProgressObserver> observers = new ArrayList<>();
@@ -199,12 +199,15 @@ public class SGA<Individual extends Copyable<Individual>>
         performedIterations = 0;
         bestVal = Double.NEGATIVE_INFINITY;
         bestInd = null;
+        bestInfeasibleVal = Double.NEGATIVE_INFINITY;
+        bestInfeasible = null;
     }
 
     private void updateStats(int iteration)
     {
         currBestVal = currPopulation.getMaxValue();
         currBestInd = currPopulation.getMaxIndividual();
+        updateInfeasibleStats();
         worst.add( currPopulation.getMinValue() );
         best.add( currBestVal );
         mean.add( currPopulation.getMeanValue() );
@@ -215,6 +218,24 @@ public class SGA<Individual extends Copyable<Individual>>
             bestInd = currPopulation.getMaxIndividual();
         }
         performedIterations = iteration;
+    }
+    
+    private void updateInfeasibleStats()
+    {
+        SimplePopulation<Individual> pop;
+        try {
+            pop = (SimplePopulation<Individual>) currPopulation;
+        } catch (ClassCastException ex) {
+            return;
+        }
+        currBestInfeasibleVal = pop.getMaxInfeasibleVal();
+        currBestInfeasible = pop.getMaxInfeasible();
+        if (currBestInfeasibleVal > bestInfeasibleVal)
+        {
+            solutionImproved = true;
+            bestInfeasibleVal = currBestInfeasibleVal;
+            bestInfeasible = currBestInfeasible;
+        }
     }
     
     public void addObserver(ProgressObserver obs)
@@ -229,10 +250,10 @@ public class SGA<Individual extends Copyable<Individual>>
     
     private void postObservers(int i)
     {
-        new Thread( () -> {
+        //new Thread( () -> {
             for (ProgressObserver obs: observers)
                 obs.currentIteration(i, solutionImproved);
-        }).start();
+        //}).start();
     }
     
     public SGA_Result getResult()

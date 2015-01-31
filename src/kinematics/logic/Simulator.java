@@ -10,7 +10,7 @@ import java.util.List;
 public class Simulator
 {
     private final Board board;
-    private final Configuration currConf;
+    private Configuration currConf;
     private Configuration targetConf;
     private double targetVal = Double.NEGATIVE_INFINITY;
     private final double armSpeed = Math.PI/2; // 45 degrees per second
@@ -57,6 +57,11 @@ public class Simulator
 
     private void moveArm(double deltaTime)
     {
+        if (targetConf == null)
+        {
+            currConf = null;
+            return;
+        }
         double[] curr = currConf.angle;
         double[] target = targetConf.angle;
         for (int i = 0; i < curr.length; ++i)
@@ -84,8 +89,7 @@ public class Simulator
 
     public void setTargetConf(Configuration conf)
     {
-        if (conf != null)
-            targetConf = conf;
+        targetConf = conf;
     }
     
     public void setTargetConf(List<Configuration> confs)

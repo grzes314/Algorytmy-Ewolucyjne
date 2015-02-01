@@ -15,6 +15,8 @@ public class RandomParentSelector<Individual extends Copyable<Individual>> imple
     public Population<Individual> select(Population<Individual> population, int nrOfParents)
     {
         SimplePopulation<Individual> parents = new SimplePopulation<>();
+        if (population.getSize() == 0)
+            return parents;
         for (int i = 0; i < nrOfParents; ++i)
             parents.addIndividual( population.getIndividual(rand.nextInt(population.getSize())) );
         return parents;

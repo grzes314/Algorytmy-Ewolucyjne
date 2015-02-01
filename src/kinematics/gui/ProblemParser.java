@@ -41,7 +41,7 @@ public class ProblemParser
         return pData;
     }
     
-    public ProblemData read(BufferedReader in) throws IOException
+    private ProblemData read(BufferedReader in) throws IOException
     {
         double[] ds = readDoubles(4);
         Point minArea = new Point(ds[0], ds[1]), maxArea = new Point(ds[2], ds[3]);

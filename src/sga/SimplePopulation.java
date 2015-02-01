@@ -66,6 +66,8 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
     private void calculateCumFitValues()
     {
         cumFitVals = new double[N];
+        if (N == 0)
+            return;
         cumFitVals[0] = fitVals[0];
         for (int i = 1; i < N; ++i)
             cumFitVals[i] = cumFitVals[i-1] + fitVals[i];

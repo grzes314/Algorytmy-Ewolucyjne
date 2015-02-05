@@ -14,6 +14,7 @@ import java.awt.BorderLayout;
  */
 public class BoardDesigner extends javax.swing.JPanel
 {
+    //private LabDesignerPrev labDesigner;
     private LabDesigner labDesigner;
     private ArmDesigner armDesigner;
     
@@ -33,6 +34,13 @@ public class BoardDesigner extends javax.swing.JPanel
         armDesContainer.removeAll();
         armDesContainer.add(armDes);
     }
+
+    /*public void setLabDesigner(LabDesignerPrev labDes)
+    {
+        labDesigner = labDes;
+        labDesContainer.removeAll();
+        labDesContainer.add(labDes);
+    }*/
 
     public void setLabDesigner(LabDesigner labDes)
     {

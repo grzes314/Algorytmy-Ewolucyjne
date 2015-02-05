@@ -24,24 +24,38 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jLabel1" alignment="0" pref="304" max="32767" attributes="0"/>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="ok" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cancel" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="maxY" min="-2" pref="96" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="minX" min="-2" pref="96" max="-2" attributes="0"/>
+                                  <Component id="maxX" min="-2" pref="96" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="rows" min="-2" pref="96" max="-2" attributes="0"/>
-                  <Component id="cols" min="-2" pref="96" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="ok" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="cancel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -52,18 +66,25 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jLabel1" min="-2" pref="28" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="rows" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel1" min="-2" pref="28" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="minX" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="maxX" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="maxY" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="cols" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="25" max="32767" attributes="0"/>
+              <EmptySpace pref="37" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="ok" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cancel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -84,12 +105,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="rows:"/>
+        <Property name="text" type="java.lang.String" value="minX"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="cols:"/>
+        <Property name="text" type="java.lang.String" value="maxX"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="ok">
@@ -108,18 +129,30 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JSpinner" name="rows">
+    <Component class="javax.swing.JSpinner" name="minX">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="10" maximum="100" minimum="2" numberType="java.lang.Integer" stepSize="1" type="number"/>
+          <SpinnerModel initial="-200" maximum="1000" minimum="-1000" numberType="java.lang.Integer" stepSize="10" type="number"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JSpinner" name="cols">
+    <Component class="javax.swing.JSpinner" name="maxX">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="10" maximum="100" minimum="2" numberType="java.lang.Integer" stepSize="1" type="number"/>
+          <SpinnerModel initial="200" maximum="1000" minimum="-1000" numberType="java.lang.Integer" stepSize="10" type="number"/>
         </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="maxY">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="500" maximum="2000" minimum="0" numberType="java.lang.Integer" stepSize="10" type="number"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="maxY"/>
       </Properties>
     </Component>
   </SubComponents>

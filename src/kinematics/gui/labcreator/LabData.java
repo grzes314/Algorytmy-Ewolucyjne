@@ -2,6 +2,7 @@
 package kinematics.gui.labcreator;
 
 import java.io.Serializable;
+import kinematics.logic.ObstacleData;
 import kinematics.logic.Point;
 import kinematics.logic.ProblemData;
 
@@ -25,7 +26,7 @@ public class LabData implements Serializable
                 fields[r][c] = Field.Empty;
     }
 
-    ProblemData.ObstacleData toObstacleData()
+    ObstacleData toObstacleData()
     {
         int k = countWalls();
         Point[] from = new Point[k];
@@ -45,7 +46,7 @@ public class LabData implements Serializable
                     v[i] = 0;
                     i++;
                 }
-        return new ProblemData.ObstacleData(k, from, to, h, w, v);
+        return new ObstacleData(k, from, to, h, w, v);
     }
 
     private int countWalls()

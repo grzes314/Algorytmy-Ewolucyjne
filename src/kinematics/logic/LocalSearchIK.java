@@ -30,8 +30,8 @@ public class LocalSearchIK implements LocalSearch<Configuration>
     public void upgrade(Configuration conf, Function<Configuration> F)
     {
         int k = RandomnessSource.rand.nextInt(conf.angle.length);
-        double alfa = pData.sData.alfa[k];
-        double beta = pData.sData.beta[k];
+        double alfa = pData.armData.get(k).minAngle;
+        double beta = pData.armData.get(k).maxAngle;
         double bestAngle = conf.angle[k];
         double bestVal = F.value(conf).value;
         for (int i = 0; i <= 10; ++i)

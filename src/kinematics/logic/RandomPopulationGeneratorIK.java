@@ -28,11 +28,12 @@ public class RandomPopulationGeneratorIK implements sga.RandomPopulationGenerato
 
     private Configuration generateConfiguration()
     {
-        int n = pData.sData.n;
+        int n = pData.armData.getSize();
         Configuration conf = new Configuration(n);
         for (int i = 0; i < n; ++i)
         {
-            conf.angle[i] = randAngle(pData.sData.alfa[i], pData.sData.beta[i]);
+            OneSegment s = pData.armData.get(i);
+            conf.angle[i] = randAngle(s.minAngle, s.maxAngle);
         }
         return conf;
     }

@@ -10,8 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import kinematics.logic.Point;
 import kinematics.logic.ProblemData;
-import kinematics.logic.ProblemData.ObstacleData;
-import kinematics.logic.ProblemData.SegmentData;
+import kinematics.logic.ObstacleData;
+import kinematics.logic.ArmData;
 import kinematics.logic.Vector;
 
 /**
@@ -46,12 +46,12 @@ public class ProblemParser
         double[] ds = readDoubles(4);
         Point minArea = new Point(ds[0], ds[1]), maxArea = new Point(ds[2], ds[3]);
         Point goal = readGoal();    
-        SegmentData sData = readSegmentData();
+        ArmData sData = readSegmentData();
         ObstacleData oData = readObstacleData();
         return new ProblemData(minArea, maxArea, goal, sData, oData);
     }
 
-    private SegmentData readSegmentData() throws IOException
+    private ArmData readSegmentData() throws IOException
     {
         String line = readNextLine();
         int n = Integer.parseInt(line);
@@ -65,7 +65,7 @@ public class ProblemParser
             alfa[i] = d[1] * Math.PI / 180.0;
             beta[i] = d[2] * Math.PI / 180.0;
         }
-        return new SegmentData(n, length, alfa, beta);
+        return new ArmData(length, alfa, beta);
     }
 
     private ObstacleData readObstacleData() throws IOException

@@ -15,7 +15,7 @@ public class StaticValuator implements Function<Configuration>
     {
         this.problemData = problemData;
         this.board = board;
-        arm = new Arm(problemData.sData);
+        arm = new Arm(problemData.armData);
     }
     
     @Override

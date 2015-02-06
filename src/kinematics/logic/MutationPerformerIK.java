@@ -39,7 +39,7 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
 
     private Configuration mutate(Configuration individual, double thetaM)
     {
-        int n = pData.sData.n;
+        int n = pData.armData.getSize();
         Configuration c = new Configuration(n);
         for (int i = 0; i < n; ++i)
         {
@@ -47,11 +47,12 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
             if (rand.nextDouble() < thetaM)
             {
                 double d = rand.nextDouble() * 2 * range - range;
+                OneSegment s = pData.armData.get(i);
                 c.angle[i] += d;
-                if (c.angle[i] > pData.sData.beta[i])
-                    c.angle[i] = pData.sData.beta[i];
-                if (c.angle[i] < pData.sData.alfa[i])
-                    c.angle[i] = pData.sData.alfa[i];
+                if (c.angle[i] > s.maxAngle)
+                    c.angle[i] = s.maxAngle;
+                if (c.angle[i] < s.minAngle)
+                    c.angle[i] = s.minAngle;
             }
         }
         return c;

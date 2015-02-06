@@ -1,22 +1,19 @@
 
 package kinematics.logic;
 
-import kinematics.logic.ProblemData.SegmentData;
-import kinematics.logic.Line;
-
 /**
  *
  * @author Grzegorz Los
  */
 public class Arm
 {
-    private final SegmentData segmentData;
+    private final ArmData armData;
     private Point coord[];
     private Configuration conf;
 
-    public Arm(SegmentData segmentData)
+    public Arm(ArmData armData)
     {
-        this.segmentData = segmentData;
+        this.armData = armData;
     }
     
     public void setConfiguration(Configuration conf)
@@ -38,14 +35,9 @@ public class Arm
         Point prev = new Point(0,0);
         for (int i = 0; i < n; ++i)
         {
-            double a = 1;
-            try {
-                a = conf.angle[i];
-            } catch (Exception ex) {
-                int b = 8;
-            }
+            double a = conf.angle[i];
             Vector v = u.rotate(a);
-            v.scaleTo(segmentData.length[i]);
+            v.scaleTo(armData.get(i).length);
             newCoord[i] = prev.plus(v);
             
             u = new Vector(newCoord[i], prev);
@@ -75,7 +67,7 @@ public class Arm
 
     public Point getLastCoord()
     {
-        return coord[segmentData.n-1];
+        return coord[armData.getSize()-1];
     }
 
     public Configuration getConf()

@@ -2,6 +2,7 @@
 package kinematics.gui.labcreator;
 
 import java.util.ArrayList;
+import kinematics.logic.ObstacleData;
 import kinematics.logic.Point;
 import kinematics.logic.ProblemData;
 import kinematics.logic.Rectangle;
@@ -45,7 +46,7 @@ public class LabDataWithRects
         goal = new Point(x, y);
     }
 
-    ProblemData.ObstacleData toObstacleData()
+    ObstacleData toObstacleData()
     {
         int k = rects.size();
         Point[] from = new Point[k];
@@ -63,7 +64,7 @@ public class LabDataWithRects
             v[i] = rect.vel;
             i++;
         }
-        return new ProblemData.ObstacleData(k, from, to, h, w, v);
+        return new ObstacleData(k, from, to, h, w, v);
     }
 
     public Point getAreaMinPoint()

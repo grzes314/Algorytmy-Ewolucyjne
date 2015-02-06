@@ -6,7 +6,9 @@
 
 package kinematics.gui.labcreator;
 
+import kinematics.logic.OneSegment;
 import javax.swing.DefaultListModel;
+import kinematics.logic.ArmData;
 
 /**
  *
@@ -23,7 +25,7 @@ public class ArmDesigner extends javax.swing.JPanel
     {
         initComponents();
         this.armData = armData;
-        for (SegmentData sd: armData.segments)
+        for (OneSegment sd: armData.segments)
             addSegmentToList(sd);
     }
     
@@ -38,12 +40,12 @@ public class ArmDesigner extends javax.swing.JPanel
         int l = (Integer) length.getValue();
         int a = (Integer) minAngle.getValue();
         int b = (Integer) maxAngle.getValue();
-        SegmentData segment = new SegmentData(l, a, b);
-        armData.addSegment(segment);
+        OneSegment segment = new OneSegment(l, a, b);
+        armData.add(segment);
         addSegmentToList(segment);
     }
 
-    private void addSegmentToList(SegmentData segment)
+    private void addSegmentToList(OneSegment segment)
     {
         DefaultListModel model = (DefaultListModel) segList.getModel();        
         model.addElement(segment);
@@ -91,7 +93,7 @@ public class ArmDesigner extends javax.swing.JPanel
             }
         });
 
-        segList.setModel(new DefaultListModel<SegmentData>());
+        segList.setModel(new DefaultListModel<OneSegment>());
         jScrollPane1.setViewportView(segList);
 
         jLabel4.setText("Segment count:");

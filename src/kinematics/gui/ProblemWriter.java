@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import kinematics.logic.OneSegment;
 import kinematics.logic.ProblemData;
 
 /**
@@ -69,14 +70,15 @@ public class ProblemWriter
 
     private void writeSegments() throws IOException
     {
-        int n = pData.sData.n;
+        int n = pData.armData.getSize();
         out.write(n + "\n");
         for (int i = 0; i < n; ++i)
         {
+            OneSegment s = pData.armData.segments.get(i);
             String line = "" +
-                pData.sData.length[i] + " " +
-                pData.sData.alfa[i] + " " +
-                pData.sData.beta[i] + "\n";
+                s.length + " " +
+                s.minAngle + " " +
+                s.maxAngle + "\n";
             out.write(line);
         }
     }

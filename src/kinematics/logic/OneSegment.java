@@ -1,5 +1,5 @@
 
-package kinematics.gui.labcreator;
+package kinematics.logic;
 
 import java.io.Serializable;
 
@@ -7,11 +7,11 @@ import java.io.Serializable;
  *
  * @author Grzegorz Los
  */
-public class SegmentData implements Serializable
+public class OneSegment implements Serializable
 {
-    public final int length, minAngle, maxAngle;
+    public final double length, minAngle, maxAngle;
 
-    public SegmentData(int length, int minAngle, int maxAngle)
+    public OneSegment(double length, double minAngle, double maxAngle)
     {
         this.length = length;
         this.minAngle = minAngle;

@@ -57,8 +57,8 @@ public class Runner implements ProgressObserver
         Board board = new Board(pData);
         canvas.setBoard(board);
         canvas.clearArms();
-        canvas.addArm(new Arm(pData.sData));
-        canvas.addArm(new Arm(pData.sData));
+        canvas.addArm(new Arm(pData.armData));
+        canvas.addArm(new Arm(pData.armData));
         
         this.mode = mode;
         switch(mode)
@@ -119,7 +119,7 @@ public class Runner implements ProgressObserver
             100,
             500,
             1,
-            4.0 / pData.sData.n,
+            4.0 / pData.armData.getSize(),
             Integer.MAX_VALUE
         );
         
@@ -142,7 +142,7 @@ public class Runner implements ProgressObserver
             100,
             500,
             1,
-            4.0 / pData.sData.n,
+            4.0 / pData.armData.getSize(),
             Integer.MAX_VALUE
         );
         
@@ -167,7 +167,7 @@ public class Runner implements ProgressObserver
             100,
             500,
             1,
-            4.0 / pData.sData.n,
+            4.0 / pData.armData.getSize(),
             Integer.MAX_VALUE
         );
         
@@ -192,7 +192,7 @@ public class Runner implements ProgressObserver
             100,
             500,
             1,
-            4.0 / pData.sData.n,
+            4.0 / pData.armData.getSize(),
             Integer.MAX_VALUE
         );
         
@@ -232,7 +232,7 @@ public class Runner implements ProgressObserver
     
     private Configuration defaultConf()
     {
-        int n = pData.sData.n;
+        int n = pData.armData.getSize();
         Configuration c = new Configuration(n);
         for (int i = 0; i < n; ++i)
             c.angle[i] = Math.PI;

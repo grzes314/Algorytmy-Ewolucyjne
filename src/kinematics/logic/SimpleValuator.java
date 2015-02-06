@@ -14,7 +14,7 @@ public class SimpleValuator implements Function<Configuration>
     public SimpleValuator(ProblemData problemData)
     {
         this.problemData = problemData;
-        arm = new Arm(problemData.sData);
+        arm = new Arm(problemData.armData);
     }
     
     @Override

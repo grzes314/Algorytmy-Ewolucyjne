@@ -17,7 +17,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import kinematics.gui.ProblemWriter;
-import kinematics.logic.Point;
 import kinematics.logic.ProblemData;
 
 /**
@@ -26,10 +25,10 @@ import kinematics.logic.ProblemData;
  */
 public class LabCreator extends JFrame
 {
-    private SizeQuestion sq;
-    private BoardDesigner boardDesigner;
-    private JFileChooser chooser;
-    private ProblemWriter pWriter = new ProblemWriter();
+    private final SizeQuestion sq;
+    private final BoardDesigner boardDesigner;
+    private final JFileChooser chooser;
+    private final ProblemWriter pWriter = new ProblemWriter();
     
     public static void main(String[] args)
     {
@@ -95,10 +94,9 @@ public class LabCreator extends JFrame
         SizeQuestion.Choice ch = sq.showQuestion();
         if (ch == SizeQuestion.Choice.OK)
         {
-            int minX = sq.getMinX();
-            int maxX = sq.getMaxX();
-            int maxY = sq.getMaxY();
-            boardDesigner.setLabDesigner(new LabDesigner(new Point(minX, -10), new Point(maxX, maxY)));
+            int rows = sq.getRows();
+            int cols = sq.getCols();
+            boardDesigner.setLabDesigner(new LabDesigner(rows, cols));
             boardDesigner.setArmDesigner(new ArmDesigner());
         }
         this.revalidate();

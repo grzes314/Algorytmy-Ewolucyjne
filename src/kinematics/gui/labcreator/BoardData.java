@@ -20,10 +20,10 @@ public class BoardData implements Serializable
         this.labData = labData;
     }
     
-    public BoardData(Point minArea, Point maxArea)
+    public BoardData(int rows, int cols)
     {
         armData = new ArmData();
-        labData = new LabData(minArea, maxArea);
+        labData = new LabData(rows, cols);
     }
     
     public ProblemData toProblemData() throws InvalidDataException

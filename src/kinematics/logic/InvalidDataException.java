@@ -1,5 +1,5 @@
 
-package kinematics.gui.labcreator;
+package kinematics.logic;
 
 /**
  *

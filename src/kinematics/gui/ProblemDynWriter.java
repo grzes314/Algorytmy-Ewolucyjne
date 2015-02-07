@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import kinematics.logic.OneSegment;
 import kinematics.logic.PrDataForDynamic;
+import static kinematics.logic.Utils.radToDeg;
 
 /**
  *
@@ -44,6 +45,7 @@ public class ProblemDynWriter
     
     private void write() throws IOException
     {
+        out.write("@ Dynamic\n");
         writeAreaLimits();
         writeGoal();
         writeSegments();
@@ -77,8 +79,8 @@ public class ProblemDynWriter
             OneSegment s = pData.armData.segments.get(i);
             String line = "" +
                 s.length + " " +
-                s.minAngle + " " +
-                s.maxAngle + "\n";
+                radToDeg(s.minAngle) + " " +
+                radToDeg(s.maxAngle) + "\n";
             out.write(line);
         }
     }

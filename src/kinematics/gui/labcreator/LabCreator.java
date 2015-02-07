@@ -1,7 +1,9 @@
 
 package kinematics.gui.labcreator;
 
+import kinematics.logic.InvalidDataException;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -113,11 +115,15 @@ public class LabCreator extends JFrame
     
     private void openClicked()
     {
-        String path = getOpenPath();
-        PrDataForLab pData = new ParserForLabirynth().read(path).labData;
-        boardDesigner.setArmDesigner(new ArmDesigner(pData.armData));
-        boardDesigner.setLabDesigner(new LabDesigner(pData.labData));
-        revalidate();
+        try {
+            String path = getOpenPath();
+            PrDataForLab pData = new ParserForLabirynth().read(path).labData;
+            boardDesigner.setArmDesigner(new ArmDesigner(pData.armData));
+            boardDesigner.setLabDesigner(new LabDesigner(pData.labData));
+            revalidate();
+        } catch (IOException ex) {
+            Logger.getLogger(LabCreator.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /*private void saveClicked()

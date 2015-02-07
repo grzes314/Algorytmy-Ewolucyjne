@@ -1,6 +1,7 @@
 
 package kinematics.gui.labcreator;
 
+import kinematics.logic.Field;
 import kinematics.logic.LabData;
 import java.awt.Color;
 import java.awt.Dimension;

@@ -8,11 +8,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import kinematics.logic.Point;
-import kinematics.logic.ProblemData;
-import kinematics.logic.ObstacleData;
 import kinematics.logic.ArmData;
+import kinematics.logic.ObstacleData;
+import kinematics.logic.Point;
 import kinematics.logic.PrDataForDynamic;
+import kinematics.logic.ProblemData;
+import static kinematics.logic.Utils.degToRad;
 
 /**
  *
@@ -63,8 +64,8 @@ public class ParserForDynamicData
         {
             double[] d = readDoubles(3);
             length[i] = d[0];
-            alfa[i] = d[1] * Math.PI / 180.0;
-            beta[i] = d[2] * Math.PI / 180.0;
+            alfa[i] = degToRad(d[1]);
+            beta[i] = degToRad(d[2]);
         }
         return new ArmData(length, alfa, beta);
     }
@@ -99,7 +100,7 @@ public class ParserForDynamicData
     private String readNextLine() throws IOException
     {
         String line = "";
-        while (line.isEmpty() || line.startsWith("#"))
+        while (line.isEmpty() || line.startsWith("#") || line.startsWith("@"))
         {
             line = in.readLine();
             line = line.trim();

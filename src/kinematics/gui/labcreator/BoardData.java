@@ -1,6 +1,7 @@
 
 package kinematics.gui.labcreator;
 
+import kinematics.logic.InvalidDataException;
 import kinematics.logic.LabData;
 import java.io.Serializable;
 import kinematics.logic.ArmData;

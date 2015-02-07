@@ -1,6 +1,7 @@
 
 package kinematics.gui.labcreator;
 
+import kinematics.logic.InvalidDataException;
 import java.util.ArrayList;
 import kinematics.logic.ObstacleData;
 import kinematics.logic.Point;

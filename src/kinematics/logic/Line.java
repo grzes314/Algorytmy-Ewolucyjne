@@ -72,4 +72,9 @@ public class Line
         else
             return null;
     }
+
+    public double getLength()
+    {
+        return p.distance(r);
+    }
 }

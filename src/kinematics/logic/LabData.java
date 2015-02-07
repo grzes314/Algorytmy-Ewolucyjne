@@ -2,6 +2,7 @@
 package kinematics.logic;
 
 import java.io.Serializable;
+import kinematics.logic.Utils.LocInCell;
 
 /**
  *
@@ -55,7 +56,7 @@ public class LabData implements Serializable
             for (int c = 0; c < cols; ++c)
                 if (fields[r][c] == Field.Wall)
                 {
-                    from[i] = toPoint(r, c);
+                    from[i] = toPoint(r, c, LocInCell.Middle);
                     to[i] = new Point(0,0);
                     h[i] = fh;
                     w[i] = fw;
@@ -75,21 +76,41 @@ public class LabData implements Serializable
         return count;
     }
 
-    private Point toPoint(int r, int c)
+    private Point toLowerLeft(int r, int c)
     {
-        double x = (c - cols/2.0) * fw;
-        double y = (rows - r) * fh;
+        double x = c * fw + minArea.x;
+        double y = (rows - 1 - r) * fh + minArea.y;
         return new Point(x, y);
+    }
+
+    public Point toPoint(int row, int col, LocInCell lic)
+    {
+        Point p = toLowerLeft(row, col);
+        switch(lic)
+        {
+            case UpperLeft:
+                return new Point(p.x, p.y + fh);
+            case UpperRight:
+                return new Point(p.x + fw, p.y + fh);
+            case LowerLeft:
+                return p;
+            case LowerRight:
+                return new Point(p.x + fw, p.y);                
+            case Middle:
+                return new Point(p.x + 0.5*fw, p.y + 0.5*fh);
+            default:
+                throw new RuntimeException("Unsupported localization");
+        }
     }
 
     public Point getAreaMinPoint()
     {
-        return toPoint(rows, -1);
+        return minArea;
     }
 
     public Point getAreaMaxPoint()
     {
-        return toPoint(-1, cols);
+        return maxArea;
     }
     
     public Point getGoal() throws InvalidDataException
@@ -97,7 +118,7 @@ public class LabData implements Serializable
         for (int r = 0; r < rows; ++r)
             for (int c = 0; c < cols; ++c)
                 if (fields[r][c] == Field.Goal)
-                    return toPoint(r,c);
+                    return toPoint(r,c, LocInCell.Middle);
         throw new InvalidDataException("Goal not set");
     }
 }

@@ -68,7 +68,7 @@ public class LabPiece
         return Math.min(d, fromP0ToP[0] - d);
     }
 
-    private List<Intersection> getIntersections(Line line)
+    public List<Intersection> getIntersections(Line line)
     {
         List<Intersection> res = new ArrayList<>();
         for (int i = 0; i < lines.length; ++i)
@@ -96,9 +96,12 @@ public class LabPiece
         return res;
     }
 
-    private double getDist(int lineInd, int lineInd0)
+    private double getDist(int pointNr1, int pointNr2)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (pointNr1 <= pointNr2)
+            return fromP0ToP[pointNr2] - fromP0ToP[pointNr1];
+        else
+            return fromP0ToP[0] + fromP0ToP[pointNr2] - fromP0ToP[pointNr1];
     }
 
     

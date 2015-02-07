@@ -11,7 +11,7 @@ import optimization.ValuedIndividual;
 public class StaticValuator implements Function<Configuration>
 {
 
-    public StaticValuator(ProblemData problemData, Board board)
+    public StaticValuator(PrDataForDynamic problemData, Board board)
     {
         this.problemData = problemData;
         this.board = board;
@@ -27,7 +27,7 @@ public class StaticValuator implements Function<Configuration>
         return new ValuedIndividual<>(x, -last.distance(problemData.goal), infeasibility < 1e-6, infeasibility);
     }
 
-    private final ProblemData problemData;
+    private final PrDataForDynamic problemData;
     private final Arm arm;
     private final Board board;
 }

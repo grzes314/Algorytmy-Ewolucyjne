@@ -2,12 +2,6 @@
 package kinematics.gui.labcreator;
 
 import java.awt.event.ActionEvent;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -16,8 +10,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import kinematics.gui.ProblemWriter;
-import kinematics.logic.ProblemData;
+import kinematics.gui.ParserForLabirynth;
+import kinematics.gui.ProblemLabWriter;
+import kinematics.logic.PrDataForLab;
 
 /**
  *
@@ -28,7 +23,7 @@ public class LabCreator extends JFrame
     private final SizeQuestion sq;
     private final BoardDesigner boardDesigner;
     private final JFileChooser chooser;
-    private final ProblemWriter pWriter = new ProblemWriter();
+    private final ProblemLabWriter pWriter = new ProblemLabWriter();
     
     public static void main(String[] args)
     {
@@ -73,11 +68,11 @@ public class LabCreator extends JFrame
         });
         menu.add(loadItem);
         
-        JMenuItem exportItem = new JMenuItem("Export");
+        /*JMenuItem exportItem = new JMenuItem("Export");
         exportItem.addActionListener((ActionEvent e) -> {
             exportClicked();
         });
-        menu.add(exportItem);
+        menu.add(exportItem);*/
         
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener((ActionEvent e) -> {
@@ -96,13 +91,36 @@ public class LabCreator extends JFrame
         {
             int rows = sq.getRows();
             int cols = sq.getCols();
-            boardDesigner.setLabDesigner(new LabDesigner(rows, cols));
+            double edgeSize = sq.getEdgeSize();
+            boardDesigner.setLabDesigner(new LabDesigner(rows, cols, edgeSize));
             boardDesigner.setArmDesigner(new ArmDesigner());
         }
         this.revalidate();
     }
     
+    
     private void saveClicked()
+    {
+        try {
+            PrDataForLab pData = boardDesigner.getBoardData().toPrDataForLab();
+            String path = getSavePath();
+            pWriter.write(path, pData);
+        } catch (InvalidDataException ex) {
+            Logger.getLogger(LabCreator.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
+    
+    private void openClicked()
+    {
+        String path = getOpenPath();
+        PrDataForLab pData = new ParserForLabirynth().read(path).labData;
+        boardDesigner.setArmDesigner(new ArmDesigner(pData.armData));
+        boardDesigner.setLabDesigner(new LabDesigner(pData.labData));
+        revalidate();
+    }
+    
+    /*private void saveClicked()
     {
         BoardData data = boardDesigner.getBoardData();
         String path = getSavePath();
@@ -150,7 +168,7 @@ public class LabCreator extends JFrame
             }
         }
         setBoardData(bData);
-    }
+    }*/
     
     private void setBoardData(BoardData bData)
     {
@@ -178,17 +196,5 @@ public class LabCreator extends JFrame
         if(returnVal == JFileChooser.APPROVE_OPTION)
             return chooser.getSelectedFile().getAbsolutePath();
         else return null;
-    }
-    
-    private void exportClicked()
-    {
-        try {
-            ProblemData pData = boardDesigner.getBoardData().toProblemData();
-            String path = getSavePath();
-            pWriter.write(path, pData);
-        } catch (InvalidDataException ex) {
-            Logger.getLogger(LabCreator.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
     }
 }

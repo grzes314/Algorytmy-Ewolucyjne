@@ -1,10 +1,9 @@
 
-package kinematics.gui.labcreator;
+package kinematics.logic;
 
 import java.io.Serializable;
-import kinematics.logic.ObstacleData;
-import kinematics.logic.Point;
-import kinematics.logic.ProblemData;
+import kinematics.gui.labcreator.Field;
+import kinematics.gui.labcreator.InvalidDataException;
 
 /**
  *
@@ -14,9 +13,10 @@ public class LabData implements Serializable
 {
     public final int rows, cols;
     public final Field[][] fields;
-    private final double fw = 20, fh = 20;
+    public final Point minArea, maxArea;
+    private final double fw, fh;
     
-    public LabData(int rows, int cols)
+    public LabData(int rows, int cols, double edgeSize)
     {
         this.rows = rows;
         this.cols = cols;
@@ -24,6 +24,10 @@ public class LabData implements Serializable
         for (int r = 0; r < rows; ++r)
             for (int c = 0; c < cols; ++c)
                 fields[r][c] = Field.Empty;
+        fw = edgeSize;
+        fh = edgeSize;
+        minArea = new Point(- cols * edgeSize / 2.0, -10.0);
+        maxArea = new Point(cols * edgeSize / 2.0, rows * edgeSize - 10.0);
     }
 
     ObstacleData toObstacleData()

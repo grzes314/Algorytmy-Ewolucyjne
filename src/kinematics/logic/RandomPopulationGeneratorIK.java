@@ -10,11 +10,11 @@ import static optimization.RandomnessSource.rand;
  */
 public class RandomPopulationGeneratorIK implements sga.RandomPopulationGenerator<Configuration>
 {
-    private final ProblemData pData;
+    private final ArmData armData;
 
-    public RandomPopulationGeneratorIK(ProblemData pData)
+    public RandomPopulationGeneratorIK(ArmData armData)
     {
-        this.pData = pData;
+        this.armData = armData;
     }
 
     @Override
@@ -28,11 +28,11 @@ public class RandomPopulationGeneratorIK implements sga.RandomPopulationGenerato
 
     private Configuration generateConfiguration()
     {
-        int n = pData.armData.getSize();
+        int n = armData.getSize();
         Configuration conf = new Configuration(n);
         for (int i = 0; i < n; ++i)
         {
-            OneSegment s = pData.armData.get(i);
+            OneSegment s = armData.get(i);
             conf.angle[i] = randAngle(s.minAngle, s.maxAngle);
         }
         return conf;

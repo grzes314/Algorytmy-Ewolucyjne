@@ -12,15 +12,15 @@ import sga.SimplePopulation;
  */
 public class MutationPerformerIK implements sga.MutationPerformer<Configuration>, ProgressObserver
 {
-    private final ProblemData pData;
+    private final ArmData armData;
     private final int nrOfLastIterationsObserved;
     private final boolean[] succ;
     private int sum = 0;
     private double range = Math.PI / 8;
 
-    public MutationPerformerIK(ProblemData pData, int nrOfLastIterationsObserved)
+    public MutationPerformerIK(ArmData armData, int nrOfLastIterationsObserved)
     {
-        this.pData = pData;
+        this.armData = armData;
         this.nrOfLastIterationsObserved = nrOfLastIterationsObserved;
         succ = new boolean[nrOfLastIterationsObserved];
     }
@@ -39,7 +39,7 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
 
     private Configuration mutate(Configuration individual, double thetaM)
     {
-        int n = pData.armData.getSize();
+        int n = armData.getSize();
         Configuration c = new Configuration(n);
         for (int i = 0; i < n; ++i)
         {
@@ -47,7 +47,7 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
             if (rand.nextDouble() < thetaM)
             {
                 double d = rand.nextDouble() * 2 * range - range;
-                OneSegment s = pData.armData.get(i);
+                OneSegment s = armData.get(i);
                 c.angle[i] += d;
                 if (c.angle[i] > s.maxAngle)
                     c.angle[i] = s.maxAngle;

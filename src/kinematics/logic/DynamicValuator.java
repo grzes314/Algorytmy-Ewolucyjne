@@ -10,10 +10,10 @@ import optimization.ValuedIndividual;
  */
 public class DynamicValuator implements Function<Configuration>
 {
-    private final ProblemData problemData;
+    private final PrDataForDynamic problemData;
     private StaticValuator valuator;
 
-    public DynamicValuator(ProblemData problemData, Board initialBoard)
+    public DynamicValuator(PrDataForDynamic problemData, Board initialBoard)
     {
         this.problemData = problemData;
         valuator = new StaticValuator(problemData, initialBoard);

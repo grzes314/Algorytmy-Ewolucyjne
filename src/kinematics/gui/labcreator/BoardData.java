@@ -1,11 +1,10 @@
 
 package kinematics.gui.labcreator;
 
+import kinematics.logic.LabData;
 import java.io.Serializable;
-import kinematics.logic.ObstacleData;
-import kinematics.logic.Point;
-import kinematics.logic.ProblemData;
 import kinematics.logic.ArmData;
+import kinematics.logic.PrDataForLab;
 
 /**
  *
@@ -22,18 +21,14 @@ public class BoardData implements Serializable
         this.labData = labData;
     }
     
-    public BoardData(int rows, int cols)
+    public BoardData(int rows, int cols, double  edgeSize)
     {
         armData = new ArmData();
-        labData = new LabData(rows, cols);
+        labData = new LabData(rows, cols, edgeSize);
     }
     
-    public ProblemData toProblemData() throws InvalidDataException
+    public PrDataForLab toPrDataForLab() throws InvalidDataException
     {
-        ObstacleData oData = labData.toObstacleData();
-        Point minArea = labData.getAreaMinPoint();
-        Point maxArea = labData.getAreaMaxPoint();
-        Point goal = labData.getGoal();
-        return new ProblemData(minArea, maxArea, goal, armData, oData);
+        return new PrDataForLab(armData, labData);
     }
 }

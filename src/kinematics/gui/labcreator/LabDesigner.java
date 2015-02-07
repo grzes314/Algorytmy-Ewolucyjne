@@ -1,6 +1,7 @@
 
 package kinematics.gui.labcreator;
 
+import kinematics.logic.LabData;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -18,9 +19,9 @@ public class LabDesigner extends JPanel
     public final LabData labData;
     private GridLayout layout;    
     
-    public LabDesigner(int rows, int cols)
+    public LabDesigner(int rows, int cols, double edgeSize)
     {
-        labData = new LabData(rows, cols);
+        labData = new LabData(rows, cols, edgeSize);
         makeLayout();
     }
 

@@ -12,11 +12,11 @@ import optimization.RandomnessSource;
  */
 public class LocalSearchIK implements LocalSearch<Configuration>
 {
-    private final ProblemData pData;
+    private final ArmData armData;
 
-    public LocalSearchIK(ProblemData pData)
+    public LocalSearchIK(ArmData armData)
     {
-        this.pData = pData;
+        this.armData = armData;
     }
 
     @Override
@@ -30,8 +30,8 @@ public class LocalSearchIK implements LocalSearch<Configuration>
     public void upgrade(Configuration conf, Function<Configuration> F)
     {
         int k = RandomnessSource.rand.nextInt(conf.angle.length);
-        double alfa = pData.armData.get(k).minAngle;
-        double beta = pData.armData.get(k).maxAngle;
+        double alfa = armData.get(k).minAngle;
+        double beta = armData.get(k).maxAngle;
         double bestAngle = conf.angle[k];
         double bestVal = F.value(conf).value;
         for (int i = 0; i <= 10; ++i)

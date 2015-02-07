@@ -3,7 +3,6 @@ package kinematics.logic;
 
 import java.util.ArrayList;
 import java.util.List;
-import kinematics.logic.ObstacleData;
 
 /**
  *
@@ -15,7 +14,7 @@ public class Board
     public final Point goal;
     private final List<Rectangle> rects = new ArrayList<>();
     
-    public Board(ProblemData pData)
+    public Board(PrDataForDynamic pData)
     {
         minArea = pData.minArea;
         maxArea = pData.maxArea;

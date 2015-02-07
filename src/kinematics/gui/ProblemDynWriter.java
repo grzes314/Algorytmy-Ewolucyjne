@@ -8,36 +8,36 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import kinematics.logic.OneSegment;
-import kinematics.logic.ProblemData;
+import kinematics.logic.PrDataForDynamic;
 
 /**
  *
  * @author Grzegorz Los
  */
-public class ProblemWriter
+public class ProblemDynWriter
 {
     private BufferedWriter out;
-    private ProblemData pData;
+    private PrDataForDynamic pData;
     
-    public void write(String pathToFile, ProblemData pData)
+    public void write(String pathToFile, PrDataForDynamic pData)
     {
         write(new File(pathToFile), pData);
     }
     
-    public void write(File file, ProblemData pData)
+    public void write(File file, PrDataForDynamic pData)
     {
         try {
             out = new BufferedWriter(new FileWriter(file));
             this.pData = pData;
             write();
         } catch (IOException ex) {
-            Logger.getLogger(ProblemWriter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProblemDynWriter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (out != null)
                     out.close();
             } catch (IOException ex) {
-                Logger.getLogger(ProblemWriter.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProblemDynWriter.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

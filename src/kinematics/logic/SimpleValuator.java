@@ -11,7 +11,7 @@ import optimization.ValuedIndividual;
 public class SimpleValuator implements Function<Configuration>
 {
 
-    public SimpleValuator(ProblemData problemData)
+    public SimpleValuator(PrDataForDynamic problemData)
     {
         this.problemData = problemData;
         arm = new Arm(problemData.armData);
@@ -25,6 +25,6 @@ public class SimpleValuator implements Function<Configuration>
         return new ValuedIndividual<>(x, -last.distance(problemData.goal));
     }
 
-    private final ProblemData problemData;
+    private final PrDataForDynamic problemData;
     private final Arm arm;
 }

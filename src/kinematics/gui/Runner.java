@@ -4,7 +4,6 @@ package kinematics.gui;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import javax.swing.Timer;
 import kinematics.logic.Arm;
 import kinematics.logic.Board;
@@ -12,6 +11,8 @@ import kinematics.logic.Configuration;
 import kinematics.logic.DummyPredictor;
 import kinematics.logic.MutationPerformerIK;
 import kinematics.logic.NoCrossoverIK;
+import kinematics.logic.PrDataForDynamic;
+import kinematics.logic.PrDataForLab;
 import kinematics.logic.Predictor;
 import kinematics.logic.ProblemData;
 import kinematics.logic.RandomPopulationGeneratorIK;
@@ -36,7 +37,8 @@ import sga.SimpleReplacementPerformer;
  */
 public class Runner implements ProgressObserver
 {
-    private final ProblemData pData;
+    private final PrDataForDynamic dynData;
+    private final PrDataForLab labData;
     private final Canvas canvas;
     private SGA<Configuration> sga;
     private DynamicFunction<Configuration> fun;
@@ -48,17 +50,29 @@ public class Runner implements ProgressObserver
 
     public Runner(ProblemData pData, Canvas canvas)
     {
-        this.pData = pData;
+        switch(pData.kind)
+        {
+            case Dynamic:
+                this.dynData = pData.dynData;
+                this.labData = null;
+                break;
+            case Labirynth:
+                this.labData = pData.labData;
+                this.dynData = null; //TODO conversion from Lab data to Dynamic Data
+                break;
+            default:
+                throw new RuntimeException("Unsupported data kind");
+        }
         this.canvas = canvas;
     }    
     
     public void run(Mode mode, boolean simulation)
     {
-        Board board = new Board(pData);
+        Board board = new Board(dynData);
         canvas.setBoard(board);
         canvas.clearArms();
-        canvas.addArm(new Arm(pData.armData));
-        canvas.addArm(new Arm(pData.armData));
+        canvas.addArm(new Arm(dynData.armData));
+        canvas.addArm(new Arm(dynData.armData));
         
         this.mode = mode;
         switch(mode)
@@ -94,21 +108,21 @@ public class Runner implements ProgressObserver
     
     private void prepareSimulationSimple(Board board, boolean simulation)
     {
-        fun = new StaticFunction<>(new SimpleValuator(pData));
+        fun = new StaticFunction<>(new SimpleValuator(dynData));
         simulator = new Simulator(board, defaultConf(), true, !simulation);
         predictor = new DummyPredictor();
     }
     
     private void prepareSimulationStatic(Board board, boolean simulation)
     {
-        fun = new StaticFunction<>(new StaticValuator(pData, board));      
+        fun = new StaticFunction<>(new StaticValuator(dynData, board));      
         simulator = new Simulator(board, defaultConf(), true, !simulation); 
         predictor = new DummyPredictor(); 
     }
     
     private void prepareSimulationDynamic(Board board, boolean simulation)
     {
-        fun = new DynamicFunction<>(new StaticValuator(pData, board));
+        fun = new DynamicFunction<>(new StaticValuator(dynData, board));
         simulator = new Simulator(board, defaultConf(), false, !simulation);
         predictor = new SimplePredictor();
     }
@@ -119,17 +133,17 @@ public class Runner implements ProgressObserver
             100,
             500,
             1,
-            4.0 / pData.armData.getSize(),
+            4.0 / dynData.armData.getSize(),
             Integer.MAX_VALUE
         );
         
         sga = new SGA<>(params);
         sga.addObserver(this);
-        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(pData));
+        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(dynData.armData));
         //sga.setParentSelector(new RouletteParentSelector<>());
         sga.setParentSelector(new RandomParentSelector<>());
         sga.setCrossoverPerformer(new NoCrossoverIK());
-        MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
+        MutationPerformerIK mp = new MutationPerformerIK(dynData.armData, 100);
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         sga.setReplacementPerformer(new SimpleReplacementPerformer<>());
@@ -142,18 +156,18 @@ public class Runner implements ProgressObserver
             100,
             500,
             1,
-            4.0 / pData.armData.getSize(),
+            4.0 / dynData.armData.getSize(),
             Integer.MAX_VALUE
         );
         
         
         sga = new SGA<>(params);
         sga.addObserver(this);
-        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(pData));
+        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(dynData.armData));
         //sga.setParentSelector(new RouletteParentSelector<>());
         sga.setParentSelector(new RandomParentSelector<>());
         sga.setCrossoverPerformer(new NoCrossoverIK());
-        MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
+        MutationPerformerIK mp = new MutationPerformerIK(dynData.armData, 100);
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,
@@ -167,18 +181,18 @@ public class Runner implements ProgressObserver
             100,
             500,
             1,
-            4.0 / pData.armData.getSize(),
+            4.0 / dynData.armData.getSize(),
             Integer.MAX_VALUE
         );
         
         
         sga = new SGA<>(params);
         sga.addObserver(this);
-        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(pData));
+        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(dynData.armData));
         //sga.setParentSelector(new RouletteParentSelector<>());
         sga.setParentSelector(new RandomParentSelector<>());
         sga.setCrossoverPerformer(new NoCrossoverIK());
-        MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
+        MutationPerformerIK mp = new MutationPerformerIK(dynData.armData, 100);
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,
@@ -192,22 +206,22 @@ public class Runner implements ProgressObserver
             100,
             500,
             1,
-            4.0 / pData.armData.getSize(),
+            4.0 / dynData.armData.getSize(),
             Integer.MAX_VALUE
         );
         
         
         sga = new SGA<>(params);
         sga.addObserver(this);
-        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(pData));
+        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(dynData.armData));
         //sga.setParentSelector(new RouletteParentSelector<>());
         sga.setParentSelector(new RandomParentSelector<>());
         sga.setCrossoverPerformer(new NoCrossoverIK());
-        MutationPerformerIK mp = new MutationPerformerIK(pData, 100);
+        MutationPerformerIK mp = new MutationPerformerIK(labData.armData, 100);
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         ReplacementWithNonFeasible<Configuration> repl = new ReplacementWithNonFeasible<>(
-            params.populationSize, params.populationSize, pData.maxArea.x + pData.maxArea.y);
+            params.populationSize, params.populationSize, dynData.maxArea.x + dynData.maxArea.y);
         sga.addObserver(repl);
         sga.setReplacementPerformer(repl);
         //sga.setLocalSearch(new LocalSearchIK(pData));
@@ -232,7 +246,7 @@ public class Runner implements ProgressObserver
     
     private Configuration defaultConf()
     {
-        int n = pData.armData.getSize();
+        int n = dynData.armData.getSize();
         Configuration c = new Configuration(n);
         for (int i = 0; i < n; ++i)
             c.angle[i] = Math.PI;
@@ -281,7 +295,7 @@ public class Runner implements ProgressObserver
     private void updateFun()
     {
         Board nextBoard = predictor.predict(simulator.getBoard(), 1.0);
-        fun.update(new StaticValuator(pData, nextBoard));
+        fun.update(new StaticValuator(dynData, nextBoard));
     }
     
     public enum Mode

@@ -7,19 +7,25 @@ package kinematics.logic;
  */
 public class ProblemData
 {
+    public final PrDataForDynamic dynData;
+    public final PrDataForLab labData;
+    public final DataKind kind;
     
-    
-    public final Point minArea, maxArea;
-    public final Point goal;
-    public final ArmData armData;
-    public final ObstacleData oData;
-
-    public ProblemData(Point minArea, Point maxArea, Point goal, ArmData sData, ObstacleData oData)
+    public ProblemData(PrDataForDynamic dynData)
     {
-        this.minArea = minArea;
-        this.maxArea = maxArea;
-        this.goal = goal;
-        this.armData = sData;
-        this.oData = oData;
+        this.dynData = dynData;
+        this.labData = null;
+        this.kind = DataKind.Dynamic;
+    }
+    
+    public ProblemData(PrDataForLab labData)
+    {
+        this.dynData = null;
+        this.labData = labData;
+        this.kind = DataKind.Labirynth;
+    }
+    
+    public enum DataKind {
+        Dynamic, Labirynth
     }
 }

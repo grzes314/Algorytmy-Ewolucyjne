@@ -103,9 +103,11 @@ public class LabCreator extends JFrame
     
     private void saveClicked()
     {
+        String path = getSavePath();
+        if (path == null)
+            return;
         try {
             PrDataForLab pData = boardDesigner.getBoardData().toPrDataForLab();
-            String path = getSavePath();
             pWriter.write(path, pData);
         } catch (InvalidDataException ex) {
             Logger.getLogger(LabCreator.class.getName()).log(Level.SEVERE, null, ex);
@@ -115,8 +117,10 @@ public class LabCreator extends JFrame
     
     private void openClicked()
     {
+        String path = getOpenPath();
+        if (path == null)
+            return;
         try {
-            String path = getOpenPath();
             PrDataForLab pData = new ParserForLabirynth().read(path).labData;
             boardDesigner.setArmDesigner(new ArmDesigner(pData.armData));
             boardDesigner.setLabDesigner(new LabDesigner(pData.labData));

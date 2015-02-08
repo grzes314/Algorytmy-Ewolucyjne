@@ -28,6 +28,7 @@ public class ReplacementWithNonFeasible<Individual extends Copyable<Individual>>
         this.maxNonFeasible = maxNonFeasible;
         this.maxFeasible = maxFeasible;
         this.initialMaxInfeasibility = initialMaxInfeasibility;
+        maxInfeasibility = initialMaxInfeasibility;
     }
 
     @Override
@@ -75,7 +76,10 @@ public class ReplacementWithNonFeasible<Individual extends Copyable<Individual>>
     @Override
     public void currentIteration(int i, boolean solutionImproved)
     {
-        maxInfeasibility = initialMaxInfeasibility / (1.0 + i/25.0);
+        if (solutionImproved)
+            maxInfeasibility *= 1.005;
+        else
+            maxInfeasibility *= 0.999;
         if (i % 200 == 0)
             System.out.println("max infeasibility: " + maxInfeasibility);
     }

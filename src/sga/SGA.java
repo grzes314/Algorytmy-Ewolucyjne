@@ -232,7 +232,7 @@ public class SGA<Individual extends Copyable<Individual>>
         currBestInfeasible = pop.getMaxInfeasible();
         if (currBestInfeasibleVal > bestInfeasibleVal)
         {
-            solutionImproved = true;
+            //solutionImproved = true;
             bestInfeasibleVal = currBestInfeasibleVal;
             bestInfeasible = currBestInfeasible;
         }

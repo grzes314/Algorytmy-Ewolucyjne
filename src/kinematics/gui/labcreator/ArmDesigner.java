@@ -6,9 +6,10 @@
 
 package kinematics.gui.labcreator;
 
-import kinematics.logic.OneSegment;
 import javax.swing.DefaultListModel;
 import kinematics.logic.ArmData;
+import kinematics.logic.OneSegment;
+import static kinematics.logic.Utils.degToRad;
 
 /**
  *
@@ -40,7 +41,7 @@ public class ArmDesigner extends javax.swing.JPanel
         int l = (Integer) length.getValue();
         int a = (Integer) minAngle.getValue();
         int b = (Integer) maxAngle.getValue();
-        OneSegment segment = new OneSegment(l, a, b);
+        OneSegment segment = new OneSegment(l, degToRad(a), degToRad(b));
         armData.add(segment);
         addSegmentToList(segment);
     }

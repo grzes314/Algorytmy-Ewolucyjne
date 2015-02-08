@@ -2,6 +2,7 @@
 package kinematics.logic;
 
 import java.io.Serializable;
+import static kinematics.logic.Utils.radToDeg;
 
 /**
  *
@@ -9,6 +10,7 @@ import java.io.Serializable;
  */
 public class OneSegment implements Serializable
 {
+    // Angles are in radians!!
     public final double length, minAngle, maxAngle;
 
     public OneSegment(double length, double minAngle, double maxAngle)
@@ -21,6 +23,8 @@ public class OneSegment implements Serializable
     @Override
     public String toString()
     {
-        return length + "; " + minAngle + "; " + maxAngle;
+        String alfa = String.format("%.2f", radToDeg(minAngle));
+        String beta = String.format("%.2f", radToDeg(maxAngle));
+        return length + "; " + alfa + "; " + beta;
     }
 }

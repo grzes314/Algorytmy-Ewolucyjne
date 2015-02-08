@@ -15,6 +15,7 @@ import kinematics.logic.DummyPredictor;
 import kinematics.logic.InvalidDataException;
 import kinematics.logic.Labirynth;
 import kinematics.logic.LabirynthCreator;
+import kinematics.logic.LabirynthValuator;
 import kinematics.logic.MutationPerformerIK;
 import kinematics.logic.NoCrossoverIK;
 import kinematics.logic.PrDataForDynamic;
@@ -106,7 +107,7 @@ public class Runner implements ProgressObserver
                 prepareSGADynamic();
                 break;
             case Labirynth:
-                prepareSimulationStatic(board, simulation);
+                prepareSimulationLabirynth(board, labirynth, simulation);
                 prepareSGALabirynth();
                 break;
         }
@@ -141,6 +142,13 @@ public class Runner implements ProgressObserver
         fun = new DynamicFunction<>(new StaticValuator(dynData, board));
         simulator = new Simulator(board, defaultConf(), false, !simulation);
         predictor = new SimplePredictor();
+    }
+    
+    private void prepareSimulationLabirynth(Board board, Labirynth lab, boolean simulation)
+    {
+        fun = new StaticFunction<>(new LabirynthValuator(labData, lab));      
+        simulator = new Simulator(board, defaultConf(), true, !simulation); 
+        predictor = new DummyPredictor(); 
     }
     
     private void prepareSGASimple()

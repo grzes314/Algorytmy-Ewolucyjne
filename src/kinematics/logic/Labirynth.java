@@ -30,7 +30,7 @@ public class Labirynth
         return sum;
     }
     
-    public boolean intersects(List<Line> lines)
+    public boolean intersects(Line[] lines)
     {
         for (Line line: lines)
         {

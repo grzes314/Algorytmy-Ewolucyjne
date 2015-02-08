@@ -51,4 +51,16 @@ public class ValuedIndividual<Individual>
         valued = true;
         this.infeasibility = infeasibility;
     }
+
+    public ValuedIndividual(Individual ind, double value, boolean feasible)
+    {
+        this.ind = ind;
+        this.value = value;
+        this.feasible = feasible;
+        valued = true;
+        if (feasible)
+            infeasibility = 0.0;
+        else
+            infeasibility = Double.POSITIVE_INFINITY;
+    }
 }

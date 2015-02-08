@@ -38,6 +38,10 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
         {
             if (!optimized || !inds.get(i).valued)
             {
+                if (!inds.get(i).feasible)
+                {
+                    int a = 9;
+                }
                 ValuedIndividual<Individual> valInd = F.value(inds.get(i).ind);
                 inds.set(i, valInd);
             }

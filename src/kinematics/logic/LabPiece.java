@@ -13,6 +13,7 @@ public class LabPiece
     private final Point[] points;
     private final Line[] lines;
     private final double[] fromP0ToP;
+    private final double perim;
         
     public LabPiece(List<Point> points)
     {
@@ -28,6 +29,7 @@ public class LabPiece
         }
         initLines();
         initDist();
+        perim = fromP0ToP[n-1] + lines[n-1].getLength();
     }
 
     private void initLines()
@@ -44,8 +46,8 @@ public class LabPiece
     {
         int n = points.length;
         fromP0ToP[0] = 0.0;
-        for (int i = 0; i < n; ++i)
-            fromP0ToP[(i+1)%n] =  fromP0ToP[i] + lines[i].getLength();        
+        for (int i = 1; i < n; ++i)
+            fromP0ToP[i] =  fromP0ToP[i-1] + lines[i-1].getLength();        
     }
     
     public double perimDist(Point from, Point to)
@@ -53,10 +55,8 @@ public class LabPiece
         Line line = new Line(from, to);
         List<Intersection> ints = getIntersections(line);
         
-        if (ints.size() == 0)
+        if (ints.size() <= 1) //ints.size() == 1 when we are inside piece
             return 0.0;
-        else if (ints.size() == 1)
-            throw new RuntimeException("How on earth?");
         
         Intersection fr = getClosest(ints, from);
         Intersection too = getClosest(ints, to);
@@ -65,7 +65,7 @@ public class LabPiece
         double offsetFrom = points[fr.lineInd].distance(fr.p);
         double offsetTo = points[too.lineInd].distance(too.p);
         d = d - offsetFrom + offsetTo;
-        return Math.min(d, fromP0ToP[0] - d);
+        return Math.min(d, perim - d);
     }
 
     public List<Intersection> getIntersections(Line line)
@@ -101,7 +101,7 @@ public class LabPiece
         if (pointNr1 <= pointNr2)
             return fromP0ToP[pointNr2] - fromP0ToP[pointNr1];
         else
-            return fromP0ToP[0] + fromP0ToP[pointNr2] - fromP0ToP[pointNr1];
+            return perim + fromP0ToP[pointNr2] - fromP0ToP[pointNr1];
     }
 
     public Point[] getPoints()

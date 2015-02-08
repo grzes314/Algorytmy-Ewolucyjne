@@ -237,7 +237,7 @@ public class Runner implements ProgressObserver
         
         sga = new SGA<>(params);
         sga.addObserver(this);
-        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(dynData.armData));
+        sga.setRandomPopoluationGenerator(new RandomPopulationGeneratorIK(labData.armData));
         //sga.setParentSelector(new RouletteParentSelector<>());
         sga.setParentSelector(new RandomParentSelector<>());
         sga.setCrossoverPerformer(new NoCrossoverIK());

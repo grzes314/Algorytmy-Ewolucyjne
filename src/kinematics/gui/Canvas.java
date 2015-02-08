@@ -8,6 +8,8 @@ import java.util.List;
 import javax.swing.JPanel;
 import kinematics.logic.Arm;
 import kinematics.logic.Board;
+import kinematics.logic.LabPiece;
+import kinematics.logic.Labirynth;
 import kinematics.logic.Point;
 import kinematics.logic.Rectangle;
 
@@ -19,21 +21,10 @@ public class Canvas extends JPanel
 {
     private ArrayList<Arm> arms = new ArrayList<>();
     private Board board;
+    private Labirynth lab;
     private final int goalR = 6;
     private final int nodeR = 4;
     private Graphics gr;
-    
-    private static class SwingCoord
-    {
-        int x,y;
-
-        public SwingCoord(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-    }
-        
     
     @Override
     public void paint(Graphics gr)
@@ -47,7 +38,8 @@ public class Canvas extends JPanel
             drawGoal();
             drawObstacles();
         }
-        drawArms();        
+        drawArms();      
+        drawLab();
     }
 
     public Arm getArm(int nr)
@@ -68,6 +60,11 @@ public class Canvas extends JPanel
     public void setBoard(Board board)
     {
         this.board = board;
+    }
+
+    void setLabirynth(Labirynth labirynth)
+    {
+        this.lab = labirynth;
     }
     
     private SwingCoord translate(Point c)
@@ -135,4 +132,37 @@ public class Canvas extends JPanel
         SwingCoord to = translate(p2);
         gr.fillRect(from.x, to.y, to.x - from.x, from.y - to.y);
     }
+
+    private void drawLab()
+    {
+        if (lab == null)
+            return;
+        gr.setColor(Color.cyan);
+        for (LabPiece lp: lab.pieces)
+            drawLabPiece(lp);
+    }
+
+    private void drawLabPiece(LabPiece lp)
+    {
+        Point[] ps = lp.getPoints();
+        int n = ps.length;
+        for (int i = 0; i < n; ++i)
+        {
+            SwingCoord p = translate(ps[i]);
+            SwingCoord r = translate( ps[(i+1)%n] );
+            gr.drawLine(p.x, p.y, r.x, r.y);
+        }
+    }
+    
+    private static class SwingCoord
+    {
+        int x,y;
+
+        public SwingCoord(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
+        
 }

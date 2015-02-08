@@ -4,17 +4,24 @@ package kinematics.gui;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Timer;
+import static kinematics.gui.Runner.Mode.Labirynth;
 import kinematics.logic.Arm;
 import kinematics.logic.Board;
 import kinematics.logic.Configuration;
 import kinematics.logic.DummyPredictor;
+import kinematics.logic.InvalidDataException;
+import kinematics.logic.Labirynth;
+import kinematics.logic.LabirynthCreator;
 import kinematics.logic.MutationPerformerIK;
 import kinematics.logic.NoCrossoverIK;
 import kinematics.logic.PrDataForDynamic;
 import kinematics.logic.PrDataForLab;
 import kinematics.logic.Predictor;
 import kinematics.logic.ProblemData;
+import static kinematics.logic.ProblemData.DataKind.Labirynth;
 import kinematics.logic.RandomPopulationGeneratorIK;
 import kinematics.logic.ReplacementWithNonFeasible;
 import kinematics.logic.SimplePredictor;
@@ -45,8 +52,9 @@ public class Runner implements ProgressObserver
     private Simulator simulator;
     private Predictor predictor;
     private Timer viewUpdater;
-    Mode mode;
-
+    private Mode mode;
+    private LabirynthCreator labCreator = new LabirynthCreator();
+    
 
     public Runner(ProblemData pData, Canvas canvas)
     {
@@ -58,7 +66,7 @@ public class Runner implements ProgressObserver
                 break;
             case Labirynth:
                 this.labData = pData.labData;
-                this.dynData = null; //TODO conversion from Lab data to Dynamic Data
+                this.dynData = pData.labData.toDynamicData();
                 break;
             default:
                 throw new RuntimeException("Unsupported data kind");
@@ -69,10 +77,18 @@ public class Runner implements ProgressObserver
     public void run(Mode mode, boolean simulation)
     {
         Board board = new Board(dynData);
+        Labirynth labirynth = null;
+        try {
+            if (labData != null)
+                labirynth = labCreator.makeLab(labData.labData);
+        } catch (InvalidDataException ex) {
+            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
+        }
         canvas.setBoard(board);
         canvas.clearArms();
         canvas.addArm(new Arm(dynData.armData));
         canvas.addArm(new Arm(dynData.armData));
+        canvas.setLabirynth(labirynth);
         
         this.mode = mode;
         switch(mode)

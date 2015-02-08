@@ -15,5 +15,20 @@ public class PrDataForLab
         this.armData = armData;
         this.labData = labData;
     }
-
+    
+    public PrDataForDynamic toDynamicData()
+    {
+        Point goal = new Point(0,0);
+        try {
+            goal = labData.getGoal();
+        } catch (InvalidDataException ex) {}
+        
+        return new PrDataForDynamic(
+            labData.minArea,
+            labData.maxArea,
+            goal,
+            armData,
+            labData.toObstacleData()
+        );
+    }
 }

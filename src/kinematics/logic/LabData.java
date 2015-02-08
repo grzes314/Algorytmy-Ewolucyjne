@@ -45,6 +45,7 @@ public class LabData implements Serializable
 
     ObstacleData toObstacleData()
     {
+        //TODO improve that method
         int k = countWalls();
         Point[] from = new Point[k];
         Point[] to = new Point[k];

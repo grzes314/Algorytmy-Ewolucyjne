@@ -104,6 +104,16 @@ public class LabPiece
             return fromP0ToP[0] + fromP0ToP[pointNr2] - fromP0ToP[pointNr1];
     }
 
+    public Point[] getPoints()
+    {
+        return points;
+    }
+
+    public Line[] getLines()
+    {
+        return lines;
+    }
+
     
     public class Intersection
     {

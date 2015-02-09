@@ -72,7 +72,7 @@ public class MutationPerformerIK implements sga.MutationPerformer<Configuration>
         if (sum < nrOfLastIterationsObserved / 5)
             range *= 0.999;
         else
-            range *= 1.05;
+            range *= i > 200 ? (i > 1000 ? 1.05 : 1.02) : 1.005;
         if (i % 200 == 0)
             System.out.printf("Range =  %.3frad = %4.2f degrees\n", range, 180*range/Math.PI);
     }

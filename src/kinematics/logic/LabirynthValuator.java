@@ -29,7 +29,7 @@ public class LabirynthValuator implements Function<Configuration>
         double infeasibility = lab.getIntersectionLength(arm);
         double d1 = lab.getEucDistToGoal(last);
         double d2 = lab.getPerimDistToGoal(last);
-        return new ValuedIndividual<>(x, -(d1 + d2), infeasibility < 1e-6, infeasibility); 
+        return new ValuedIndividual<>(x, -(d1 + 5*d2), infeasibility < 1e-6, infeasibility); 
     }
 
 }

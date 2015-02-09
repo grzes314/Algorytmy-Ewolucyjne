@@ -19,7 +19,7 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
     private double minTargetVal, maxTargetVal, meanTargetVal, maxInfeasibleVal;
     Individual maxIndividual, minIndividual, maxInfeasible;
     private int N;
-    private boolean optimized = false;
+    private boolean optimized = true;
     
     @Override
     public void evaluate(Function<Individual> F)
@@ -38,7 +38,7 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
         {
             if (!optimized || !inds.get(i).valued)
             {
-                if (!inds.get(i).feasible)
+                if (inds.get(i).valued)
                 {
                     int a = 9;
                 }

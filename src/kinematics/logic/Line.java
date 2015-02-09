@@ -11,7 +11,7 @@ public class Line
 {
     public final double a, b, c;
     public final double midX, midY, xRange, yRange;
-    public static final double eps = 0.0001;
+    public static final double eps = 1.0e-7;
     public final Point p, r;
     
     public Line(Point p, Point r)
@@ -32,6 +32,27 @@ public class Line
         xRange = (maxX - minX) / 2;
         yRange = (maxY - minY) / 2;
     }
+    /*public Line(Point p, Point r)
+    {
+        this.p = p;
+        this.r = r;
+        double u = r.x - p.x;
+        double v = r.y - p.y;
+        double pomA = v;
+        double pomB = -u;
+        double pomC = u * p.y - v * p.x;
+        a = pomA / pomC;
+        b = pomB / pomC;
+        c = 1.0;
+        double minX = min(p.x, r.x);
+        double maxX = max(p.x, r.x);
+        double minY = min(p.y, r.y);
+        double maxY = max(p.y, r.y);
+        midX = (maxX + minX) / 2;
+        midY = (maxY + minY) / 2;
+        xRange = (maxX - minX) / 2;
+        yRange = (maxY - minY) / 2;
+    }*/
     
     public boolean onLine(Point p)
     {

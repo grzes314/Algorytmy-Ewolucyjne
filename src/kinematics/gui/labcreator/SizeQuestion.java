@@ -166,7 +166,7 @@ public class SizeQuestion extends javax.swing.JDialog
 
     public int getCols()
     {
-        return (Integer) rows.getValue(); 
+        return (Integer) cols.getValue(); 
     }
     
     public int getEdgeSize()

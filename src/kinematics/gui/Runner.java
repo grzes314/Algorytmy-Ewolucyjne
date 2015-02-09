@@ -194,8 +194,10 @@ public class Runner implements ProgressObserver
         MutationPerformerIK mp = new MutationPerformerIK(dynData.armData, 100);
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
-        sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,
-                                            params.populationSize/2, Double.POSITIVE_INFINITY));
+        ReplacementWithNonFeasible<Configuration> repl = new ReplacementWithNonFeasible<>(
+            params.populationSize, params.populationSize/5, new Arm(dynData.armData).getLength()/4);
+        sga.setReplacementPerformer(repl);
+        sga.addObserver(repl);
         //sga.setLocalSearch(new LocalSearchIK(pData));        
     }
 
@@ -220,7 +222,7 @@ public class Runner implements ProgressObserver
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,
-                                    params.populationSize/2, Double.POSITIVE_INFINITY));
+                                    params.populationSize/5, Double.POSITIVE_INFINITY));
         //sga.setLocalSearch(new LocalSearchIK(pData));
     }
 
@@ -230,7 +232,7 @@ public class Runner implements ProgressObserver
             100,
             500,
             1,
-            4.0 / dynData.armData.getSize(),
+            4.0 / labData.armData.getSize(),
             Integer.MAX_VALUE
         );
         
@@ -245,7 +247,7 @@ public class Runner implements ProgressObserver
         sga.addObserver(mp);
         sga.setMutationPerformer(mp);
         ReplacementWithNonFeasible<Configuration> repl = new ReplacementWithNonFeasible<>(
-            params.populationSize, params.populationSize, dynData.maxArea.x + dynData.maxArea.y);
+            params.populationSize, params.populationSize/5, new Arm(labData.armData).getLength()/4);
         sga.addObserver(repl);
         sga.setReplacementPerformer(repl);
         //sga.setLocalSearch(new LocalSearchIK(pData));
@@ -308,7 +310,7 @@ public class Runner implements ProgressObserver
         }
         simulator.setTargetConf(sga.getCurrBestInd());
         canvas.getArm(0).setConfiguration(simulator.getCurrConf());
-        if (mode == Mode.Labirynth)
+        if (mode == Mode.Labirynth || mode == Mode.Static)
         {
             SimplePopulation<Configuration> pop = (SimplePopulation<Configuration>) sga.getCurrPopulation();
             Configuration conf = pop.getMaxInfeasible();

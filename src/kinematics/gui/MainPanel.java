@@ -36,7 +36,7 @@ public class MainPanel extends javax.swing.JPanel
         if(returnVal == JFileChooser.APPROVE_OPTION)
         {
             try {
-                ProblemData pData = pParser.read(chooser.getSelectedFile().getName());
+                ProblemData pData = pParser.read(chooser.getSelectedFile().getAbsolutePath());
                 runner = new Runner(pData, canvas);
             } catch (IOException ex) {
                 Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);

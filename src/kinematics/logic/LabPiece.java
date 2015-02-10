@@ -75,15 +75,15 @@ public class LabPiece
         return Math.min(d, perim - d);
     }*/
     
-    public double perimDist(Point from, Point to)
+    /*public double perimDist(Point from, Point to)
     {
         findClosestTo(to);
         
         Line line = new Line(from, to);
         return perimDist(line);
-    }
+    }*/
     
-    /*public double perimDist(Point from, Point to)
+    public double perimDist(Point from, Point to)
     {
         findClosestTo(to);
         
@@ -103,7 +103,7 @@ public class LabPiece
             if (d[i] < res)
                 res = d[i];
         return res;
-    }*/
+    }
     
     // Wyznacza odleglosc po obwodzie od pierwszego przeciecia wyznaczonego przez line do closesestToTo
     private double perimDist(Line line)

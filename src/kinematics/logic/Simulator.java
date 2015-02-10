@@ -55,11 +55,11 @@ public class Simulator
         }
     }
 
-    private void moveArm(double deltaTime)
+    private synchronized void moveArm(double deltaTime)
     {
         if (targetConf == null)
         {
-            currConf = null;
+            //currConf = null;
             return;
         }
         double[] curr = currConf.angle;
@@ -87,7 +87,7 @@ public class Simulator
         return targetConf;
     }
 
-    public void setTargetConf(Configuration conf)
+    public synchronized void setTargetConf(Configuration conf)
     {
         targetConf = conf;
     }

@@ -19,7 +19,7 @@ public class SimplePopulation<Individual extends Copyable<Individual>> implement
     private double minTargetVal, maxTargetVal, meanTargetVal, maxInfeasibleVal;
     Individual maxIndividual, minIndividual, maxInfeasible;
     private int N;
-    private boolean optimized = true;
+    public static boolean optimized = true;
     
     @Override
     public void evaluate(Function<Individual> F)

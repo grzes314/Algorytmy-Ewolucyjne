@@ -172,6 +172,7 @@ public class Runner implements ProgressObserver
         sga.setMutationPerformer(mp);
         sga.setReplacementPerformer(new SimpleReplacementPerformer<>());
         //sga.setLocalSearch(new LocalSearchIK(pData));        
+        SimplePopulation.optimized = true;
     }
 
     private void prepareSGAStatic()
@@ -198,7 +199,8 @@ public class Runner implements ProgressObserver
             params.populationSize, params.populationSize/5, new Arm(dynData.armData).getLength()/4);
         sga.setReplacementPerformer(repl);
         sga.addObserver(repl);
-        //sga.setLocalSearch(new LocalSearchIK(pData));        
+        //sga.setLocalSearch(new LocalSearchIK(pData));   
+        SimplePopulation.optimized = true;     
     }
 
     private void prepareSGADynamic()
@@ -224,13 +226,14 @@ public class Runner implements ProgressObserver
         sga.setReplacementPerformer(new ReplacementWithNonFeasible<>(params.populationSize,
                                     params.populationSize/5, Double.POSITIVE_INFINITY));
         //sga.setLocalSearch(new LocalSearchIK(pData));
+        SimplePopulation.optimized = false;
     }
 
     private void prepareSGALabirynth()
     {
         SGA_Params params = new SGA_Params(
-            100,
-            500,
+            1000,
+            5000,
             1,
             4.0 / labData.armData.getSize(),
             Integer.MAX_VALUE
@@ -251,6 +254,7 @@ public class Runner implements ProgressObserver
         sga.addObserver(repl);
         sga.setReplacementPerformer(repl);
         //sga.setLocalSearch(new LocalSearchIK(pData));
+        SimplePopulation.optimized = true;
     }
     
     public void stop()

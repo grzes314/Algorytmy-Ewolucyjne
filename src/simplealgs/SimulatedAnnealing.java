@@ -84,15 +84,16 @@ public class SimulatedAnnealing<Individual>
         ValuedIndividual<Individual> best  = curr;
         for (int i = 0; i < nrOfIterations; ++i)
         {
-            double t = 0.05 / (1.0 + Math.sqrt(i));
-            curr = oneIteration(curr, t);
+            double coeff = nrOfIterations / 1000000.0;
+            double t = 1 / (1.0 + Math.sqrt(i/coeff));
+            curr = oneIteration(curr, t, i);
             if (curr.value > best.value)
                 best = curr;
         }
         return best;
     }
 
-    private ValuedIndividual<Individual> oneIteration(ValuedIndividual<Individual> curr, double temp)
+    private ValuedIndividual<Individual> oneIteration(ValuedIndividual<Individual> curr, double temp, int i)
     {
         Individual n = neighbourhood.chooseOne(curr.ind);
         ValuedIndividual vi = F.value(n);
@@ -101,8 +102,15 @@ public class SimulatedAnnealing<Individual>
         double r = RandomnessSource.rand.nextDouble();
         double x = (vi.value - curr.value) / Math.abs(curr.value) / temp; // vi.value < curr.value
         if (Math.exp(x) > r)
+        {
+            if (x != 0)
+                System.out.println("przeskok: " + i + ", temp=" + temp + ", rel= " + (vi.value - curr.value) / Math.abs(curr.value));
             return vi;
+        }
         else
+        {
+            //System.out.println("bezzmian: " + i + ", temp=" + temp + ", rel= " + (vi.value - curr.value) / Math.abs(curr.value));
             return curr;
+        }
     }
 }
